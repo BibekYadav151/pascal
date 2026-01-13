@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
+import { Card, AnimatedButton } from '../components/ui';
 
 const Courses = () => {
   const { programs, addProgramInquiry } = useApp();
@@ -15,7 +16,6 @@ const Courses = () => {
   });
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [showDetails, setShowDetails] = useState(null);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -104,20 +104,17 @@ const Courses = () => {
     handleCloseModal();
   };
 
-  const toggleDetails = (programId) => {
-    setShowDetails(showDetails === programId ? null : programId);
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       {/* Page Header */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 py-16">
+      <section className="bg-gray-900 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-display-lg mb-6">
               Courses & Programs
             </h1>
-            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            <p className="text-body-lg text-gray-300 max-w-2xl mx-auto">
               Explore study programs from top universities worldwide
             </p>
           </div>
@@ -125,17 +122,17 @@ const Courses = () => {
       </section>
 
       {/* Search & Filter Section */}
-      <section className="py-8 bg-white shadow-sm">
+      <section className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Search Bar */}
-          <div className="mb-6">
+          <div className="mb-8">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search by course name or university..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="input-field w-full pl-12"
               />
               <svg className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -148,7 +145,7 @@ const Courses = () => {
             <select
               value={filters.country}
               onChange={(e) => handleFilterChange('country', e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-field"
             >
               <option value="">All Countries</option>
               {uniqueCountries.map(country => (
@@ -159,7 +156,7 @@ const Courses = () => {
             <select
               value={filters.university}
               onChange={(e) => handleFilterChange('university', e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-field"
             >
               <option value="">All Universities</option>
               {uniqueUniversities.map(uni => (
@@ -170,7 +167,7 @@ const Courses = () => {
             <select
               value={filters.duration}
               onChange={(e) => handleFilterChange('duration', e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-field"
             >
               <option value="">All Durations</option>
               {uniqueDurations.map(duration => (
@@ -181,7 +178,7 @@ const Courses = () => {
             <select
               value={filters.ieltsRequired}
               onChange={(e) => handleFilterChange('ieltsRequired', e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-field"
             >
               <option value="">IELTS Required</option>
               <option value="yes">Yes</option>
@@ -191,7 +188,7 @@ const Courses = () => {
             <select
               value={filters.languageTest}
               onChange={(e) => handleFilterChange('languageTest', e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-field"
             >
               <option value="">Language Test</option>
               {uniqueLanguageTests.map(test => (
@@ -202,7 +199,7 @@ const Courses = () => {
             <select
               value={filters.studyLevel}
               onChange={(e) => handleFilterChange('studyLevel', e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-field"
             >
               <option value="">Study Level</option>
               {uniqueStudyLevels.map(level => (
@@ -234,10 +231,11 @@ const Courses = () => {
       {/* Program Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPrograms.map((program) => (
-            <div
+          {filteredPrograms.map((program, index) => (
+            <Card
               key={program.id}
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden"
+              className="overflow-hidden"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Card Header */}
               <div className="bg-gradient-to-r from-blue-500 to-blue-700 p-4 text-white">
@@ -289,70 +287,92 @@ const Courses = () => {
                   </div>
                 )}
 
-                {/* Actions */}
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => toggleDetails(program.id)}
-                    className="flex-1 border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
-                  >
-                    {showDetails === program.id ? 'Hide Details' : 'View Details'}
-                  </button>
-                  <button
-                    onClick={() => handleApplyInquiry(program)}
-                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
-                  >
-                    Apply Inquiry
-                  </button>
-                </div>
-              </div>
+                {/* Program Details */}
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
+                      <svg className="w-4 h-4 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Tuition Fees
+                    </h4>
+                    <p className="text-gray-700 text-sm">{program.tuitionFee}</p>
+                  </div>
 
-              {/* Expanded Details */}
-              {showDetails === program.id && (
-                <div className="border-t border-gray-200 bg-gray-50 p-6">
-                  <div className="space-y-4 text-sm">
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Tuition Fees</h4>
-                      <p className="text-gray-600">{program.tuitionFee}</p>
-                    </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
+                      <svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      Intake Dates
+                    </h4>
+                    <p className="text-gray-700 text-sm">{program.intakeDates.join(', ')}</p>
+                  </div>
 
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Intake Dates</h4>
-                      <p className="text-gray-600">{program.intakeDates.join(', ')}</p>
-                    </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
+                      <svg className="w-4 h-4 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Entry Requirements
+                    </h4>
+                    <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
+                      {program.requirements.map((req, index) => (
+                        <li key={index}>{req}</li>
+                      ))}
+                    </ul>
+                  </div>
 
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Entry Requirements</h4>
-                      <ul className="list-disc list-inside text-gray-600 space-y-1">
-                        {program.requirements.map((req, index) => (
-                          <li key={index}>{req}</li>
-                        ))}
-                      </ul>
-                    </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
+                      <svg className="w-4 h-4 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Description
+                    </h4>
+                    <p className="text-gray-700 text-sm">{program.description}</p>
+                  </div>
 
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Description</h4>
-                      <p className="text-gray-600">{program.description}</p>
-                    </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
+                      <svg className="w-4 h-4 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Scholarship Info
+                    </h4>
+                    <p className="text-gray-700 text-sm">{program.scholarshipInfo}</p>
+                  </div>
 
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Scholarship Info</h4>
-                      <p className="text-gray-600">{program.scholarshipInfo}</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Career Opportunities</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {program.careerOpportunities.map((career, index) => (
-                          <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
-                            {career}
-                          </span>
-                        ))}
-                      </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
+                      <svg className="w-4 h-4 mr-2 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0V8a2 2 0 01-2 2H8a2 2 0 01-2-2V6m8 0H8m0 0V4" />
+                      </svg>
+                      Career Opportunities
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {program.careerOpportunities.map((career, index) => (
+                        <span key={index} className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium border border-blue-200">
+                          {career}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
-              )}
-            </div>
+
+                {/* Apply Button */}
+                <AnimatedButton
+                  onClick={() => handleApplyInquiry(program)}
+                  variant="primary"
+                  size="md"
+                  className="w-full"
+                  icon="📝"
+                >
+                  Apply for This Program
+                </AnimatedButton>
+              </div>
+
+            </Card>
           ))}
         </div>
 
@@ -369,72 +389,87 @@ const Courses = () => {
 
       {/* Apply Inquiry Modal */}
       {showModal && selectedProgram && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 rounded-t-2xl">
-              <h2 className="text-2xl font-bold text-white mb-2">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+            <div className="bg-gray-900 p-4 rounded-t-2xl">
+              <h2 className="text-lg font-bold text-white">
                 Apply for Program
               </h2>
-              <p className="text-blue-100">Fill out the form to inquire about this program</p>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               {/* Auto-filled Info */}
-              <div className="bg-blue-50 rounded-lg p-4 space-y-2">
+              <div className="bg-gray-50 rounded-lg p-3 space-y-3">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Program Name
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Program
                   </label>
                   <input
                     type="text"
                     value={selectedProgram.title}
                     readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
+                    className="w-full px-3 py-2 bg-gray-100 rounded text-gray-600 cursor-not-allowed border-0 text-sm"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
                       University
                     </label>
                     <input
                       type="text"
                       value={selectedProgram.university}
                       readOnly
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
+                      className="w-full px-3 py-2 bg-gray-100 rounded text-gray-600 cursor-not-allowed border-0 text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
                       Country
                     </label>
                     <input
                       type="text"
                       value={selectedProgram.country}
                       readOnly
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
+                      className="w-full px-3 py-2 bg-gray-100 rounded text-gray-600 cursor-not-allowed border-0 text-sm"
                     />
                   </div>
                 </div>
               </div>
 
               {/* User Input Fields */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.fullName}
-                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your full name"
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    className="input-field"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Phone *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="input-field"
+                    placeholder="Your phone"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
                   Email *
                 </label>
                 <input
@@ -442,65 +477,55 @@ const Courses = () => {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your email"
+                  className="input-field"
+                  placeholder="your.email@gmail.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Phone *
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your phone number"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
                   IELTS Score (Optional)
                 </label>
                 <input
                   type="text"
                   value={formData.ieltsScore}
                   onChange={(e) => setFormData({ ...formData, ieltsScore: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="input-field"
                   placeholder="e.g., 7.0"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
                   Message (Optional)
                 </label>
                 <textarea
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  rows="3"
-                  placeholder="Any additional message..."
+                  className="input-field"
+                  rows="2"
+                  placeholder="Any questions?"
                 />
               </div>
 
               <div className="flex gap-3 pt-4">
-                <button
+                <AnimatedButton
                   type="submit"
-                  className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105"
+                  variant="primary"
+                  size="md"
+                  className="flex-1"
                 >
                   Submit Inquiry
-                </button>
-                <button
+                </AnimatedButton>
+                <AnimatedButton
                   type="button"
                   onClick={handleCloseModal}
-                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-lg transition-colors"
+                  variant="secondary"
+                  size="md"
+                  className="flex-1"
                 >
                   Cancel
-                </button>
+                </AnimatedButton>
               </div>
             </form>
           </div>

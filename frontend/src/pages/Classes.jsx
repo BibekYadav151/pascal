@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import React, { useState } from "react";
+import { useApp } from "../context/AppContext";
+import { AnimatedButton, Card } from "../components/ui";
 
 const Classes = () => {
   const { classes, instituteClasses, addClassInquiry } = useApp();
@@ -53,16 +54,16 @@ const Classes = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Page Header */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="section-spacing bg-white relative">
+        <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center">
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-6">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
               📚 Available Classes
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-display-lg text-gray-900 mb-6">
               Our Classes
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-body-lg text-gray-600 max-w-2xl mx-auto">
               Join our comprehensive classes and start your journey to success
             </p>
           </div>
@@ -70,82 +71,94 @@ const Classes = () => {
       </section>
 
       {/* Available Classes Section */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="section-spacing bg-gray-50">
+        <div className="relative max-w-7xl mx-auto container-spacing">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {classes.map((classItem) => (
-              <div
+              <Card
                 key={classItem.id}
-                className="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="group p-6"
               >
                 <div className="flex items-center justify-between mb-6">
-                  <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <span className="px-3 py-1 bg-green-50 text-green-700 text-xs font-semibold rounded-full">
+                  <span className={`px-2 py-1 text-xs font-medium rounded-md ${
+                    classItem.status === 'Active'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-gray-100 text-gray-600'
+                  }`}>
                     {classItem.status}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                <h3 className="text-title-md text-gray-900 mb-4">
                   {classItem.title}
                 </h3>
 
-                <div className="space-y-4 mb-8">
+                <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-3 text-gray-600">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-base">{classItem.time}</span>
+                    <div className="w-5 h-5 bg-gray-100 rounded-md flex items-center justify-center">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <span className="text-body-sm">{classItem.time}</span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-600">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001-.946 5.39 3.42 3.42 0 014.383 1.912 3.42 3.42 0 001.946-5.39l.001-.005a3.42 3.42 0 00-.002-6.78l-.001-.005a3.42 3.42 0 00-4.383-1.912 3.42 3.42 0 00-1.946 5.39z" />
-                    </svg>
-                    <span className="text-base">{classItem.duration}</span>
+                    <div className="w-5 h-5 bg-gray-100 rounded-md flex items-center justify-center">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001-.946 5.39 3.42 3.42 0 014.383 1.912 3.42 3.42 0 001.946-5.39l.001-.005a3.42 3.42 0 00-.002-6.78l-.001-.005a3.42 3.42 0 00-4.383-1.912 3.42 3.42 0 00-1.946 5.39z" />
+                      </svg>
+                    </div>
+                    <span className="text-body-sm">{classItem.duration}</span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-600">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-base">{classItem.fee}</span>
+                    <div className="w-5 h-5 bg-gray-100 rounded-md flex items-center justify-center">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <span className="text-body-sm">{classItem.fee}</span>
                   </div>
                 </div>
 
-                <button
+                <AnimatedButton
                   onClick={() => handleApplyNow(classItem)}
-                  className="w-full bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                  variant="primary"
+                  size="md"
+                  className="w-full"
                 >
                   Apply Now
-                </button>
-              </div>
+                </AnimatedButton>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
       {/* Institute Classes Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-green-50 text-green-700 text-sm font-medium mb-6">
+      <section className="section-spacing bg-white">
+        <div className="relative max-w-7xl mx-auto container-spacing">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
               🎓 Institute Programs
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-display-md text-gray-900 mb-6">
               Classes Provided by Pascal Institute
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-body-lg text-gray-600 max-w-2xl mx-auto">
               Learn more about our comprehensive course offerings
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6">
             {instituteClasses.map((classItem) => (
-              <div
+              <Card
                 key={classItem.id}
-                className="bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="p-6"
               >
                 <div className="flex justify-between items-start mb-6">
                   <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -163,22 +176,26 @@ const Classes = () => {
                   </span>
                 </div>
 
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                <h3 className="text-title-lg text-gray-900 mb-4">
                   {classItem.title}
                 </h3>
 
                 <div className="flex gap-6 mb-6 pb-6 border-b border-gray-100">
                   <div className="flex items-center gap-2 text-gray-600">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-sm">{classItem.duration}</span>
+                    <div className="w-5 h-5 bg-gray-100 rounded-md flex items-center justify-center">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <span className="text-body-sm">{classItem.duration}</span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-sm">{classItem.fee}</span>
+                    <div className="w-5 h-5 bg-gray-100 rounded-md flex items-center justify-center">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <span className="text-body-sm">{classItem.fee}</span>
                   </div>
                 </div>
 
@@ -197,7 +214,7 @@ const Classes = () => {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
@@ -206,111 +223,116 @@ const Classes = () => {
       {/* Apply Now Modal */}
       {showModal && selectedClass && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-8 rounded-t-3xl">
-              <h2 className="text-2xl font-bold text-white mb-2">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+            <div className="bg-gray-900 p-4 rounded-t-2xl">
+              <h2 className="text-lg font-bold text-white">
                 Apply for Class
               </h2>
-              <p className="text-blue-100">Fill out the form below to apply</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-8 space-y-5">
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
               {/* Auto-filled Info */}
-              <div className="bg-gray-50 rounded-2xl p-5 space-y-4">
+              <div className="bg-gray-50 rounded-lg p-3 space-y-3">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
                     Class Name
                   </label>
                   <input
                     type="text"
                     value={selectedClass.title}
                     readOnly
-                    className="w-full px-4 py-3 bg-gray-100 rounded-xl text-gray-600 cursor-not-allowed border-0"
+                    className="w-full px-3 py-2 bg-gray-100 rounded text-gray-600 cursor-not-allowed border-0 text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
                     Class Time
                   </label>
                   <input
                     type="text"
                     value={selectedClass.time}
                     readOnly
-                    className="w-full px-4 py-3 bg-gray-100 rounded-xl text-gray-600 cursor-not-allowed border-0"
+                    className="w-full px-3 py-2 bg-gray-100 rounded text-gray-600 cursor-not-allowed border-0 text-sm"
                   />
                 </div>
               </div>
 
               {/* User Input Fields */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.fullName}
-                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all"
-                  placeholder="Enter your full name"
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-sm"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Phone *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.contactNumber}
+                    onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-sm"
+                    placeholder="Your phone"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Contact Number *
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.contactNumber}
-                  onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all"
-                  placeholder="Enter your contact number"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Email (Gmail) *
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Gmail Address *
                 </label>
                 <input
                   type="email"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all"
-                  placeholder="example@gmail.com"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-sm"
+                  placeholder="your.email@gmail.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
                   Message (Optional)
                 </label>
                 <textarea
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all"
-                  rows="3"
-                  placeholder="Any additional message..."
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-sm"
+                  rows="2"
+                  placeholder="Any questions?"
                 />
               </div>
 
-              <div className="flex gap-3 pt-4">
-                <button
+              <div className="flex gap-3 pt-2">
+                <AnimatedButton
                   type="submit"
-                  className="flex-1 bg-blue-600 text-white font-semibold py-4 rounded-xl hover:bg-blue-700 transition-colors"
+                  variant="primary"
+                  size="sm"
+                  className="flex-1"
                 >
-                  Submit Inquiry
-                </button>
-                <button
+                  Apply Now
+                </AnimatedButton>
+                <AnimatedButton
                   type="button"
                   onClick={handleCloseModal}
-                  className="flex-1 bg-gray-100 text-gray-700 font-semibold py-4 rounded-xl hover:bg-gray-200 transition-colors"
+                  variant="secondary"
+                  size="sm"
+                  className="flex-1"
                 >
                   Cancel
-                </button>
+                </AnimatedButton>
               </div>
             </form>
           </div>

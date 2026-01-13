@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { Card, AnimatedButton } from '../components/ui';
 
 const Contact = () => {
   const { addContactMessage } = useApp();
@@ -62,13 +63,16 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       {/* Page Header */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+      <section className="section-spacing bg-white">
+        <div className="relative max-w-7xl mx-auto container-spacing">
+          <div className="text-center">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
+              📞 Contact Us
+            </div>
+            <h1 className="text-display-lg text-gray-900 mb-6">
               Contact Us
             </h1>
-            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            <p className="text-body-lg text-gray-600 max-w-2xl mx-auto">
               Have questions? Get in touch with us today
             </p>
           </div>
@@ -76,16 +80,16 @@ const Contact = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12">
+      <section className="section-spacing bg-gray-50">
+        <div className="relative max-w-7xl mx-auto container-spacing">
+          <div className="grid lg:grid-cols-2 gap-16">
             {/* Contact Info */}
             <div className="space-y-8">
               <div>
-                <h2 className="text-3xl font-bold text-blue-900 mb-6">
+                <h2 className="text-display-md text-gray-900 mb-6">
                   Get In Touch
                 </h2>
-                <p className="text-lg text-gray-600 mb-8">
+                <p className="text-body-lg text-gray-600 mb-8">
                   We'd love to hear from you. Fill out the form or reach out through
                   any of our contact channels below.
                 </p>
@@ -94,60 +98,77 @@ const Contact = () => {
               {/* Contact Details */}
               <div className="space-y-6">
                 {contactInfo.map((info, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start space-x-4 bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
-                  >
-                    <div className="text-4xl">{info.icon}</div>
-                    <div>
-                      <h3 className="font-bold text-blue-900 mb-1">{info.title}</h3>
-                      <p className="text-gray-600">{info.details}</p>
+                  <Card key={index} className="p-6">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <span className="text-2xl">{info.icon}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-title-sm text-gray-900 mb-1">{info.title}</h3>
+                        <p className="text-body-sm text-gray-600">{info.details}</p>
+                      </div>
                     </div>
-                  </div>
+                  </Card>
                 ))}
               </div>
 
               {/* Social Media */}
-              <div className="bg-white rounded-xl p-6 shadow-lg">
-                <h3 className="font-bold text-blue-900 mb-4">Follow Us</h3>
+              <Card className="p-6">
+                <h3 className="text-title-md text-gray-900 mb-4">Follow Us</h3>
                 <div className="flex space-x-4">
                   {socialLinks.map((social, index) => (
                     <a
                       key={index}
                       href={social.url}
-                      className="flex items-center justify-center w-12 h-12 bg-blue-100 hover:bg-blue-200 rounded-full text-2xl transition-colors"
+                      className="flex items-center justify-center w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-lg text-2xl transition-colors"
                       title={social.name}
                     >
                       {social.icon}
                     </a>
                   ))}
                 </div>
-              </div>
+              </Card>
             </div>
 
             {/* Contact Form */}
-            <div className="bg-white rounded-2xl shadow-xl p-8">
-              <h2 className="text-2xl font-bold text-blue-900 mb-6">
+            <Card className="p-8">
+              <h2 className="text-title-lg text-gray-900 mb-6">
                 Send Us a Message
               </h2>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter your full name"
-                  />
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.fullName}
+                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                      className="input-field"
+                      placeholder="Your name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Phone *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="input-field"
+                      placeholder="Your phone"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
                     Email *
                   </label>
                   <input
@@ -155,27 +176,13 @@ const Contact = () => {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter your email address"
+                    className="input-field"
+                    placeholder="your.email@example.com"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Phone *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter your phone number"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
                     Subject *
                   </label>
                   <input
@@ -183,88 +190,97 @@ const Contact = () => {
                     required
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter the subject"
+                    className="input-field"
+                    placeholder="What's this about?"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
                     Message *
                   </label>
                   <textarea
                     required
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    rows="5"
-                    placeholder="Enter your message"
+                    className="input-field"
+                    rows="3"
+                    placeholder="Tell us how we can help..."
                   />
                 </div>
 
-                <button
+                <AnimatedButton
                   type="submit"
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg"
+                  variant="primary"
+                  size="md"
+                  className="w-full"
                 >
                   Send Message
-                </button>
+                </AnimatedButton>
               </form>
-            </div>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Map Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-blue-900 mb-4">
+      <section className="section-spacing bg-white">
+        <div className="relative max-w-7xl mx-auto container-spacing">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
+              📍 Our Location
+            </div>
+            <h2 className="text-display-md text-gray-900 mb-4">
               Find Us
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-body-lg text-gray-600">
               Visit our office in Kathmandu
             </p>
           </div>
 
-          <div className="bg-gray-200 rounded-2xl overflow-hidden shadow-lg">
+          <Card className="overflow-hidden">
             {/* Placeholder for Map */}
-            <div className="w-full h-96 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+            <div className="w-full h-80 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-6xl mb-4">🗺️</div>
-                <p className="text-xl text-blue-900 font-semibold">
+                <div className="text-4xl mb-4">🗺️</div>
+                <p className="text-title-md text-gray-900 mb-2">
                   Map Integration Coming Soon
                 </p>
-                <p className="text-gray-600 mt-2">
+                <p className="text-body-sm text-gray-600">
                   Our office is located in Kathmandu, Nepal
                 </p>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+      <section className="section-spacing bg-gray-900">
+        <div className="relative max-w-4xl mx-auto container-spacing text-center">
+          <h2 className="text-display-md text-white mb-6">
             Ready to Start Your Journey?
           </h2>
-          <p className="text-xl text-blue-100 mb-8">
+          <p className="text-body-lg text-gray-300 mb-8">
             Contact us today and let us help you achieve your dreams of studying abroad
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => window.location.href = '/courses'}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg transition-all duration-200 transform hover:scale-105"
+            <AnimatedButton
+              href="/courses"
+              variant="secondary"
+              size="lg"
+              className="bg-white text-gray-900 hover:bg-gray-100"
             >
               Browse Programs
-            </button>
-            <button
-              onClick={() => window.location.href = '/classes'}
-              className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-8 rounded-lg transition-all duration-200 transform hover:scale-105"
+            </AnimatedButton>
+            <AnimatedButton
+              href="/classes"
+              variant="outline"
+              size="lg"
+              className="border-gray-600 text-white hover:bg-gray-800"
             >
               View Classes
-            </button>
+            </AnimatedButton>
           </div>
         </div>
       </section>

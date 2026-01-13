@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import { AnimatedButton } from './ui';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,12 +48,14 @@ const Navbar = () => {
               </Link>
             ))}
             {isAdmin && (
-              <Link
-                to="/admin/dashboard"
-                className="px-4 py-2 ml-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 hover:bg-green-100 transition-all duration-200"
+              <AnimatedButton
+                href="/admin/dashboard"
+                variant="secondary"
+                size="sm"
+                className="ml-2 bg-green-50 text-green-700 hover:bg-green-100 border-green-200"
               >
                 Admin Panel
-              </Link>
+              </AnimatedButton>
             )}
           </div>
 
@@ -108,13 +111,17 @@ const Navbar = () => {
               </Link>
             ))}
             {isAdmin && (
-              <Link
-                to="/admin/dashboard"
-                onClick={() => setIsOpen(false)}
-                className="block px-4 py-3 mt-2 rounded-lg text-base font-medium bg-green-50 text-green-700"
-              >
-                Admin Panel
-              </Link>
+              <div className="px-4 py-2">
+                <AnimatedButton
+                  href="/admin/dashboard"
+                  onClick={() => setIsOpen(false)}
+                  variant="secondary"
+                  size="sm"
+                  className="w-full bg-green-50 text-green-700 hover:bg-green-100 border-green-200"
+                >
+                  Admin Panel
+                </AnimatedButton>
+              </div>
             )}
           </div>
         </div>
