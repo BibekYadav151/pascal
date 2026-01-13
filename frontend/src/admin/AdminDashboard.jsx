@@ -34,54 +34,62 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Admin Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-blue-600 font-bold text-xl">P</span>
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-4">
+              <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-sm">
+                <span className="text-white font-bold text-lg">P</span>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-gray-900">Admin Panel</h1>
+                <p className="text-sm text-gray-500">Pascal Institute</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-bold">Admin Panel</h1>
-              <p className="text-sm text-blue-200">Pascal Institute</p>
-            </div>
-          </div>
 
-          <div className="flex items-center space-x-4">
-            <span className="text-sm">{adminEmail}</span>
-            <button
-              onClick={adminLogout}
-              className="bg-white hover:bg-gray-100 text-blue-600 font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
-            >
-              Logout
-            </button>
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-gray-600 hidden sm:block">{adminEmail}</span>
+              <button
+                onClick={adminLogout}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors text-sm"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4 4m4-4v12m-4-16h14" />
+                </svg>
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="flex gap-8">
           {/* Sidebar Navigation */}
-          <div className="md:col-span-1">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-              <nav className="py-2">
-                {menuItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                  >
-                    <span className="text-xl mr-3">{item.icon}</span>
-                    <span className="font-medium">{item.name}</span>
-                  </Link>
-                ))}
+          <div className="w-64 flex-shrink-0 hidden lg:block">
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden sticky top-24">
+              <nav className="p-4">
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-3">Menu</p>
+                <div className="space-y-1">
+                  {menuItems.map((item) => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-50"
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span className="text-gray-700">{item.name}</span>
+                    </Link>
+                  ))}
+                </div>
               </nav>
             </div>
           </div>
 
           {/* Main Content */}
-          <div className="md:col-span-3">
+          <div className="flex-1 min-w-0">
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 Dashboard Overview
@@ -93,60 +101,72 @@ const AdminDashboard = () => {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-4xl">📊</div>
-                  <div className="text-3xl font-bold">{stats.totalInquiries}</div>
+              <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">📊</span>
+                  </div>
+                  <div className="text-3xl font-bold text-blue-600">{stats.totalInquiries}</div>
                 </div>
-                <p className="text-blue-100">Total Inquiries</p>
+                <p className="text-sm text-gray-500">Total Inquiries</p>
               </div>
 
-              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-4xl">🎓</div>
-                  <div className="text-3xl font-bold">{stats.classApplications}</div>
+              <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">🎓</span>
+                  </div>
+                  <div className="text-3xl font-bold text-green-600">{stats.classApplications}</div>
                 </div>
-                <p className="text-green-100">Class Applications</p>
+                <p className="text-sm text-gray-500">Class Applications</p>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-4xl">📚</div>
-                  <div className="text-3xl font-bold">{stats.programApplications}</div>
+              <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">📚</span>
+                  </div>
+                  <div className="text-3xl font-bold text-purple-600">{stats.programApplications}</div>
                 </div>
-                <p className="text-purple-100">Program Applications</p>
+                <p className="text-sm text-gray-500">Program Applications</p>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-4xl">🏫</div>
-                  <div className="text-3xl font-bold">{stats.activeClasses}</div>
+              <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">🏫</span>
+                  </div>
+                  <div className="text-3xl font-bold text-orange-600">{stats.activeClasses}</div>
                 </div>
-                <p className="text-orange-100">Active Classes</p>
+                <p className="text-sm text-gray-500">Active Classes</p>
               </div>
 
-              <div className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-6 text-white shadow-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-4xl">📖</div>
-                  <div className="text-3xl font-bold">{stats.activePrograms}</div>
+              <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">📖</span>
+                  </div>
+                  <div className="text-3xl font-bold text-pink-600">{stats.activePrograms}</div>
                 </div>
-                <p className="text-pink-100">Active Programs</p>
+                <p className="text-sm text-gray-500">Active Programs</p>
               </div>
 
-              <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-6 text-white shadow-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-4xl">💬</div>
-                  <div className="text-3xl font-bold">{stats.unreadMessages}</div>
+              <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">💬</span>
+                  </div>
+                  <div className="text-3xl font-bold text-red-600">{stats.unreadMessages}</div>
                 </div>
-                <p className="text-red-100">Unread Messages</p>
+                <p className="text-sm text-gray-500">Unread Messages</p>
               </div>
             </div>
 
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Recent Inquiries */}
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
-                  <h3 className="text-lg font-bold text-white">Recent Inquiries</h3>
+              <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
+                <div className="px-6 py-4 border-b border-gray-100">
+                  <h3 className="text-lg font-bold text-gray-900">Recent Inquiries</h3>
                 </div>
                 <div className="p-6">
                   {recentInquiries.length > 0 ? (
@@ -154,16 +174,12 @@ const AdminDashboard = () => {
                       {recentInquiries.map((inquiry) => (
                         <div
                           key={inquiry.id}
-                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
                         >
                           <div>
-                            <p className="font-semibold text-gray-900">{inquiry.studentName}</p>
-                            <p className="text-sm text-gray-600">
-                              {inquiry.type} - {inquiry.className || inquiry.programName}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {new Date(inquiry.date).toLocaleDateString()}
-                            </p>
+                            <p className="font-semibold text-gray-900 text-sm">{inquiry.studentName}</p>
+                            <p className="text-xs text-gray-500">{inquiry.type} - {inquiry.className || inquiry.programName}</p>
+                            <p className="text-xs text-gray-400">{new Date(inquiry.date).toLocaleDateString()}</p>
                           </div>
                           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                             inquiry.status === 'New'
@@ -178,15 +194,15 @@ const AdminDashboard = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-gray-500 text-center py-4">No inquiries yet</p>
+                    <p className="text-gray-500 text-center py-8 text-sm">No inquiries yet</p>
                   )}
                 </div>
               </div>
 
               {/* Recent Contact Messages */}
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-green-500 to-green-600 px-6 py-4">
-                  <h3 className="text-lg font-bold text-white">Recent Messages</h3>
+              <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
+                <div className="px-6 py-4 border-b border-gray-100">
+                  <h3 className="text-lg font-bold text-gray-900">Recent Messages</h3>
                 </div>
                 <div className="p-6">
                   {recentMessages.length > 0 ? (
@@ -194,29 +210,21 @@ const AdminDashboard = () => {
                       {recentMessages.map((message) => (
                         <div
                           key={message.id}
-                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
                         >
-                          <div className="flex-1">
-                            <div className="flex items-center">
-                              {message.read ? (
-                                <span className="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
-                              ) : (
-                                <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
-                              )}
-                              <p className="font-semibold text-gray-900">{message.name}</p>
-                            </div>
-                            <p className="text-sm text-gray-600 truncate">
-                              {message.subject}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {new Date(message.date).toLocaleDateString()}
-                            </p>
+                          {!message.read && (
+                            <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2"></div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-gray-900 text-sm">{message.name}</p>
+                            <p className="text-xs text-gray-500 truncate">{message.subject}</p>
+                            <p className="text-xs text-gray-400">{new Date(message.date).toLocaleDateString()}</p>
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-gray-500 text-center py-4">No messages yet</p>
+                    <p className="text-gray-500 text-center py-8 text-sm">No messages yet</p>
                   )}
                 </div>
               </div>
@@ -224,35 +232,35 @@ const AdminDashboard = () => {
 
             {/* Quick Actions */}
             <div className="mt-8">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <h3 className="text-lg font-bold text-gray-900 mb-6">Quick Actions</h3>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <Link
                   to="/admin/classes"
-                  className="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all text-center hover:-translate-y-1"
+                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
                 >
-                  <div className="text-4xl mb-2">➕</div>
-                  <p className="font-semibold text-gray-700">Add Class</p>
+                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">➕</div>
+                  <p className="font-semibold text-gray-900 text-sm">Add Class</p>
                 </Link>
                 <Link
                   to="/admin/programs"
-                  className="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all text-center hover:-translate-y-1"
+                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
                 >
-                  <div className="text-4xl mb-2">➕</div>
-                  <p className="font-semibold text-gray-700">Add Program</p>
+                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">➕</div>
+                  <p className="font-semibold text-gray-900 text-sm">Add Program</p>
                 </Link>
                 <Link
                   to="/admin/class-inquiries"
-                  className="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all text-center hover:-translate-y-1"
+                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
                 >
-                  <div className="text-4xl mb-2">📨</div>
-                  <p className="font-semibold text-gray-700">View Inquiries</p>
+                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📨</div>
+                  <p className="font-semibold text-gray-900 text-sm">View Inquiries</p>
                 </Link>
                 <Link
                   to="/admin/messages"
-                  className="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all text-center hover:-translate-y-1"
+                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
                 >
-                  <div className="text-4xl mb-2">💬</div>
-                  <p className="font-semibold text-gray-700">View Messages</p>
+                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">💬</div>
+                  <p className="font-semibold text-gray-900 text-sm">View Messages</p>
                 </Link>
               </div>
             </div>

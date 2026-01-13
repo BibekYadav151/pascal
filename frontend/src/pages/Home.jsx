@@ -9,31 +9,23 @@ const Home = () => {
     {
       icon: '🎓',
       title: 'Student Visa Counseling',
-      description: 'Expert guidance for student visa applications and documentation'
+      description: 'Expert guidance for student visa applications'
     },
     {
       icon: '🌍',
       title: 'Study Abroad Programs',
-      description: 'Wide range of study programs in top universities worldwide'
+      description: 'Wide range of programs in top universities'
     },
     {
       icon: '📘',
       title: 'IELTS / PTE / Language Classes',
-      description: 'Comprehensive test preparation with experienced instructors'
+      description: 'Comprehensive test preparation'
     },
     {
       icon: '📝',
       title: 'Documentation & Interview Prep',
-      description: 'Complete support for documentation and interview preparation'
+      description: 'Complete support for applications'
     }
-  ];
-
-  const whyChooseUs = [
-    'Certified Counselors',
-    'High Visa Success Rate',
-    'Affordable Fees',
-    'Personalized Guidance',
-    'Trusted Partner Institutions'
   ];
 
   const partnerUniversities = [
@@ -48,29 +40,32 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 to-white py-20 md:py-32">
+      <section className="pt-32 pb-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
             <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-900 mb-6 leading-tight">
-                Your Gateway to
-                <span className="block text-blue-600">Global Education</span>
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-6">
+                🎓 Start Your Journey Today
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                Your Gateway to{' '}
+                <span className="text-blue-600">Global Education</span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 mb-8">
-                Expert guidance for student visas, test preparation, and international
-                admissions. Achieve your dream of studying abroad with Pascal Institute.
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                Expert guidance for student visas, test preparation, and international admissions.
+                Achieve your dream of studying abroad with Pascal Institute.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/courses"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-center transition-all duration-200 transform hover:scale-105 shadow-lg"
+                  className="inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-200"
                 >
                   Explore Programs
                 </Link>
                 <Link
                   to="/classes"
-                  className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg text-center transition-all duration-200 transform hover:scale-105 shadow-lg"
+                  className="inline-flex items-center justify-center px-8 py-3 bg-white text-gray-900 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-all duration-200"
                 >
                   Apply for Classes
                 </Link>
@@ -78,22 +73,29 @@ const Home = () => {
             </div>
 
             {/* Right Content - Illustration */}
-            <div className="relative">
-              <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl p-8 shadow-2xl">
-                <div className="text-center">
-                  <div className="text-8xl mb-4">🎓</div>
-                  <div className="grid grid-cols-3 gap-4 mt-8">
-                    <div className="bg-white rounded-xl p-4 shadow-md">
-                      <div className="text-3xl mb-2">🌏</div>
-                      <p className="text-sm font-medium text-gray-700">Global Reach</p>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 shadow-md">
-                      <div className="text-3xl mb-2">✈️</div>
-                      <p className="text-sm font-medium text-gray-700">Study Abroad</p>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 shadow-md">
-                      <div className="text-3xl mb-2">🏆</div>
-                      <p className="text-sm font-medium text-gray-700">Success Stories</p>
+            <div className="relative hidden lg:block">
+              <div className="absolute -top-4 -left-4 w-72 h-72 bg-blue-100 rounded-full opacity-50 blur-3xl"></div>
+              <div className="relative bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="bg-gray-50 rounded-2xl p-6 text-center hover:shadow-md transition-shadow">
+                    <div className="text-4xl mb-3">🌏</div>
+                    <p className="text-sm font-medium text-gray-900">Global Reach</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-2xl p-6 text-center hover:shadow-md transition-shadow">
+                    <div className="text-4xl mb-3">✈️</div>
+                    <p className="text-sm font-medium text-gray-900">Study Abroad</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-2xl p-6 text-center hover:shadow-md transition-shadow">
+                    <div className="text-4xl mb-3">🏆</div>
+                    <p className="text-sm font-medium text-gray-900">Success Stories</p>
+                  </div>
+                </div>
+                <div className="mt-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="text-5xl font-bold text-blue-600">95%</div>
+                    <div>
+                      <p className="text-sm text-gray-600">Visa Success</p>
+                      <p className="text-xs text-gray-500">Rate</p>
                     </div>
                   </div>
                 </div>
@@ -106,26 +108,30 @@ const Home = () => {
       {/* Services Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Our Services
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Comprehensive solutions for your international education journey
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-2"
+                className="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
-                <div className="text-5xl mb-4">{service.icon}</div>
-                <h3 className="text-xl font-bold text-blue-900 mb-3">
+                <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  {service.icon}
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   {service.title}
                 </h3>
-                <p className="text-gray-600">{service.description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {service.description}
+                </p>
               </div>
             ))}
           </div>
@@ -135,33 +141,52 @@ const Home = () => {
       {/* Popular Classes Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
-              Popular Classes
-            </h2>
-            <p className="text-xl text-gray-600">
-              Join our most sought-after preparation classes
-            </p>
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-2">
+                Popular Classes
+              </h2>
+              <p className="text-lg text-gray-600">
+                Join our most sought-after preparation classes
+              </p>
+            </div>
+            <Link
+              to="/classes"
+              className="hidden md:inline-flex items-center px-6 py-3 bg-white text-gray-900 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-all duration-200"
+            >
+              View All Classes
+            </Link>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {classes.slice(0, 4).map((classItem) => (
               <div
                 key={classItem.id}
-                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="bg-white rounded-2xl p-6 hover:shadow-xl transition-all duration-300 border border-gray-100 group"
               >
-                <div className="text-blue-600 font-bold text-2xl mb-2">
+                <div className="text-blue-600 font-semibold text-xl mb-3">
                   {classItem.time}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                <h3 className="text-base font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
                   {classItem.title}
                 </h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Duration: {classItem.duration}
-                </p>
+                <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {classItem.duration}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {classItem.fee}
+                  </span>
+                </div>
                 <Link
                   to="/classes"
-                  className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg text-center transition-colors"
+                  className="block w-full text-center bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   Apply Now
                 </Link>
@@ -169,10 +194,10 @@ const Home = () => {
             ))}
           </div>
 
-          <div className="text-center mt-10">
+          <div className="mt-8 md:hidden">
             <Link
               to="/classes"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-200 transform hover:scale-105"
+              className="block w-full text-center px-6 py-3 bg-white text-gray-900 font-medium rounded-lg border border-gray-300"
             >
               View All Classes
             </Link>
@@ -183,50 +208,42 @@ const Home = () => {
       {/* Why Choose Us Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-6">
-                Why Choose Pascal Institute?
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-green-50 text-green-700 text-sm font-medium mb-6">
+                ✓ Why Choose Us
+              </div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                Your Trusted Education Partner
               </h2>
-              <p className="text-lg text-gray-600 mb-8">
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                 With years of experience and thousands of successful placements,
                 we are your trusted partner for international education.
               </p>
 
               <div className="space-y-4">
-                {whyChooseUs.map((item, index) => (
+                {['Certified Counselors', 'High Visa Success Rate', 'Affordable Fees', 'Personalized Guidance', 'Trusted Partner Institutions'].map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-center space-x-4 bg-blue-50 rounded-lg p-4"
+                    className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
                   >
-                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="w-5 h-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
+                    <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-gray-700 font-medium">{item}</span>
+                    <span className="text-base font-medium text-gray-900">{item}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-8 text-white">
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-10 text-white">
               <div className="text-center">
-                <div className="text-6xl font-bold mb-4">95%</div>
-                <p className="text-xl mb-2">Visa Success Rate</p>
-                <p className="text-blue-200">
-                  Our students consistently achieve high visa approval rates
-                  thanks to our expert guidance and thorough preparation.
+                <div className="text-7xl font-bold mb-4">1000+</div>
+                <p className="text-xl mb-6 text-blue-100">Students Placed</p>
+                <p className="text-sm text-blue-200 leading-relaxed">
+                  Join thousands of students who have successfully achieved their dreams of studying abroad with our expert guidance.
                 </p>
               </div>
             </div>
@@ -237,11 +254,11 @@ const Home = () => {
       {/* Partner Universities Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
-              Our Partner Universities
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Partner Universities
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600">
               We partner with top universities worldwide
             </p>
           </div>
@@ -250,12 +267,12 @@ const Home = () => {
             {partnerUniversities.map((uni, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center aspect-square"
+                className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all duration-300 text-center group"
               >
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
-                  <span className="text-2xl">🎓</span>
+                <div className="w-16 h-16 bg-gray-100 rounded-2xl mx-auto mb-4 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+                  <span className="text-3xl">🎓</span>
                 </div>
-                <h3 className="text-sm font-bold text-gray-900 text-center">
+                <h3 className="text-sm font-semibold text-gray-900 mb-1">
                   {uni.name}
                 </h3>
                 <p className="text-xs text-gray-600">{uni.country}</p>
@@ -268,23 +285,22 @@ const Home = () => {
       {/* CTA Section */}
       <section className="py-20 bg-blue-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+          <h2 className="text-4xl font-bold text-white mb-6">
             Ready to Start Your Journey?
           </h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Get in touch with us today and let us help you achieve your dreams of
-            studying abroad.
+          <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+            Get in touch with us today and let us help you achieve your dreams of studying abroad.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/contact"
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg text-center transition-all duration-200 transform hover:scale-105"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-medium rounded-lg hover:bg-gray-100 transition-all duration-200"
             >
               Contact Us Now
             </Link>
             <Link
               to="/courses"
-              className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-8 rounded-lg text-center transition-all duration-200 transform hover:scale-105"
+              className="inline-flex items-center justify-center px-8 py-4 bg-blue-700 text-white font-medium rounded-lg hover:bg-blue-800 transition-all duration-200"
             >
               Browse Programs
             </Link>
