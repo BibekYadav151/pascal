@@ -80,29 +80,23 @@ const AdminInstituteClasses = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Institute Classes</h1>
-            <p className="text-gray-600">Manage classes provided by Pascal Institute</p>
-          </div>
-          <div className="flex gap-3">
-            <Link
-              to="/admin/dashboard"
-              className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
-            >
-              ← Dashboard
-            </Link>
-            <button
-              onClick={handleAddClass}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
-            >
-              <span>➕</span> Add Class
-            </button>
-          </div>
-        </div>
+   <div className="space-y-6">
+     {/* Header with Actions */}
+     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+       <div>
+         <h1 className="text-3xl font-bold text-gray-900">Institute Classes</h1>
+         <p className="text-gray-600">Manage classes provided by Pascal Institute</p>
+       </div>
+
+       <div className="flex flex-wrap gap-3">
+         <button
+           onClick={handleAddClass}
+           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+         >
+           <span>➕</span> Add Class
+         </button>
+       </div>
+     </div>
 
         {/* Classes Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

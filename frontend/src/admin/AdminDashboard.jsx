@@ -3,15 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 
 const AdminDashboard = () => {
-  const navigate = useNavigate();
-  const { isAdmin, adminEmail, adminLogout, getDashboardStats, classInquiries, programInquiries, contactMessages } = useApp();
+  const { getDashboardStats, classInquiries, programInquiries, contactMessages, appointments } = useApp();
 
   const stats = getDashboardStats();
-
-  if (!isAdmin) {
-    navigate('/admin/login');
-    return null;
-  }
 
   const recentInquiries = [
     ...classInquiries.slice(-5).map(i => ({ ...i, type: 'Class' })),
@@ -22,72 +16,10 @@ const AdminDashboard = () => {
 
   const recentMessages = contactMessages.slice(-5).reverse();
 
-  const menuItems = [
-    { name: 'Dashboard', path: '/admin/dashboard', icon: '📊' },
-    { name: 'Classes', path: '/admin/classes', icon: '🎓' },
-    { name: 'Class Inquiries', path: '/admin/class-inquiries', icon: '📨' },
-    { name: 'Programs', path: '/admin/programs', icon: '📚' },
-    { name: 'Program Inquiries', path: '/admin/program-inquiries', icon: '📩' },
-    { name: 'Institute Classes', path: '/admin/institute-classes', icon: '🏫' },
-    { name: 'Universities', path: '/admin/universities', icon: '🏛️' },
-    { name: 'Contact Messages', path: '/admin/messages', icon: '💬' }
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Admin Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-sm">
-                <span className="text-white font-bold text-lg">P</span>
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-gray-900">Admin Panel</h1>
-                <p className="text-sm text-gray-500">Pascal Institute</p>
-              </div>
-            </div>
 
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600 hidden sm:block">{adminEmail}</span>
-              <button
-                onClick={adminLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors text-sm"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4 4m4-4v12m-4-16h14" />
-                </svg>
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
-          {/* Sidebar Navigation */}
-          <div className="w-64 flex-shrink-0 hidden lg:block">
-            <div className="bg-white rounded-2xl shadow-sm overflow-hidden sticky top-24">
-              <nav className="p-4">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-3">Menu</p>
-                <div className="space-y-1">
-                  {menuItems.map((item) => (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-50"
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-gray-700">{item.name}</span>
-                    </Link>
-                  ))}
-                </div>
-              </nav>
-            </div>
-          </div>
-
           {/* Main Content */}
           <div className="flex-1 min-w-0">
             <div className="mb-8">
@@ -160,7 +92,17 @@ const AdminDashboard = () => {
                 </div>
                 <p className="text-sm text-gray-500">Unread Messages</p>
               </div>
-            </div>
+
+              <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">📅</span>
+                  </div>
+                  <div className="text-3xl font-bold text-indigo-600">{stats.pendingAppointments}</div>
+                </div>
+                <p className="text-sm text-gray-500">Pending Appointments</p>
+              </div>
+              </div>
 
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Recent Inquiries */}
@@ -230,44 +172,113 @@ const AdminDashboard = () => {
               </div>
             </div>
 
+            {/* Recent Appointments */}
+            <div className="mt-8">
+             <div className="flex justify-between items-center mb-6">
+               <h3 className="text-lg font-bold text-gray-900">Recent Appointments</h3>
+               <Link
+                 to="/admin/appointments"
+                 className="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center gap-1"
+               >
+                 View All
+                 <span>→</span>
+               </Link>
+             </div>
+
+             {appointments.length > 0 ? (
+               <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
+                 <div className="divide-y divide-gray-100">
+                   {appointments.slice(-5).reverse().map((appointment) => {
+                     const getStatusBadge = (status) => {
+                       const statusConfig = {
+                         'Pending': { bg: 'bg-yellow-100', text: 'text-yellow-800' },
+                         'Confirmed': { bg: 'bg-green-100', text: 'text-green-800' },
+                         'Completed': { bg: 'bg-blue-100', text: 'text-blue-800' },
+                         'Cancelled': { bg: 'bg-red-100', text: 'text-red-800' }
+                       };
+                       return statusConfig[status] || { bg: 'bg-gray-100', text: 'text-gray-800' };
+                     };
+
+                     const statusBadge = getStatusBadge(appointment.status);
+
+                     return (
+                       <div key={appointment.id} className="p-4 hover:bg-gray-50 transition-colors">
+                         <div className="flex items-center justify-between">
+                           <div className="flex-1 min-w-0">
+                             <div className="flex items-center gap-3">
+                               <div className="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center">
+                                 <span className="text-lg text-indigo-600">📅</span>
+                               </div>
+                               <div>
+                                 <h4 className="font-semibold text-gray-900 text-sm truncate">{appointment.fullName}</h4>
+                                 <p className="text-xs text-gray-500 truncate">{appointment.email}</p>
+                               </div>
+                             </div>
+                           </div>
+
+                           <div className="flex items-center gap-4">
+                             <div className="text-right">
+                               <p className="text-sm font-medium text-gray-900">{new Date(appointment.appointmentDate).toLocaleDateString()}</p>
+                               <p className="text-xs text-gray-500">{appointment.appointmentTime}</p>
+                             </div>
+                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusBadge.bg} ${statusBadge.text}`}>
+                               {appointment.status}
+                             </span>
+                           </div>
+                         </div>
+                       </div>
+                     );
+                   })}
+                 </div>
+               </div>
+             ) : (
+               <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 p-8 text-center">
+                 <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                   <span className="text-xl text-indigo-600">📅</span>
+                 </div>
+                 <p className="text-gray-600 text-sm">No appointments yet</p>
+                 <p className="text-gray-500 text-xs mt-1">Appointments will appear here when booked</p>
+               </div>
+             )}
+            </div>
+
             {/* Quick Actions */}
             <div className="mt-8">
-              <h3 className="text-lg font-bold text-gray-900 mb-6">Quick Actions</h3>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <Link
-                  to="/admin/classes"
-                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
-                >
-                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">➕</div>
-                  <p className="font-semibold text-gray-900 text-sm">Add Class</p>
-                </Link>
-                <Link
-                  to="/admin/programs"
-                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
-                >
-                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">➕</div>
-                  <p className="font-semibold text-gray-900 text-sm">Add Program</p>
-                </Link>
-                <Link
-                  to="/admin/class-inquiries"
-                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
-                >
-                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📨</div>
-                  <p className="font-semibold text-gray-900 text-sm">View Inquiries</p>
-                </Link>
-                <Link
-                  to="/admin/messages"
-                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
-                >
-                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">💬</div>
-                  <p className="font-semibold text-gray-900 text-sm">View Messages</p>
-                </Link>
-              </div>
+             <h3 className="text-lg font-bold text-gray-900 mb-6">Quick Actions</h3>
+             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+               <Link
+                 to="/admin/classes"
+                 className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
+               >
+                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">➕</div>
+                 <p className="font-semibold text-gray-900 text-sm">Add Class</p>
+               </Link>
+               <Link
+                 to="/admin/programs"
+                 className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
+               >
+                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">➕</div>
+                 <p className="font-semibold text-gray-900 text-sm">Add Program</p>
+               </Link>
+               <Link
+                 to="/admin/class-inquiries"
+                 className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
+               >
+                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📨</div>
+                 <p className="font-semibold text-gray-900 text-sm">View Inquiries</p>
+               </Link>
+               <Link
+                 to="/admin/appointments"
+                 className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
+               >
+                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📅</div>
+                 <p className="font-semibold text-gray-900 text-sm">Manage Appointments</p>
+               </Link>
+             </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -46,18 +46,13 @@ const AdminProgramInquiries = () => {
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Program Inquiries</h1>
             <p className="text-gray-600">Manage program application inquiries</p>
           </div>
-          <div className="flex gap-3">
-            <Link
-              to="/admin/dashboard"
-              className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
-            >
-              ← Dashboard
-            </Link>
+          
+          <div className="flex flex-wrap gap-3">
             <button
               onClick={exportToExcel}
               disabled={programInquiries.length === 0}

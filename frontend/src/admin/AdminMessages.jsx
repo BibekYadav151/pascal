@@ -12,21 +12,12 @@ const AdminMessages = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Contact Messages</h1>
-            <p className="text-gray-600">Manage messages from contact form</p>
-          </div>
-          <Link
-            to="/admin/dashboard"
-            className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
-          >
-            ← Dashboard
-          </Link>
-        </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Contact Messages</h1>
+        <p className="text-gray-600">Manage messages from contact form</p>
+      </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 gap-4 mb-8">

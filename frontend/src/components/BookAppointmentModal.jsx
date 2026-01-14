@@ -65,6 +65,26 @@ const BookAppointmentModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Save appointment to localStorage
+    const appointmentData = {
+      id: Date.now(),
+      fullName: formData.fullName,
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      appointmentType: selectedType,
+      appointmentDate: selectedDate,
+      appointmentTime: selectedTime,
+      preferredCountry: formData.preferredCountry,
+      message: formData.message,
+      status: 'Pending',
+      createdAt: new Date().toISOString()
+    };
+
+    // Get existing appointments or initialize empty array
+    const existingAppointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+    const updatedAppointments = [...existingAppointments, appointmentData];
+    localStorage.setItem('appointments', JSON.stringify(updatedAppointments));
+
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
