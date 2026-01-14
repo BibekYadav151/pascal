@@ -12,14 +12,15 @@ const AdminMessages = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <>
+      <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Contact Messages</h1>
         <p className="text-gray-600">Manage messages from contact form</p>
       </div>
 
-        {/* Stats */}
+      {/* Stats */}
         <div className="grid grid-cols-2 gap-4 mb-8">
           <div className="bg-white rounded-xl p-6 shadow-lg">
             <div className="text-3xl font-bold text-blue-600">{contactMessages.length}</div>
@@ -94,7 +95,7 @@ const AdminMessages = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

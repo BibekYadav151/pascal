@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { CheckCircle, XCircle, Clock, Calendar, User, Mail, Phone, MapPin, Edit, Trash2, Search, Filter } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Calendar, User, Mail, Phone, MapPin, Edit, Trash2, Search, Filter, X } from 'lucide-react';
 
 const AdminAppointments = () => {
   const { 
