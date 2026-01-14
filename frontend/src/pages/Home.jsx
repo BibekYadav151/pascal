@@ -49,174 +49,137 @@ const Home = () => {
       <FloatingElements className="opacity-30" />
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden bg-gray-50">
-        <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-100"></div>
+      <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden min-h-[90vh] flex items-center">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50"></div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        {/* Subtle Background Shapes */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 right-20 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 w-full">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
-            <div className="space-y-8 animate-slide-up">
-              <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white text-gray-700 text-sm font-medium border border-gray-200">
-                <span className="mr-2">🎓</span>
-                Start Your Journey Today
-              </div>
+            <div className="space-y-8 z-10">
+              {/* Main Headline */}
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+                Let's Work Together to Create Wonders with Us
+              </h1>
 
-              <div className="space-y-6">
-                <h1 className="text-display-xl md:text-6xl text-gray-900 font-semibold leading-tight">
-                  Your Gateway to{" "}
-                  <span className="text-gray-900 font-semibold">
-                    Global Education
-                  </span>
-                </h1>
-
-                <div className="w-12 h-0.5 bg-gray-900"></div>
-              </div>
-
-              <p className="text-body-lg text-gray-600 max-w-xl leading-relaxed">
-                Expert guidance for student visas, test preparation, and
-                international admissions.
-                <span className="font-medium text-gray-900">
-                  {" "}
-                  Achieve your dream of studying abroad
-                </span>{" "}
-                with Pascal Institute.
+              {/* Description */}
+              <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-2xl">
+                A visionary educational consultancy, crafting captivating
+                opportunities through expert guidance and personalized support.
+                Adept at turning your study abroad dreams into extraordinary
+                reality.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <AnimatedButton
-                  href="/courses"
+                  href="/contact"
                   variant="primary"
                   size="lg"
-                  icon="🚀"
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg text-base font-medium"
                 >
-                  Explore Programs
+                  Let's Talk.
                 </AnimatedButton>
                 <AnimatedButton
-                  href="/classes"
+                  href="/courses"
                   variant="secondary"
                   size="lg"
-                  icon="📚"
+                  className="bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-900 px-8 py-4 rounded-lg text-base font-medium"
                 >
-                  Apply for Classes
+                  Start Project
                 </AnimatedButton>
               </div>
 
-              {/* Trust indicators */}
-              <div className="flex flex-col sm:flex-row gap-6 pt-8">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-1">
-                    {[...Array(4)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-6 h-6 rounded-full bg-gray-400 border border-white"
-                      ></div>
-                    ))}
+              {/* Statistics */}
+              <div className="flex flex-wrap gap-12 pt-16">
+                <div>
+                  <div className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
+                    <AnimatedCounter value={8} suffix="+" />
                   </div>
-                  <span className="text-body-sm text-gray-600">
-                    1000+ Happy Students
-                  </span>
+                  <p className="text-sm text-gray-600 font-medium">
+                    years experience
+                  </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-body-sm text-gray-600">
-                    95% Success Rate
-                  </span>
+                <div>
+                  <div className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
+                    <AnimatedCounter value={1000} suffix="+" />
+                  </div>
+                  <p className="text-sm text-gray-600 font-medium">
+                    students success
+                  </p>
+                </div>
+                <div>
+                  <div className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
+                    <AnimatedCounter value={95} suffix="%" />
+                  </div>
+                  <p className="text-sm text-gray-600 font-medium">
+                    satisfied rate
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Right Content - Modern Dashboard */}
-            <div className="relative hidden lg:block">
-              <FloatingElements count={3} className="opacity-20" />
-
-              {/* Main dashboard card */}
-              <Card className="relative p-8 shadow-2xl border-0 bg-white/80 backdrop-blur-lg">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                      <span className="text-white font-bold">P</span>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">
-                        Pascal Dashboard
-                      </h3>
-                      <p className="text-xs text-gray-500">Live Statistics</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                  </div>
-                </div>
-
-                {/* Stats Grid */}
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 text-center group hover:scale-105 transition-transform">
-                    <div className="text-2xl mb-2 group-hover:animate-bounce">
-                      🌏
-                    </div>
-                    <div className="text-lg font-bold text-blue-600">
-                      <AnimatedCounter value={25} suffix="+" />
-                    </div>
-                    <p className="text-xs text-gray-600">Countries</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center group hover:scale-105 transition-transform">
-                    <div className="text-2xl mb-2 group-hover:animate-bounce">
-                      ✈️
-                    </div>
-                    <div className="text-lg font-bold text-purple-600">
-                      <AnimatedCounter value={1000} suffix="+" />
-                    </div>
-                    <p className="text-xs text-gray-600">Students</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center group hover:scale-105 transition-transform">
-                    <div className="text-2xl mb-2 group-hover:animate-bounce">
-                      🏆
-                    </div>
-                    <div className="text-lg font-bold text-green-600">
-                      <AnimatedCounter value={95} suffix="%" />
-                    </div>
-                    <p className="text-xs text-gray-600">Success</p>
-                  </div>
-                </div>
-
-                {/* Progress section */}
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">
-                      Applications This Month
-                    </span>
-                    <span className="text-sm text-gray-500">247/300</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-1000 ease-out"
-                      style={{ width: "82%" }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Recent activity */}
-                <div className="mt-6 pt-4 border-t border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      <span className="text-green-600 text-sm">✓</span>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">
-                        New student enrolled
-                      </p>
-                      <p className="text-xs text-gray-500">2 minutes ago</p>
+            {/* Right Content - Image with Floating Tags */}
+            <div className="relative hidden lg:block z-10">
+              {/* Main Image Container */}
+              <div className="relative">
+                {/* Placeholder for person image */}
+                <div className="relative w-full aspect-[4/5] max-w-md mx-auto">
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                    {/* Placeholder image - you can replace this with actual image */}
+                    <div className="w-full h-full flex items-end justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-8">
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        {/* Person silhouette */}
+                        <div className="absolute bottom-0 w-3/4 h-4/5 bg-gradient-to-b from-gray-200 to-gray-300 rounded-t-full"></div>
+                        {/* Head */}
+                        <div className="absolute bottom-[60%] w-32 h-32 bg-gray-300 rounded-full border-4 border-white shadow-lg"></div>
+                        {/* Glasses placeholder */}
+                        <div className="absolute bottom-[60%] w-40 h-8 bg-gray-400/50 rounded-full border-2 border-gray-500"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </Card>
 
-              {/* Floating achievement badge */}
-              <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                <span className="text-white font-bold text-xl">⭐</span>
+                {/* Floating Tags */}
+                <div className="absolute -top-6 right-4 bg-white rounded-2xl px-4 py-3 shadow-xl border-2 border-green-200 flex items-center gap-3 animate-float z-20">
+                  <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
+                    <span className="text-xl">🎓</span>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-900">
+                    Student Visa Counseling
+                  </span>
+                </div>
+
+                <div
+                  className="absolute top-1/2 -left-6 bg-white rounded-2xl px-4 py-3 shadow-xl border-2 border-green-200 flex items-center gap-3 animate-float z-20"
+                  style={{ animationDelay: "0.5s" }}
+                >
+                  <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
+                    <span className="text-xl">🌍</span>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-900">
+                    Study Abroad Programs
+                  </span>
+                </div>
+
+                <div
+                  className="absolute -bottom-6 right-8 bg-white rounded-2xl px-4 py-3 shadow-xl border-2 border-green-200 flex items-center gap-3 animate-float z-20"
+                  style={{ animationDelay: "1s" }}
+                >
+                  <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
+                    <span className="text-xl">📚</span>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-900">
+                    Test Preparation
+                  </span>
+                </div>
               </div>
             </div>
           </div>
