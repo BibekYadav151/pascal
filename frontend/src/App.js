@@ -11,6 +11,8 @@ import Classes from './pages/Classes';
 import Courses from './pages/Courses';
 import Contact from './pages/Contact';
 import ServiceDetail from './pages/ServiceDetail';
+import Blogs from './pages/Blogs';
+import BlogDetail from './pages/BlogDetail';
 import AdminLogin from './admin/AdminLogin';
 import AdminLayout from './admin/AdminLayout';
 import AdminDashboard from './admin/AdminDashboard';
@@ -22,6 +24,7 @@ import AdminInstituteClasses from './admin/AdminInstituteClasses';
 import AdminUniversities from './admin/AdminUniversities';
 import AdminMessages from './admin/AdminMessages';
 import AdminAppointments from './admin/AdminAppointments';
+import AdminBlogs from './admin/AdminBlogs';
 
 function App() {
   const [isBookAppointmentOpen, setIsBookAppointmentOpen] = useState(false);
@@ -43,6 +46,8 @@ function App() {
                     <Route path="/courses" element={<Courses onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
                     <Route path="/contact" element={<Contact onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
                     <Route path="/services/:serviceId" element={<ServiceDetail />} />
+                    <Route path="/blogs" element={<Blogs />} />
+                    <Route path="/blogs/:slug" element={<BlogDetail />} />
                   </Routes>
                 </main>
                 <Footer />
@@ -63,6 +68,7 @@ function App() {
               <Route path="universities" element={<AdminUniversities />} />
               <Route path="messages" element={<AdminMessages />} />
               <Route path="appointments" element={<AdminAppointments />} />
+              <Route path="blogs" element={<AdminBlogs />} />
             </Route>
           </Routes>
           
