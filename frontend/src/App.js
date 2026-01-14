@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
+import { ThemeProvider } from './lib/theme-context';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import BookAppointmentModal from './components/BookAppointmentModal';
 import Home from './pages/Home';
 import About from './pages/About';
 import Classes from './pages/Classes';
@@ -19,37 +21,47 @@ import AdminUniversities from './admin/AdminUniversities';
 import AdminMessages from './admin/AdminMessages';
 
 function App() {
-  return (
-    <AppProvider>
-      <Router>
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/classes" element={<Classes />} />
-              <Route path="/courses" element={<Courses />} />
-              <Route path="/contact" element={<Contact />} />
+  const [isBookAppointmentOpen, setIsBookAppointmentOpen] = useState(false);
 
-              {/* Admin Routes */}
-              <Route path="/admin" element={<AdminLogin />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/classes" element={<AdminClasses />} />
-              <Route path="/admin/class-inquiries" element={<AdminClassInquiries />} />
-              <Route path="/admin/programs" element={<AdminPrograms />} />
-              <Route path="/admin/program-inquiries" element={<AdminProgramInquiries />} />
-              <Route path="/admin/institute-classes" element={<AdminInstituteClasses />} />
-              <Route path="/admin/universities" element={<AdminUniversities />} />
-              <Route path="/admin/messages" element={<AdminMessages />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </AppProvider>
+  return (
+    <ThemeProvider>
+      <AppProvider>
+        <Router>
+          <div className="min-h-screen flex flex-col">
+            <Navbar onBookAppointment={() => setIsBookAppointmentOpen(true)} />
+            <main className="flex-grow">
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/classes" element={<Classes onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
+                <Route path="/courses" element={<Courses onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
+                <Route path="/contact" element={<Contact onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
+
+                {/* Admin Routes */}
+                <Route path="/admin" element={<AdminLogin />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/classes" element={<AdminClasses />} />
+                <Route path="/admin/class-inquiries" element={<AdminClassInquiries />} />
+                <Route path="/admin/programs" element={<AdminPrograms />} />
+                <Route path="/admin/program-inquiries" element={<AdminProgramInquiries />} />
+                <Route path="/admin/institute-classes" element={<AdminInstituteClasses />} />
+                <Route path="/admin/universities" element={<AdminUniversities />} />
+                <Route path="/admin/messages" element={<AdminMessages />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+          
+          {/* Book Appointment Modal */}
+          <BookAppointmentModal 
+            isOpen={isBookAppointmentOpen}
+            onClose={() => setIsBookAppointmentOpen(false)}
+          />
+        </Router>
+      </AppProvider>
+    </ThemeProvider>
   );
 }
 

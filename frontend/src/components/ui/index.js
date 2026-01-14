@@ -3,3 +3,4 @@ export { default as AnimatedCounter } from './AnimatedCounter';
 export { default as Card } from './Card';
 export { default as FloatingElements } from './FloatingElements';
 export { default as GradientText } from './GradientText';
+export { default as Button } from './Button';
