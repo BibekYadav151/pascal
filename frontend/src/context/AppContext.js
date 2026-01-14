@@ -238,6 +238,32 @@ export const AppProvider = ({ children }) => {
     setContactMessages(contactMessages.filter(m => m.id !== id));
   };
 
+  // Appointment Management
+  const [appointments, setAppointments] = useState(() => {
+    const saved = localStorage.getItem('appointments');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('appointments', JSON.stringify(appointments));
+  }, [appointments]);
+
+  const addAppointment = (appointment) => {
+    setAppointments([...appointments, {
+      ...appointment,
+      id: Date.now(),
+      createdAt: new Date().toISOString()
+    }]);
+  };
+
+  const updateAppointment = (id, updatedAppointment) => {
+    setAppointments(appointments.map(a => a.id === id ? { ...a, ...updatedAppointment } : a));
+  };
+
+  const deleteAppointment = (id) => {
+    setAppointments(appointments.filter(a => a.id !== id));
+  };
+
   // Dashboard Stats
   const getDashboardStats = () => {
     return {
@@ -246,7 +272,8 @@ export const AppProvider = ({ children }) => {
       programApplications: programInquiries.length,
       activeClasses: classes.filter(c => c.status === 'Active').length,
       activePrograms: programs.filter(p => p.status === 'Active').length,
-      unreadMessages: contactMessages.filter(m => !m.read).length
+      unreadMessages: contactMessages.filter(m => !m.read).length,
+      pendingAppointments: appointments.filter(a => a.status === 'Pending').length
     };
   };
 
@@ -294,6 +321,12 @@ export const AppProvider = ({ children }) => {
         addContactMessage,
         markContactMessageRead,
         deleteContactMessage,
+
+        // Appointments
+        appointments,
+        addAppointment,
+        updateAppointment,
+        deleteAppointment,
 
         // Stats
         getDashboardStats
