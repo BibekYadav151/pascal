@@ -162,25 +162,25 @@ const Home = () => {
       icon: "🎓",
       title: "Student Visa Counseling",
       description: "Expert guidance for student visa applications",
-      slug: "student-visa-counseling"
+      slug: "student-visa-counseling",
     },
     {
       icon: "🌍",
       title: "Study Abroad Programs",
       description: "Wide range of programs in top universities",
-      slug: "study-abroad-programs"
+      slug: "study-abroad-programs",
     },
     {
       icon: "📘",
       title: "IELTS / PTE / Language Classes",
       description: "Comprehensive test preparation",
-      slug: "ielts-pte-language-classes"
+      slug: "ielts-pte-language-classes",
     },
     {
       icon: "📝",
       title: "Documentation & Interview Prep",
       description: "Complete support for applications",
-      slug: "documentation-interview-prep"
+      slug: "documentation-interview-prep",
     },
   ];
 
