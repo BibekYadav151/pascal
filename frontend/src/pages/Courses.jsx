@@ -106,12 +106,12 @@ const Courses = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50">
       {/* Page Header */}
-      <section className="bg-gray-900 py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="page-top bg-gray-900">
+        <div className="max-w-7xl mx-auto container-spacing">
           <div className="text-center text-white">
-            <h1 className="text-display-lg mb-6">
+            <h1 className="text-display-lg mb-4">
               Courses & Programs
             </h1>
             <p className="text-body-lg text-gray-300 max-w-2xl mx-auto">
@@ -122,8 +122,8 @@ const Courses = () => {
       </section>
 
       {/* Search & Filter Section */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 md:py-10 bg-gray-50">
+        <div className="max-w-7xl mx-auto container-spacing">
           {/* Search Bar */}
           <div className="mb-8">
             <div className="relative">
@@ -222,14 +222,14 @@ const Courses = () => {
       </section>
 
       {/* Results Count */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto container-spacing py-4">
         <p className="text-gray-600">
           Showing <span className="font-semibold">{filteredPrograms.length}</span> programs
         </p>
       </div>
 
       {/* Program Cards */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="max-w-7xl mx-auto container-spacing pb-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPrograms.map((program, index) => (
             <Card

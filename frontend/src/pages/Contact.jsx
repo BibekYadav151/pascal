@@ -61,15 +61,15 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50">
       {/* Page Header */}
-      <section className="section-spacing bg-white">
+      <section className="page-top bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
               📞 Contact Us
             </div>
-            <h1 className="text-display-lg text-gray-900 mb-6">
+            <h1 className="text-display-lg text-gray-900 mb-4">
               Contact Us
             </h1>
             <p className="text-body-lg text-gray-600 max-w-2xl mx-auto">
@@ -82,7 +82,7 @@ const Contact = () => {
       {/* Contact Section */}
       <section className="section-spacing bg-gray-50">
         <div className="relative max-w-7xl mx-auto container-spacing">
-          <div className="grid lg:grid-cols-2 gap-16">
+          <div className="grid lg:grid-cols-2 gap-10">
             {/* Contact Info */}
             <div className="space-y-8">
               <div>
