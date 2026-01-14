@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, Menu, Moon, Sun, X } from "lucide-react";
-import { useTheme } from "../lib/theme-context";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { Button } from "./ui";
 
 const Navbar = ({ onBookAppointment }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { theme, toggleTheme, mounted } = useTheme();
   const location = useLocation();
 
   useEffect(() => {
@@ -35,8 +33,8 @@ const Navbar = ({ onBookAppointment }) => {
 
   const navShellClassName = `backdrop-blur-md border transition-all duration-300 ${
     scrolled
-      ? "bg-white/60 border-gray-200/60 shadow-lg dark:bg-gray-900/60 dark:border-gray-700/60"
-      : "bg-white/35 border-gray-200/40 shadow-md dark:bg-gray-900/35 dark:border-gray-700/40"
+      ? "bg-white/90 border-gray-200/70 shadow-lg"
+      : "bg-white/95 border-gray-200/50 shadow-md"
   }`;
 
   return (
@@ -49,7 +47,7 @@ const Navbar = ({ onBookAppointment }) => {
       >
         <nav
           className={`flex items-center justify-between rounded-full ${
-            scrolled ? "px-4 py-3" : "px-6 py-4"
+            scrolled ? "px-4 py-2" : "px-6 py-2"
           } ${navShellClassName}`}
         >
           {/* Logo */}
@@ -60,10 +58,10 @@ const Navbar = ({ onBookAppointment }) => {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-blue-500 flex items-center justify-center text-white text-sm font-black">
               PI
             </div>
-            <span className="hidden lg:inline text-gray-900 dark:text-white">
+            <span className="hidden lg:inline text-black">
               Pascal Institute
             </span>
-            <span className="hidden md:inline lg:hidden text-gray-900 dark:text-white">
+            <span className="hidden md:inline lg:hidden text-black">
               Pascal
             </span>
           </Link>
@@ -78,8 +76,8 @@ const Navbar = ({ onBookAppointment }) => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors ${
-                  isActive(link.path) ? "text-gray-900 dark:text-white" : ""
+                className={`text-gray-600 hover:text-black transition-colors ${
+                  isActive(link.path) ? "text-black" : ""
                 }`}
               >
                 {link.name}
@@ -88,25 +86,11 @@ const Navbar = ({ onBookAppointment }) => {
           </div>
 
           {/* Actions */}
-          <div className="hidden md:flex items-center gap-3 shrink-0">
-            {mounted && (
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-full hover:bg-gray-900/10 dark:hover:bg-white/10 transition-colors text-gray-900 dark:text-white"
-                aria-label="Toggle theme"
-                type="button"
-              >
-                {theme === "light" ? (
-                  <Moon className="h-5 w-5" />
-                ) : (
-                  <Sun className="h-5 w-5" />
-                )}
-              </button>
-            )}
+          <div className="hidden md:flex items-center shrink-0">
             <Button
               onClick={onBookAppointment}
               className={`rounded-full bg-orange-500 hover:bg-orange-600 text-white font-medium transition-all hover:scale-[1.03] flex items-center gap-2 cursor-pointer whitespace-nowrap ${
-                scrolled ? "px-4 h-9 text-sm" : "px-6 h-10 text-sm"
+                scrolled ? "px-4 h-8 text-sm" : "px-6 h-8 text-sm"
               }`}
             >
               <span className="hidden lg:inline">Book Appointment</span>
@@ -131,26 +115,12 @@ const Navbar = ({ onBookAppointment }) => {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-blue-500 flex items-center justify-center text-white text-sm font-black">
                 PI
               </div>
-              <span className="text-gray-900 dark:text-white">Pascal</span>
+              <span className="text-black">Pascal</span>
             </Link>
 
             <div className="flex items-center gap-2">
-              {mounted && (
-                <button
-                  onClick={toggleTheme}
-                  className="p-2 rounded-full hover:bg-gray-900/10 dark:hover:bg-white/10 transition-colors text-gray-900 dark:text-white"
-                  aria-label="Toggle theme"
-                  type="button"
-                >
-                  {theme === "light" ? (
-                    <Moon className="h-5 w-5" />
-                  ) : (
-                    <Sun className="h-5 w-5" />
-                  )}
-                </button>
-              )}
               <button
-                className="p-2 text-gray-900 hover:bg-gray-900/5 dark:text-white dark:hover:bg-white/5 rounded-full transition-colors"
+                className="p-2 text-black hover:bg-gray-900/5 rounded-full transition-colors"
                 onClick={() => setMobileMenuOpen((s) => !s)}
                 aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                 type="button"
@@ -168,7 +138,7 @@ const Navbar = ({ onBookAppointment }) => {
 
       {mobileMenuOpen && (
         <div className="fixed inset-0 top-20 z-40 px-4 pb-6 animate-slide-down md:hidden">
-          <div className="rounded-2xl border border-gray-200/70 bg-white/95 backdrop-blur-md shadow-xl dark:border-gray-700/70 dark:bg-gray-900/95">
+          <div className="rounded-2xl border border-gray-200/70 bg-white/90 backdrop-blur-md shadow-xl">
             <nav className="flex flex-col gap-2 p-4">
               {navLinks.map((link) => (
                 <Link
@@ -176,8 +146,8 @@ const Navbar = ({ onBookAppointment }) => {
                   to={link.path}
                   className={`px-3 py-2 rounded-xl font-medium transition-colors ${
                     isActive(link.path)
-                      ? "bg-gray-900/5 text-gray-900 dark:bg-white/10 dark:text-white"
-                      : "text-gray-700 hover:bg-gray-900/5 dark:text-gray-300 dark:hover:bg-white/10"
+                      ? "bg-gray-900/5 text-black"
+                      : "text-gray-700 hover:bg-gray-900/5"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >

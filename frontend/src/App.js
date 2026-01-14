@@ -55,7 +55,7 @@ function App() {
           </div>
           
           {/* Book Appointment Modal */}
-          <BookAppointmentModal 
+          <BookAppointmentModal
             isOpen={isBookAppointmentOpen}
             onClose={() => setIsBookAppointmentOpen(false)}
           />

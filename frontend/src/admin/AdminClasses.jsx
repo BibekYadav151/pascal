@@ -10,7 +10,7 @@ const AdminClasses = () => {
 
   const [formData, setFormData] = useState({
     title: '',
-    time: '',
+    timeSlots: [{ time: '', available: true }],
     duration: '',
     fee: '',
     status: 'Active',
@@ -21,7 +21,7 @@ const AdminClasses = () => {
     setEditingClass(null);
     setFormData({
       title: '',
-      time: '',
+      timeSlots: [{ time: '', available: true }],
       duration: '',
       fee: '',
       status: 'Active',
@@ -34,7 +34,7 @@ const AdminClasses = () => {
     setEditingClass(classItem);
     setFormData({
       title: classItem.title,
-      time: classItem.time,
+      timeSlots: classItem.timeSlots || [{ time: classItem.time || '', available: true }],
       duration: classItem.duration,
       fee: classItem.fee,
       status: classItem.status,
@@ -60,7 +60,7 @@ const AdminClasses = () => {
     setEditingClass(null);
     setFormData({
       title: '',
-      time: '',
+      timeSlots: [{ time: '', available: true }],
       duration: '',
       fee: '',
       status: 'Active',
@@ -72,6 +72,31 @@ const AdminClasses = () => {
     if (window.confirm('Are you sure you want to delete this class?')) {
       deleteClass(id);
     }
+  };
+
+  const addTimeSlot = () => {
+    setFormData({
+      ...formData,
+      timeSlots: [...formData.timeSlots, { time: '', available: true }]
+    });
+  };
+
+  const removeTimeSlot = (index) => {
+    if (formData.timeSlots.length > 1) {
+      setFormData({
+        ...formData,
+        timeSlots: formData.timeSlots.filter((_, i) => i !== index)
+      });
+    }
+  };
+
+  const updateTimeSlot = (index, field, value) => {
+    setFormData({
+      ...formData,
+      timeSlots: formData.timeSlots.map((slot, i) =>
+        i === index ? { ...slot, [field]: value } : slot
+      )
+    });
   };
 
   return (
@@ -106,7 +131,7 @@ const AdminClasses = () => {
               <thead className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Class Name</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Time</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">Time Slots</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Duration</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Fee</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Status</th>
@@ -119,7 +144,15 @@ const AdminClasses = () => {
                     <td className="px-6 py-4">
                       <div className="font-semibold text-gray-900">{classItem.title}</div>
                     </td>
-                    <td className="px-6 py-4 text-gray-600">{classItem.time}</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      <div className="flex flex-wrap gap-1">
+                        {classItem.timeSlots?.map((slot, index) => (
+                          <span key={index} className="inline-block bg-gray-100 px-2 py-1 rounded text-xs">
+                            {slot.time}
+                          </span>
+                        )) || <span>{classItem.time}</span>}
+                      </div>
+                    </td>
                     <td className="px-6 py-4 text-gray-600">{classItem.duration}</td>
                     <td className="px-6 py-4 text-gray-600">{classItem.fee}</td>
                     <td className="px-6 py-4">
@@ -188,16 +221,47 @@ const AdminClasses = () => {
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Class Time *
+                    Class Time Slots *
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.time}
-                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g., 10:00 AM"
-                  />
+                  <div className="space-y-2">
+                    {formData.timeSlots.map((slot, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          required
+                          value={slot.time}
+                          onChange={(e) => updateTimeSlot(index, 'time', e.target.value)}
+                          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          placeholder="e.g., 10:00 AM"
+                        />
+                        <label className="flex items-center gap-1 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={slot.available}
+                            onChange={(e) => updateTimeSlot(index, 'available', e.target.checked)}
+                            className="rounded"
+                          />
+                          Available
+                        </label>
+                        {formData.timeSlots.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeTimeSlot(index)}
+                            className="text-red-500 hover:text-red-700 px-2 py-1"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={addTimeSlot}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1"
+                    >
+                      ➕ Add Time Slot
+                    </button>
+                  </div>
                 </div>
 
                 <div>

@@ -116,11 +116,31 @@ export const AppProvider = ({ children }) => {
 
   // Class Management
   const addClass = (newClass) => {
-    setClasses([...classes, { ...newClass, id: Date.now() }]);
+    // Ensure timeSlots is an array
+    const classWithTimeSlots = {
+      ...newClass,
+      timeSlots: Array.isArray(newClass.timeSlots)
+        ? newClass.timeSlots
+        : [{ time: newClass.time || 'TBD', available: true }],
+      id: Date.now()
+    };
+    setClasses([...classes, classWithTimeSlots]);
   };
 
   const updateClass = (id, updatedClass) => {
-    setClasses(classes.map(c => c.id === id ? { ...c, ...updatedClass } : c));
+    setClasses(classes.map(c => {
+      if (c.id === id) {
+        // Ensure timeSlots is properly handled
+        const updated = { ...c, ...updatedClass };
+        if (updatedClass.timeSlots) {
+          updated.timeSlots = Array.isArray(updatedClass.timeSlots)
+            ? updatedClass.timeSlots
+            : [{ time: updatedClass.time || 'TBD', available: true }];
+        }
+        return updated;
+      }
+      return c;
+    }));
   };
 
   const deleteClass = (id) => {

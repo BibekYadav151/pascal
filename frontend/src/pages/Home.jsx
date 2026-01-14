@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import heroStudentImage from "../assets/hero-student.svg";
@@ -10,7 +10,152 @@ import {
 } from "../components/ui";
 
 const Home = () => {
-  const { classes } = useApp();
+  const { classes, addClassInquiry } = useApp();
+  const scrollContainerRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    contactNumber: "",
+    email: "",
+    message: "",
+  });
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
+
+  // Modal handlers
+  const handleApplyNow = (classItem) => {
+    setSelectedClass(classItem);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedClass(null);
+    setSelectedTimeSlot("");
+    setFormData({
+      fullName: "",
+      contactNumber: "",
+      email: "",
+      message: "",
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!formData.email.endsWith("@gmail.com")) {
+      alert("Please enter a valid Gmail address");
+      return;
+    }
+
+    addClassInquiry({
+      studentName: formData.fullName,
+      phone: formData.contactNumber,
+      email: formData.email,
+      className: selectedClass.title,
+      classTime:
+        selectedTimeSlot ||
+        selectedClass.timeSlots?.[0]?.time ||
+        selectedClass.time,
+      message: formData.message,
+    });
+
+    alert(
+      "Your inquiry has been submitted successfully! We will contact you soon."
+    );
+    handleCloseModal();
+  };
+
+  // Drag functionality
+  const handleMouseDown = (e) => {
+    // Prevent dragging when clicking on buttons or interactive elements
+    if (e.target.tagName === "BUTTON" || e.target.closest("button")) {
+      return;
+    }
+
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+    scrollContainerRef.current.style.cursor = "grabbing";
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll speed multiplier
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.style.cursor = "grab";
+    }
+  };
+
+  const handleTouchStart = (e) => {
+    // Prevent dragging when touching buttons or interactive elements
+    if (e.target.tagName === "BUTTON" || e.target.closest("button")) {
+      return;
+    }
+
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  // Global mouse up handler
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      if (isDragging) {
+        setIsDragging(false);
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.style.cursor = "grab";
+        }
+      }
+    };
+
+    document.addEventListener("mouseup", handleGlobalMouseUp);
+    document.addEventListener("mouseleave", handleGlobalMouseUp);
+
+    return () => {
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
+      document.removeEventListener("mouseleave", handleGlobalMouseUp);
+    };
+  }, [isDragging]);
+
+  // Arrow scroll functions
+  const scrollLeftArrow = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -320, behavior: "smooth" });
+    }
+  };
+
+  const scrollRightArrow = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 320, behavior: "smooth" });
+    }
+  };
 
   const services = [
     {
@@ -61,7 +206,7 @@ const Home = () => {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-blue-100/10 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto container-spacing w-full">
+        <div className="relative max-w-7xl mx-auto container-spacing w-full mt-8 md:mt-12">
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             {/* Left Content */}
             <div className="space-y-6 z-10">
@@ -94,7 +239,7 @@ const Home = () => {
                   size="md"
                   className="bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-900 px-6 py-3 rounded-lg text-sm md:text-base font-medium"
                 >
-                  Start Project
+                  Select Courses
                 </AnimatedButton>
               </div>
 
@@ -276,81 +421,147 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {classes.slice(0, 4).map((classItem, index) => (
-              <Card
-                key={classItem.id}
-                className="p-6 group"
-                style={{ animationDelay: `${index * 0.1}s` }}
+          {/* Scrollable Classes Container */}
+          <div className="relative">
+            {/* Left Arrow */}
+            <button
+              onClick={scrollLeftArrow}
+              onMouseDown={(e) => e.stopPropagation()}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-3 hover:bg-gray-50 transition-all duration-200 border border-gray-200 hover:scale-110 active:scale-95 hover:shadow-2xl"
+            >
+              <svg
+                className="w-6 h-6 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                {/* Time badge */}
-                <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium mb-4">
-                  <span className="mr-2">🕐</span>
-                  {classItem.time}
-                </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
 
-                {/* Title */}
-                <h3 className="text-title-md text-gray-900 mb-4 leading-tight">
-                  {classItem.title}
-                </h3>
+            {/* Right Arrow */}
+            <button
+              onClick={scrollRightArrow}
+              onMouseDown={(e) => e.stopPropagation()}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-3 hover:bg-gray-50 transition-all duration-200 border border-gray-200 hover:scale-110 active:scale-95 hover:shadow-2xl"
+            >
+              <svg
+                className="w-6 h-6 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
 
-                {/* Details */}
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3 text-gray-600">
-                    <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+            {/* Scrollable Container */}
+            <div
+              ref={scrollContainerRef}
+              className={`flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-16 ${
+                isDragging ? "cursor-grabbing" : "cursor-grab"
+              } select-none`}
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {classes.map((classItem, index) => (
+                <div key={classItem.id} className="flex-shrink-0 w-80">
+                  <Card
+                    className="p-6 group h-full"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    {/* Time badge */}
+                    <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium mb-4">
+                      <span className="mr-2">🕐</span>
+                      <div className="flex flex-wrap gap-1">
+                        {classItem.timeSlots?.map((slot, index) => (
+                          <span key={index}>
+                            {slot.time}
+                            {index < classItem.timeSlots.length - 1 ? ", " : ""}
+                          </span>
+                        )) || <span>{classItem.time || "TBD"}</span>}
+                      </div>
                     </div>
-                    <span className="text-body-sm font-medium">
-                      {classItem.duration}
-                    </span>
-                  </div>
 
-                  <div className="flex items-center gap-3 text-gray-600">
-                    <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+                    {/* Title */}
+                    <h3 className="text-title-md text-gray-900 mb-4 leading-tight">
+                      {classItem.title}
+                    </h3>
+
+                    {/* Details */}
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center gap-3 text-gray-600">
+                        <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        </div>
+                        <span className="text-body-sm font-medium">
+                          {classItem.duration}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-3 text-gray-600">
+                        <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        </div>
+                        <span className="text-body-sm font-medium">
+                          {classItem.fee}
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-body-sm font-medium">
-                      {classItem.fee}
-                    </span>
-                  </div>
-                </div>
 
-                {/* Apply button */}
-                <AnimatedButton
-                  href="/classes"
-                  variant="primary"
-                  size="md"
-                  className="w-full"
-                  icon="📝"
-                >
-                  Apply Now
-                </AnimatedButton>
-              </Card>
-            ))}
+                    {/* Apply button */}
+                    <AnimatedButton
+                      onClick={() => handleApplyNow(classItem)}
+                      variant="primary"
+                      size="md"
+                      className="w-full"
+                      icon="📝"
+                    >
+                      Apply Now
+                    </AnimatedButton>
+                  </Card>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="mt-8 md:hidden">
@@ -581,6 +792,162 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Apply Now Modal */}
+      {showModal && selectedClass && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+            <div className="bg-gray-900 p-4 rounded-t-2xl">
+              <h2 className="text-lg font-bold text-white">Apply for Class</h2>
+            </div>
+
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+              {/* Auto-filled Info */}
+              <div className="bg-gray-50 rounded-lg p-3 space-y-3">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Class Name
+                  </label>
+                  <input
+                    type="text"
+                    value={selectedClass.title}
+                    readOnly
+                    className="w-full px-3 py-2 bg-gray-100 rounded text-gray-600 cursor-not-allowed border-0 text-sm"
+                  />
+                </div>
+                {selectedClass.timeSlots &&
+                selectedClass.timeSlots.length > 1 ? (
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Select Time Slot *
+                    </label>
+                    <select
+                      value={selectedTimeSlot}
+                      onChange={(e) => setSelectedTimeSlot(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-sm"
+                      required
+                    >
+                      <option value="">Choose a time slot</option>
+                      {selectedClass.timeSlots
+                        .filter((slot) => slot.available)
+                        .map((slot, index) => (
+                          <option key={index} value={slot.time}>
+                            {slot.time}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Class Time
+                    </label>
+                    <input
+                      type="text"
+                      value={
+                        selectedClass.timeSlots?.[0]?.time ||
+                        selectedClass.time ||
+                        "TBD"
+                      }
+                      readOnly
+                      className="w-full px-3 py-2 bg-gray-100 rounded text-gray-600 cursor-not-allowed border-0 text-sm"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* User Input Fields */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.fullName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, fullName: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-sm"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Phone *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.contactNumber}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        contactNumber: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-sm"
+                    placeholder="Your phone"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Gmail Address *
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-sm"
+                  placeholder="your.email@gmail.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Message (Optional)
+                </label>
+                <textarea
+                  value={formData.message}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-sm"
+                  rows="2"
+                  placeholder="Any questions?"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <AnimatedButton
+                  type="submit"
+                  variant="primary"
+                  size="sm"
+                  className="flex-1"
+                >
+                  Apply Now
+                </AnimatedButton>
+                <AnimatedButton
+                  type="button"
+                  onClick={handleCloseModal}
+                  variant="secondary"
+                  size="sm"
+                  className="flex-1"
+                >
+                  Cancel
+                </AnimatedButton>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

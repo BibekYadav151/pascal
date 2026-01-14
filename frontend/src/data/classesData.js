@@ -2,7 +2,11 @@ export const classesData = [
   {
     id: 1,
     title: 'IELTS Preparation',
-    time: '10:00 AM',
+    timeSlots: [
+      { time: '10:00 AM', available: true },
+      { time: '11:00 AM', available: true },
+      { time: '1:00 PM', available: true }
+    ],
     duration: '2 Months',
     fee: 'NPR 12,000',
     status: 'Active',
@@ -11,7 +15,9 @@ export const classesData = [
   {
     id: 2,
     title: 'PTE Academic',
-    time: '12:00 PM',
+    timeSlots: [
+      { time: '12:00 PM', available: true }
+    ],
     duration: '1.5 Months',
     fee: 'NPR 10,000',
     status: 'Active',
@@ -20,7 +26,9 @@ export const classesData = [
   {
     id: 3,
     title: 'Japanese Language',
-    time: '2:00 PM',
+    timeSlots: [
+      { time: '2:00 PM', available: true }
+    ],
     duration: '3 Months',
     fee: 'NPR 15,000',
     status: 'Active',
@@ -29,7 +37,9 @@ export const classesData = [
   {
     id: 4,
     title: 'Accounting Package',
-    time: '4:00 PM',
+    timeSlots: [
+      { time: '4:00 PM', available: true }
+    ],
     duration: '3 Months',
     fee: 'NPR 8,000',
     status: 'Active',
@@ -38,7 +48,9 @@ export const classesData = [
   {
     id: 5,
     title: 'Spoken English',
-    time: '11:00 AM',
+    timeSlots: [
+      { time: '11:00 AM', available: true }
+    ],
     duration: '2 Months',
     fee: 'NPR 8,000',
     status: 'Active',
