@@ -162,21 +162,25 @@ const Home = () => {
       icon: "🎓",
       title: "Student Visa Counseling",
       description: "Expert guidance for student visa applications",
+      slug: "student-visa-counseling"
     },
     {
       icon: "🌍",
       title: "Study Abroad Programs",
       description: "Wide range of programs in top universities",
+      slug: "study-abroad-programs"
     },
     {
       icon: "📘",
       title: "IELTS / PTE / Language Classes",
       description: "Comprehensive test preparation",
+      slug: "ielts-pte-language-classes"
     },
     {
       icon: "📝",
       title: "Documentation & Interview Prep",
       description: "Complete support for applications",
+      slug: "documentation-interview-prep"
     },
   ];
 
@@ -365,7 +369,10 @@ const Home = () => {
                   </p>
 
                   {/* Learn more link */}
-                  <div className="flex items-center text-gray-900 font-medium group-hover:text-gray-700 transition-colors pt-2">
+                  <Link
+                    to={`/services/${service.slug}`}
+                    className="flex items-center text-gray-900 font-medium group-hover:text-gray-700 transition-colors pt-2"
+                  >
                     <span>Learn more</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
@@ -380,7 +387,7 @@ const Home = () => {
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
-                  </div>
+                  </Link>
                 </div>
               </Card>
             ))}

@@ -10,6 +10,7 @@ import About from './pages/About';
 import Classes from './pages/Classes';
 import Courses from './pages/Courses';
 import Contact from './pages/Contact';
+import ServiceDetail from './pages/ServiceDetail';
 import AdminLogin from './admin/AdminLogin';
 import AdminLayout from './admin/AdminLayout';
 import AdminDashboard from './admin/AdminDashboard';
@@ -41,6 +42,7 @@ function App() {
                     <Route path="/classes" element={<Classes onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
                     <Route path="/courses" element={<Courses onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
                     <Route path="/contact" element={<Contact onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
+                    <Route path="/services/:serviceId" element={<ServiceDetail />} />
                   </Routes>
                 </main>
                 <Footer />
