@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import heroStudentImage from "../assets/hero-student.svg";
 import {
   AnimatedButton,
   AnimatedCounter,
@@ -49,28 +50,28 @@ const Home = () => {
       <FloatingElements className="opacity-30" />
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden min-h-[90vh] flex items-center">
+      <section className="relative pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden min-h-[70vh] flex items-center">
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50"></div>
 
         {/* Subtle Background Shapes */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-16 right-10 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 left-10 w-80 h-80 bg-purple-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-blue-100/10 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="relative max-w-7xl mx-auto container-spacing w-full">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
             {/* Left Content */}
-            <div className="space-y-8 z-10">
+            <div className="space-y-6 z-10">
               {/* Main Headline */}
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight">
                 Let's Work Together to Create Wonders with Us
               </h1>
 
               {/* Description */}
-              <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-2xl">
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-2xl">
                 A visionary educational consultancy, crafting captivating
                 opportunities through expert guidance and personalized support.
                 Adept at turning your study abroad dreams into extraordinary
@@ -78,29 +79,29 @@ const Home = () => {
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <AnimatedButton
                   href="/contact"
                   variant="primary"
-                  size="lg"
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg text-base font-medium"
+                  size="md"
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-sm md:text-base font-medium"
                 >
                   Let's Talk.
                 </AnimatedButton>
                 <AnimatedButton
                   href="/courses"
                   variant="secondary"
-                  size="lg"
-                  className="bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-900 px-8 py-4 rounded-lg text-base font-medium"
+                  size="md"
+                  className="bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-900 px-6 py-3 rounded-lg text-sm md:text-base font-medium"
                 >
                   Start Project
                 </AnimatedButton>
               </div>
 
               {/* Statistics */}
-              <div className="flex flex-wrap gap-12 pt-16">
+              <div className="flex flex-wrap gap-8 pt-8 md:pt-10">
                 <div>
-                  <div className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1">
                     <AnimatedCounter value={8} suffix="+" />
                   </div>
                   <p className="text-sm text-gray-600 font-medium">
@@ -108,7 +109,7 @@ const Home = () => {
                   </p>
                 </div>
                 <div>
-                  <div className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1">
                     <AnimatedCounter value={1000} suffix="+" />
                   </div>
                   <p className="text-sm text-gray-600 font-medium">
@@ -116,7 +117,7 @@ const Home = () => {
                   </p>
                 </div>
                 <div>
-                  <div className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1">
                     <AnimatedCounter value={95} suffix="%" />
                   </div>
                   <p className="text-sm text-gray-600 font-medium">
@@ -127,58 +128,49 @@ const Home = () => {
             </div>
 
             {/* Right Content - Image with Floating Tags */}
-            <div className="relative hidden lg:block z-10">
-              {/* Main Image Container */}
-              <div className="relative">
-                {/* Placeholder for person image */}
-                <div className="relative w-full aspect-[4/5] max-w-md mx-auto">
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                    {/* Placeholder image - you can replace this with actual image */}
-                    <div className="w-full h-full flex items-end justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-8">
-                      <div className="relative w-full h-full flex items-center justify-center">
-                        {/* Person silhouette */}
-                        <div className="absolute bottom-0 w-3/4 h-4/5 bg-gradient-to-b from-gray-200 to-gray-300 rounded-t-full"></div>
-                        {/* Head */}
-                        <div className="absolute bottom-[60%] w-32 h-32 bg-gray-300 rounded-full border-4 border-white shadow-lg"></div>
-                        {/* Glasses placeholder */}
-                        <div className="absolute bottom-[60%] w-40 h-8 bg-gray-400/50 rounded-full border-2 border-gray-500"></div>
-                      </div>
+            <div className="relative z-10 flex justify-center lg:justify-end">
+              <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-md">
+                <img
+                  src={heroStudentImage}
+                  alt="Student counseling illustration"
+                  className="w-full h-auto rounded-3xl shadow-2xl border border-white/60"
+                  loading="eager"
+                />
+
+                {/* Floating Tags (desktop only) */}
+                <div className="hidden lg:block">
+                  <div className="absolute -top-6 right-4 bg-white rounded-2xl px-3 py-2 shadow-xl border border-gray-200 flex items-center gap-3 animate-float z-20">
+                    <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
+                      <span className="text-lg">🎓</span>
                     </div>
+                    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                      Student Visa Counseling
+                    </span>
                   </div>
-                </div>
 
-                {/* Floating Tags */}
-                <div className="absolute -top-6 right-4 bg-white rounded-2xl px-4 py-3 shadow-xl border-2 border-green-200 flex items-center gap-3 animate-float z-20">
-                  <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
-                    <span className="text-xl">🎓</span>
+                  <div
+                    className="absolute top-1/2 -left-6 bg-white rounded-2xl px-3 py-2 shadow-xl border border-gray-200 flex items-center gap-3 animate-float z-20"
+                    style={{ animationDelay: "0.5s" }}
+                  >
+                    <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
+                      <span className="text-lg">🌍</span>
+                    </div>
+                    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                      Study Abroad Programs
+                    </span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-900">
-                    Student Visa Counseling
-                  </span>
-                </div>
 
-                <div
-                  className="absolute top-1/2 -left-6 bg-white rounded-2xl px-4 py-3 shadow-xl border-2 border-green-200 flex items-center gap-3 animate-float z-20"
-                  style={{ animationDelay: "0.5s" }}
-                >
-                  <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
-                    <span className="text-xl">🌍</span>
+                  <div
+                    className="absolute -bottom-6 right-8 bg-white rounded-2xl px-3 py-2 shadow-xl border border-gray-200 flex items-center gap-3 animate-float z-20"
+                    style={{ animationDelay: "1s" }}
+                  >
+                    <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
+                      <span className="text-lg">📚</span>
+                    </div>
+                    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                      Test Preparation
+                    </span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-900">
-                    Study Abroad Programs
-                  </span>
-                </div>
-
-                <div
-                  className="absolute -bottom-6 right-8 bg-white rounded-2xl px-4 py-3 shadow-xl border-2 border-green-200 flex items-center gap-3 animate-float z-20"
-                  style={{ animationDelay: "1s" }}
-                >
-                  <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
-                    <span className="text-xl">📚</span>
-                  </div>
-                  <span className="text-sm font-semibold text-gray-900">
-                    Test Preparation
-                  </span>
                 </div>
               </div>
             </div>
@@ -189,8 +181,8 @@ const Home = () => {
       {/* Services Section */}
       <section className="section-spacing bg-white relative">
         <div className="relative max-w-7xl mx-auto container-spacing">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
               <span className="mr-2">💎</span>
               Our Expertise
             </div>
@@ -265,20 +257,20 @@ const Home = () => {
       </section>
 
       {/* Popular Classes Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-12">
+      <section className="section-spacing bg-gray-50">
+        <div className="max-w-7xl mx-auto container-spacing">
+          <div className="flex justify-between items-center mb-10">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-2">
+              <h2 className="text-display-md text-gray-900 mb-2">
                 Popular Classes
               </h2>
-              <p className="text-lg text-gray-600">
+              <p className="text-body-md text-gray-600">
                 Join our most sought-after preparation classes
               </p>
             </div>
             <Link
               to="/classes"
-              className="hidden md:inline-flex items-center px-6 py-3 bg-white text-gray-900 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-all duration-200"
+              className="hidden md:inline-flex items-center px-5 py-2.5 bg-white text-gray-900 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-all duration-200 text-sm"
             >
               View All Classes
             </Link>
@@ -364,7 +356,7 @@ const Home = () => {
           <div className="mt-8 md:hidden">
             <Link
               to="/classes"
-              className="block w-full text-center px-6 py-3 bg-white text-gray-900 font-medium rounded-lg border border-gray-300"
+              className="block w-full text-center px-5 py-2.5 bg-white text-gray-900 font-medium rounded-lg border border-gray-300 text-sm"
             >
               View All Classes
             </Link>
@@ -375,9 +367,9 @@ const Home = () => {
       {/* Why Choose Us Section */}
       <section className="section-spacing bg-white relative">
         <div className="relative max-w-7xl mx-auto container-spacing">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div>
-              <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
+              <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
                 <span className="mr-2">⭐</span>
                 Why Choose Us
               </div>
@@ -480,13 +472,13 @@ const Home = () => {
       </section>
 
       {/* Partner Universities Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+      <section className="section-spacing bg-gray-50">
+        <div className="max-w-7xl mx-auto container-spacing">
+          <div className="text-center mb-10">
+            <h2 className="text-display-md text-gray-900 mb-3">
               Partner Universities
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-body-md text-gray-600">
               We partner with top universities worldwide
             </p>
           </div>
@@ -562,7 +554,7 @@ const Home = () => {
           </div>
 
           {/* Trust indicators */}
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 text-gray-300">
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 text-gray-300">
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-xl">⚡</span>

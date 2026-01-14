@@ -43,15 +43,15 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen">
       {/* About Header */}
-      <section className="section-spacing bg-white">
+      <section className="page-top bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
               👥 About Pascal Institute
             </div>
-            <h1 className="text-display-lg text-gray-900 mb-6">
+            <h1 className="text-display-lg text-gray-900 mb-4">
               About Us
             </h1>
             <p className="text-body-lg text-gray-600 max-w-3xl mx-auto">
@@ -64,7 +64,7 @@ const About = () => {
       {/* Who We Are */}
       <section className="section-spacing bg-gray-50">
         <div className="relative max-w-7xl mx-auto container-spacing">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div>
               <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white text-gray-700 text-sm font-medium mb-6 border border-gray-200">
                 🏢 Our Story
@@ -168,8 +168,8 @@ const About = () => {
       {/* What We Do */}
       <section className="section-spacing bg-gray-50">
         <div className="relative max-w-7xl mx-auto container-spacing">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white text-gray-700 text-sm font-medium mb-8 border border-gray-200">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white text-gray-700 text-sm font-medium mb-6 border border-gray-200">
               💼 Our Services
             </div>
             <h2 className="text-display-md text-gray-900 mb-6">

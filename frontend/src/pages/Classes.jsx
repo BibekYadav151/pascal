@@ -54,13 +54,13 @@ const Classes = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Page Header */}
-      <section className="section-spacing bg-white relative">
+      <section className="page-top bg-white relative">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
               📚 Available Classes
             </div>
-            <h1 className="text-display-lg text-gray-900 mb-6">
+            <h1 className="text-display-lg text-gray-900 mb-4">
               Our Classes
             </h1>
             <p className="text-body-lg text-gray-600 max-w-2xl mx-auto">
@@ -142,8 +142,8 @@ const Classes = () => {
       {/* Institute Classes Section */}
       <section className="section-spacing bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
               🎓 Institute Programs
             </div>
             <h2 className="text-display-md text-gray-900 mb-6">
