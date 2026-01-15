@@ -7,6 +7,8 @@ const AdminBlogs = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingBlog, setEditingBlog] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -21,6 +23,96 @@ const AdminBlogs = () => {
     featured: false,
     status: 'Draft'
   });
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
+
+  // Handle file selection
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB');
+        return;
+      }
+
+      setSelectedFile(file);
+      
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreviewUrl(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Upload image to server
+  const uploadImage = async () => {
+    if (!selectedFile) return null;
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('coverImage', selectedFile);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/upload/blog-cover', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setFormData(prev => ({
+          ...prev,
+          imageUrl: data.data.url
+        }));
+        setSelectedFile(null);
+        return data.data.url;
+      } else {
+        alert(data.message || 'Error uploading image');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Error uploading image. Please try again.');
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Remove selected file
+  const removeFile = () => {
+    setSelectedFile(null);
+    setPreviewUrl('');
+  };
+
+  // Copy image URL to clipboard
+  const copyImageUrl = async (url) => {
+    try {
+      await navigator.clipboard.writeText(url);
+      alert('Image URL copied to clipboard!');
+    } catch (error) {
+      console.error('Failed to copy URL:', error);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      alert('Image URL copied to clipboard!');
+    }
+  };
 
   useEffect(() => {
     fetchBlogs();
@@ -55,6 +147,8 @@ const AdminBlogs = () => {
       featured: false,
       status: 'Draft'
     });
+    setSelectedFile(null);
+    setPreviewUrl('');
     setShowModal(true);
   };
 
@@ -73,15 +167,30 @@ const AdminBlogs = () => {
       featured: blog.featured,
       status: blog.status
     });
+    setSelectedFile(null);
+    setPreviewUrl(blog.imageUrl);
     setShowModal(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Upload image first if a file is selected
+    let imageUrl = formData.imageUrl;
+    if (selectedFile) {
+      const uploadedUrl = await uploadImage();
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl;
+      } else {
+        // If upload fails, don't proceed with submission
+        return;
+      }
+    }
+
     const blogData = {
       ...formData,
-      tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '')
+      tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
+      imageUrl
     };
 
     try {
@@ -113,7 +222,7 @@ const AdminBlogs = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, imageUrl) => {
     if (window.confirm('Are you sure you want to delete this blog?')) {
       try {
         const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
@@ -123,6 +232,18 @@ const AdminBlogs = () => {
         const data = await response.json();
 
         if (data.success) {
+          // If the blog has an uploaded image, try to delete it from server
+          if (imageUrl && imageUrl.includes('/uploads/')) {
+            try {
+              const filename = imageUrl.split('/uploads/')[1];
+              await fetch(`http://localhost:5000/api/upload/file/${filename}`, {
+                method: 'DELETE',
+              });
+            } catch (error) {
+              console.warn('Could not delete uploaded file:', error);
+            }
+          }
+          
           await fetchBlogs();
           setDeleteConfirm(null);
         } else {
@@ -151,6 +272,8 @@ const AdminBlogs = () => {
       featured: false,
       status: 'Draft'
     });
+    setSelectedFile(null);
+    setPreviewUrl('');
   };
 
   const generateSlug = (title) => {
@@ -158,6 +281,26 @@ const AdminBlogs = () => {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
+  };
+
+  // Calculate read time based on content length
+  const calculateReadTime = (content) => {
+    const wordsPerMinute = 200; // Average reading speed
+    const wordCount = content.split(/\s+/).length;
+    const readTime = Math.ceil(wordCount / wordsPerMinute);
+    return `${readTime} min`;
+  };
+
+  // Auto-calculate read time when content changes
+  const handleContentChange = (e) => {
+    const content = e.target.value;
+    const readTime = calculateReadTime(content);
+    
+    setFormData({
+      ...formData,
+      content,
+      readTime: readTime
+    });
   };
 
   const handleTitleChange = (e) => {
@@ -290,7 +433,7 @@ const AdminBlogs = () => {
                             </svg>
                           </button>
                           <button
-                            onClick={() => handleDelete(blog.id)}
+                            onClick={() => handleDelete(blog.id, blog.imageUrl)}
                             className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                             title="Delete"
                           >
@@ -391,7 +534,7 @@ const AdminBlogs = () => {
                 </label>
                 <textarea
                   value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  onChange={handleContentChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-64 resize-y font-mono text-sm"
                   placeholder="Write your blog content here. You can use markdown formatting."
                   required
@@ -437,25 +580,111 @@ const AdminBlogs = () => {
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
-                {/* Image URL */}
+                {/* Cover Image Upload */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    Cover Image URL
+                    Cover Image
                   </label>
-                  <input
-                    type="url"
-                    value={formData.imageUrl}
-                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="https://example.com/image.jpg"
-                  />
-                  {formData.imageUrl && (
-                    <img
-                      src={formData.imageUrl}
-                      alt="Preview"
-                      className="w-full h-32 object-cover rounded-lg mt-2"
-                    />
+                  
+                  {/* File Upload Area */}
+                  <div className="space-y-4">
+                    {!selectedFile && !previewUrl ? (
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileSelect}
+                          className="hidden"
+                          id="file-upload"
+                        />
+                        <label
+                          htmlFor="file-upload"
+                          className="cursor-pointer flex flex-col items-center"
+                        >
+                          <svg className="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                          <span className="text-sm font-medium text-gray-900">Click to upload</span>
+                          <span className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</span>
+                        </label>
+                      </div>
+                    ) : (
+                      <div className="relative">
+                        <img
+                          src={previewUrl || formData.imageUrl}
+                          alt="Preview"
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={removeFile}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                        {selectedFile && (
+                          <div className="mt-2 flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <span className="font-medium">{selectedFile.name}</span>
+                              <span>({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)</span>
+                            </div>
+                            {formData.imageUrl && formData.imageUrl.includes('/uploads/') && (
+                              <button
+                                type="button"
+                                onClick={() => copyImageUrl(formData.imageUrl)}
+                                className="text-blue-600 hover:text-blue-800 text-xs font-medium"
+                                title="Copy image URL"
+                              >
+                                Copy URL
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Upload Button */}
+                  {selectedFile && (
+                    <div className="mt-3">
+                      <button
+                        type="button"
+                        onClick={uploadImage}
+                        disabled={uploading}
+                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                      >
+                        {uploading ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            Uploading...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            Upload Image
+                          </>
+                        )}
+                      </button>
+                    </div>
                   )}
+
+                  {/* Manual URL Input */}
+                  <div className="mt-4">
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Or enter image URL manually
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.imageUrl}
+                      onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="https://example.com/image.jpg"
+                    />
+                  </div>
                 </div>
 
                 {/* Read Time */}
