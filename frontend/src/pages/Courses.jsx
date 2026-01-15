@@ -238,7 +238,7 @@ const Courses = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Card Header */}
-              <div className="bg-gradient-to-r from-blue-500 to-blue-700 p-4 text-white">
+              <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-4 text-white">
                 <div className="text-xs uppercase tracking-wide opacity-80 mb-1">
                   {program.studyLevel}
                 </div>
@@ -363,10 +363,9 @@ const Courses = () => {
                 {/* Apply Button */}
                 <AnimatedButton
                   onClick={() => handleApplyInquiry(program)}
-                  variant="primary"
+                  variant="outline"
                   size="md"
-                  className="w-full"
-                  icon="📝"
+                  className="w-full border-orange-500 text-orange-500 hover:bg-orange-50"
                 >
                   Apply for This Program
                 </AnimatedButton>
