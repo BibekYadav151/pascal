@@ -139,7 +139,7 @@ const Navbar = ({ onBookAppointment }) => {
 
       {mobileMenuOpen && (
         <div className="fixed inset-0 top-20 z-40 px-4 pb-6 animate-slide-down md:hidden">
-          <div className="rounded-2xl border border-gray-200/70 bg-white/90 backdrop-blur-md shadow-xl">
+          <div className="rounded-2xl border border-gray-200/70 bg-white backdrop-blur-md shadow-xl">
             <nav className="flex flex-col gap-2 p-4">
               {navLinks.map((link) => (
                 <Link

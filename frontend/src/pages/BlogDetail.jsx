@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -21,13 +23,15 @@ const BlogDetail = () => {
 
   const fetchBlog = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/blogs/slug/${slug}`);
+      const response = await fetch(
+        `http://localhost:5000/api/blogs/slug/${slug}`
+      );
       const data = await response.json();
       if (data.success) {
         setBlog(data.data);
       }
     } catch (error) {
-      console.error('Error fetching blog:', error);
+      console.error("Error fetching blog:", error);
     } finally {
       setLoading(false);
     }
@@ -35,69 +39,65 @@ const BlogDetail = () => {
 
   const fetchRelatedBlogs = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/blogs/related/${blog.id}/${blog.category}`);
+      const response = await fetch(
+        `http://localhost:5000/api/blogs/related/${blog.id}/${blog.category}`
+      );
       const data = await response.json();
       if (data.success) {
         setRelatedBlogs(data.data);
       }
     } catch (error) {
-      console.error('Error fetching related blogs:', error);
+      console.error("Error fetching related blogs:", error);
     }
   };
 
   const generateTableOfContents = () => {
     if (!blog) return;
 
-    // Parse markdown-style headers from content
-    const headerRegex = /^(#{2,3})\s+(.+)$/gm;
-    const headers = [];
-    let match;
-
-    while ((match = headerRegex.exec(blog.content)) !== null) {
-      const level = match[1].length;
-      const text = match[2].trim();
-      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-
-      headers.push({
-        level,
-        text,
-        id
+    // Check if blog has a custom table of contents
+    if (blog.tableOfContents && blog.tableOfContents.trim()) {
+      // Parse the custom table of contents
+      const lines = blog.tableOfContents.trim().split("\n");
+      const headers = lines.map((line, index) => {
+        const text = line.trim().replace(/^\d+\.\s*/, ""); // Remove numbering like "1. "
+        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        return {
+          level: 2, // Default level for custom TOC
+          text,
+          id,
+        };
       });
-    }
+      setTableOfContents(headers);
+    } else {
+      // Parse markdown-style headers from content
+      const headerRegex = /^(#{2,3})\s+(.+)$/gm;
+      const headers = [];
+      let match;
 
-    setTableOfContents(headers);
+      while ((match = headerRegex.exec(blog.content)) !== null) {
+        const level = match[1].length;
+        const text = match[2].trim();
+        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+        headers.push({
+          level,
+          text,
+          id,
+        });
+      }
+
+      setTableOfContents(headers);
+    }
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return '';
+    if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
-  };
-
-  const renderContent = (content) => {
-    if (!content) return '';
-
-    // Simple markdown parser
-    let html = content
-      // Headers
-      .replace(/^### (.*$)/gim, '<h3 className="text-title-lg text-gray-900 mt-8 mb-4 font-semibold">$1</h3>')
-      .replace(/^## (.*$)/gim, '<h2 className="text-title-md text-gray-900 mt-10 mb-6 font-bold">$1</h2>')
-      // Bold
-      .replace(/\*\*(.*?)\*\*/g, '<strong className="font-semibold text-gray-900">$1</strong>')
-      // Italic
-      .replace(/\*(.*?)\*/g, '<em className="italic">$1</em>')
-      // Lists
-      .replace(/^\* (.*$)/gim, '<li className="ml-6 list-disc text-body text-gray-700 mb-2">$1</li>')
-      .replace(/(<li.*<\/li>)/s, '<ul className="mb-6">$1</ul>')
-      // Line breaks
-      .replace(/\n\n/g, '</p><p className="text-body text-gray-700 mb-4">')
-      .replace(/\n/g, '<br />');
-
-    return <div className="prose prose-lg max-w-none">{html}</div>;
   };
 
   if (loading) {
@@ -116,18 +116,42 @@ const BlogDetail = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block p-4 bg-gray-100 rounded-full mb-4">
-            <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <svg
+              className="w-16 h-16 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
             </svg>
           </div>
-          <h2 className="text-title-lg text-gray-900 mb-2">Article not found</h2>
-          <p className="text-body text-gray-600 mb-6">The article you're looking for doesn't exist or has been removed.</p>
+          <h2 className="text-title-lg text-gray-900 mb-2">
+            Article not found
+          </h2>
+          <p className="text-body text-gray-600 mb-6">
+            The article you're looking for doesn't exist or has been removed.
+          </p>
           <Link
             to="/blogs"
             className="inline-flex items-center px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
           >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back to Articles
           </Link>
@@ -139,14 +163,27 @@ const BlogDetail = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Header */}
-      <section className="bg-gray-900">
-        <div className="max-w-7xl mx-auto container-spacing py-12">
+      <section className="bg-gray-900 pt-24 pb-12">
+        <div className="max-w-7xl mx-auto container-spacing">
           <div className="flex items-center gap-2 mb-4">
-            <Link to="/blogs" className="text-gray-400 hover:text-white transition-colors">
+            <Link
+              to="/blogs"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
               Articles
             </Link>
-            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="w-4 h-4 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
             <span className="text-gray-400">{blog.category}</span>
           </div>
@@ -162,8 +199,18 @@ const BlogDetail = () => {
                 </span>
               )}
               <span className="text-gray-400 text-sm flex items-center gap-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
                 {blog.readTime}
               </span>
@@ -186,19 +233,41 @@ const BlogDetail = () => {
                 </div>
                 <div>
                   <p className="text-white font-semibold">{blog.author}</p>
-                  <p className="text-gray-400 text-sm">Published on {formatDate(blog.createdAt)}</p>
+                  <p className="text-gray-400 text-sm">
+                    Published on {formatDate(blog.createdAt)}
+                  </p>
                 </div>
               </div>
 
               <div className="ml-auto flex items-center gap-3">
                 <button className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                    />
                   </svg>
                 </button>
                 <button className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                    />
                   </svg>
                 </button>
               </div>
@@ -227,9 +296,15 @@ const BlogDetail = () => {
       {/* Content Section */}
       <section className="section-spacing">
         <div className="max-w-7xl mx-auto container-spacing">
-          <div className="grid lg:grid-cols-4 gap-12">
+          <div
+            className={`grid ${
+              blog.tableOfContents && blog.tableOfContents.trim()
+                ? "lg:grid-cols-4"
+                : "lg:grid-cols-3"
+            } gap-12`}
+          >
             {/* Table of Contents - Sticky Sidebar */}
-            {tableOfContents.length > 0 && (
+            {blog.tableOfContents && blog.tableOfContents.trim() && (
               <aside className="hidden lg:block lg:col-span-1">
                 <div className="sticky top-8">
                   <div className="bg-white rounded-xl shadow-lg p-6">
@@ -243,8 +318,8 @@ const BlogDetail = () => {
                           href={`#${header.id}`}
                           className={`block text-sm transition-colors ${
                             header.level === 3
-                              ? 'text-gray-600 hover:text-gray-900 pl-4'
-                              : 'text-gray-900 font-medium hover:text-blue-600'
+                              ? "text-gray-600 hover:text-gray-900 pl-4"
+                              : "text-gray-900 font-medium hover:text-blue-600"
                           }`}
                         >
                           {header.text}
@@ -275,7 +350,13 @@ const BlogDetail = () => {
             )}
 
             {/* Main Content */}
-            <article className="lg:col-span-2">
+            <article
+              className={
+                blog.tableOfContents && blog.tableOfContents.trim()
+                  ? "lg:col-span-2"
+                  : "lg:col-span-2"
+              }
+            >
               <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
                 {/* Tags */}
                 {blog.tags && blog.tags.length > 0 && (
@@ -292,8 +373,72 @@ const BlogDetail = () => {
                 )}
 
                 {/* Content */}
-                <div className="blog-content text-gray-700 leading-relaxed">
-                  {renderContent(blog.content)}
+                <div className="blog-content prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-strong:text-gray-900 prose-strong:font-semibold prose-em:text-gray-700 prose-ul:text-gray-700 prose-ol:text-gray-700 prose-li:text-gray-700">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      h1: ({ children }) => (
+                        <h1 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+                          {children}
+                        </h1>
+                      ),
+                      h2: ({ children }) => (
+                        <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-6">
+                          {children}
+                        </h2>
+                      ),
+                      h3: ({ children }) => (
+                        <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
+                          {children}
+                        </h3>
+                      ),
+                      h4: ({ children }) => (
+                        <h4 className="text-lg font-semibold text-gray-900 mt-6 mb-3">
+                          {children}
+                        </h4>
+                      ),
+                      p: ({ children }) => (
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                          {children}
+                        </p>
+                      ),
+                      ul: ({ children }) => (
+                        <ul className="list-disc list-inside text-gray-700 mb-6 space-y-2">
+                          {children}
+                        </ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="list-decimal list-inside text-gray-700 mb-6 space-y-2">
+                          {children}
+                        </ol>
+                      ),
+                      li: ({ children }) => (
+                        <li className="text-gray-700">{children}</li>
+                      ),
+                      blockquote: ({ children }) => (
+                        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-700 my-6">
+                          {children}
+                        </blockquote>
+                      ),
+                      code: ({ inline, children }) =>
+                        inline ? (
+                          <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono">
+                            {children}
+                          </code>
+                        ) : (
+                          <code className="block bg-gray-100 p-4 rounded-lg text-sm font-mono overflow-x-auto">
+                            {children}
+                          </code>
+                        ),
+                      pre: ({ children }) => (
+                        <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-6">
+                          {children}
+                        </pre>
+                      ),
+                    }}
+                  >
+                    {blog.content}
+                  </ReactMarkdown>
                 </div>
 
                 {/* Article Footer */}
@@ -306,8 +451,10 @@ const BlogDetail = () => {
                         </span>
                       </div>
                       <div>
-                        <p className="text-gray-900 font-semibold text-lg">Written by {blog.author}</p>
-                        <p className="text-gray-500 text-sm">Expert in study abroad consultancy</p>
+                        <p className="text-gray-900 font-semibold text-lg">
+                          Written by {blog.author}
+                        </p>
+                        
                       </div>
                     </div>
                   </div>
@@ -316,16 +463,31 @@ const BlogDetail = () => {
 
               {/* Navigation */}
               <div className="grid md:grid-cols-2 gap-6 mt-8">
-                <Link to="/blogs" className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all group">
+                <Link
+                  to="/blogs"
+                  className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all group"
+                >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                      <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      <svg
+                        className="w-5 h-5 text-gray-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 19l-7-7 7-7"
+                        />
                       </svg>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">Back to</p>
-                      <p className="font-semibold text-gray-900">All Articles</p>
+                      <p className="font-semibold text-gray-900">
+                        All Articles
+                      </p>
                     </div>
                   </div>
                 </Link>
@@ -333,7 +495,13 @@ const BlogDetail = () => {
             </article>
 
             {/* Related Articles Sidebar */}
-            <aside className="lg:col-span-1">
+            <aside
+              className={
+                blog.tableOfContents && blog.tableOfContents.trim()
+                  ? "lg:col-span-1"
+                  : "lg:col-span-1"
+              }
+            >
               <div className="sticky top-8">
                 {relatedBlogs.length > 0 && (
                   <div className="bg-white rounded-xl shadow-lg p-6">
@@ -381,10 +549,11 @@ const BlogDetail = () => {
                 {/* CTA Card */}
                 <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 mt-6">
                   <h3 className="text-title-md text-white mb-3 font-semibold">
-                        Need Help?
+                    Need Help?
                   </h3>
                   <p className="text-blue-100 text-sm mb-4">
-                    Our experts are here to help you with your study abroad journey.
+                    Our experts are here to help you with your study abroad
+                    journey.
                   </p>
                   <Link
                     to="/contact"

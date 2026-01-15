@@ -66,9 +66,7 @@ const Blogs = () => {
       <section className="page-top bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-6 border border-blue-200">
-              📝 Latest Insights
-            </div>
+            
             <h1 className="text-display-lg text-gray-900 mb-4">
               Blog & Resources
             </h1>
@@ -323,7 +321,7 @@ const Blogs = () => {
             <p className="text-body-lg text-gray-300 mb-8 max-w-2xl mx-auto">
               Subscribe to our newsletter and never miss an article about studying abroad
             </p>
-            <AnimatedButton className="bg-white text-gray-900 hover:bg-gray-100">
+            <AnimatedButton className="bg-orange-600 text-gray-900 hover:bg-orange-700">
               Subscribe Now
             </AnimatedButton>
           </div>

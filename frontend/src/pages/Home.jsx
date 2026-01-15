@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useApp } from "../context/AppContext";
-import heroStudentImage from "../assets/hero-student.svg";
+import heroStudentImage from "../assets/hero-student.png";
 import {
   AnimatedButton,
   AnimatedCounter,
@@ -10,8 +10,9 @@ import {
 } from "../components/ui";
 
 const Home = () => {
-  const { classes, addClassInquiry } = useApp();
+  const { classes, addClassInquiry, universities } = useApp();
   const scrollContainerRef = useRef(null);
+  const carouselRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -184,14 +185,37 @@ const Home = () => {
     },
   ];
 
-  const partnerUniversities = [
-    { name: "University of Toronto", country: "Canada" },
-    { name: "University of Manchester", country: "UK" },
-    { name: "University of Tasmania", country: "Australia" },
-    { name: "University of Auckland", country: "New Zealand" },
-    { name: "TUFS Tokyo", country: "Japan" },
-    { name: "UOW Australia", country: "Australia" },
-  ];
+  // Filter only partner universities
+  const partnerUniversities = universities.filter(
+    (uni) => uni.isPartner && uni.status === "Active"
+  );
+
+  // Auto-sliding carousel effect
+  useEffect(() => {
+    if (partnerUniversities.length <= 6) return; // Don't auto-slide if all fit on screen
+
+    const interval = setInterval(() => {
+      if (carouselRef.current) {
+        const container = carouselRef.current;
+        const cardWidth = 200; // Approximate card width
+        const gap = 24; // Gap between cards
+        const totalCardWidth = cardWidth + gap;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+        const currentScroll = container.scrollLeft;
+        const nextScroll = currentScroll + totalCardWidth;
+
+        if (nextScroll >= maxScroll) {
+          // Reset to beginning when reaching the end
+          container.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          // Scroll to next card
+          container.scrollBy({ left: totalCardWidth, behavior: "smooth" });
+        }
+      }
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [partnerUniversities.length]);
 
   return (
     <div className="min-h-screen relative">
@@ -233,7 +257,7 @@ const Home = () => {
                   href="/contact"
                   variant="primary"
                   size="md"
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-sm md:text-base font-medium"
+                  className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg text-sm md:text-base font-medium"
                 >
                   Let's Talk.
                 </AnimatedButton>
@@ -241,7 +265,7 @@ const Home = () => {
                   href="/courses"
                   variant="secondary"
                   size="md"
-                  className="bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-900 px-6 py-3 rounded-lg text-sm md:text-base font-medium"
+                  className="bg-white hover:bg-gray-50 text-gray-900 hover:text-orange-600   px-6 py-3 rounded-lg text-sm md:text-base font-medium"
                 >
                   Select Courses
                 </AnimatedButton>
@@ -278,7 +302,7 @@ const Home = () => {
 
             {/* Right Content - Image with Floating Tags */}
             <div className="relative z-10 flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-md">
+              <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
                 <img
                   src={heroStudentImage}
                   alt="Student counseling illustration"
@@ -288,8 +312,8 @@ const Home = () => {
 
                 {/* Floating Tags (desktop only) */}
                 <div className="hidden lg:block">
-                  <div className="absolute -top-6 right-4 bg-white rounded-2xl px-3 py-2 shadow-xl border border-gray-200 flex items-center gap-3 animate-float z-20">
-                    <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
+                  <div className="absolute -top-6 right-4 bg-white/40 backdrop-blur-md  rounded-2xl px-3 py-2 shadow-xl  flex items-center gap-3 animate-float z-20">
+                    <div className="w-9 h-9  rounded-xl flex items-center justify-center  ">
                       <span className="text-lg">🎓</span>
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
@@ -298,10 +322,10 @@ const Home = () => {
                   </div>
 
                   <div
-                    className="absolute top-1/2 -left-6 bg-white rounded-2xl px-3 py-2 shadow-xl border border-gray-200 flex items-center gap-3 animate-float z-20"
+                    className="absolute top-1/2 -left-6 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl  flex items-center gap-3 animate-float z-20"
                     style={{ animationDelay: "0.5s" }}
                   >
-                    <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
+                    <div className="w-9 h-9  rounded-xl flex items-center justify-center ">
                       <span className="text-lg">🌍</span>
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
@@ -310,10 +334,10 @@ const Home = () => {
                   </div>
 
                   <div
-                    className="absolute -bottom-6 right-8 bg-white rounded-2xl px-3 py-2 shadow-xl border border-gray-200 flex items-center gap-3 animate-float z-20"
+                    className="absolute -bottom-6 right-8 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center gap-3 animate-float z-20"
                     style={{ animationDelay: "1s" }}
                   >
-                    <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center border border-green-200">
+                    <div className="w-9 h-9  rounded-xl flex items-center justify-center ">
                       <span className="text-lg">📚</span>
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
@@ -701,31 +725,59 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div
+            ref={carouselRef}
+            className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
             {partnerUniversities.map((uni, index) => (
-              <Card
-                key={index}
-                className="p-6 text-center group"
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                {/* University icon */}
-                <div className="w-12 h-12 bg-gray-100 rounded-lg mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl">🎓</span>
-                </div>
+              <div key={index} className="flex-shrink-0 w-48">
+                <Card
+                  className="p-6 text-center group h-full"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  {/* University icon */}
+                  <div className="w-12 h-12 bg-gray-100 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                    <span className="text-2xl">🎓</span>
+                  </div>
 
-                {/* University name */}
-                <h3 className="text-body-sm font-medium text-gray-900 mb-2 leading-tight">
-                  {uni.name}
-                </h3>
+                  {/* University name */}
+                  <h3 className="text-body-sm font-medium text-gray-900 mb-2 leading-tight">
+                    {uni.website ? (
+                      <a
+                        href={uni.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-orange-600 transition-colors cursor-pointer"
+                      >
+                        {uni.name}
+                      </a>
+                    ) : (
+                      uni.name
+                    )}
+                  </h3>
 
-                {/* Country */}
-                <div className="inline-flex items-center px-2 py-1 rounded-md bg-gray-100 text-gray-600 text-xs font-medium">
-                  <span className="mr-1">📍</span>
-                  {uni.country}
-                </div>
-              </Card>
+                  {/* Country */}
+                  <div className="inline-flex items-center px-2 py-1 rounded-md bg-gray-100 text-gray-600 text-xs font-medium">
+                    <span className="mr-1">📍</span>
+                    {uni.country}
+                  </div>
+                </Card>
+              </div>
             ))}
           </div>
+
+          {partnerUniversities.length === 0 && (
+            <div className="text-center py-16">
+              <div className="text-6xl mb-4">🎓</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Partner Universities
+              </h3>
+              <p className="text-gray-600">
+                Our partner universities will be displayed here soon.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -733,10 +785,6 @@ const Home = () => {
       <section className="section-spacing bg-gray-900 relative">
         <div className="relative max-w-5xl mx-auto container-spacing text-center">
           {/* Badge */}
-          <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-800 text-white text-sm font-medium mb-8 border border-gray-700">
-            <span className="mr-2">🚀</span>
-            Take the Next Step
-          </div>
 
           <h2 className="text-display-lg text-white mb-8">
             Ready to Start Your{" "}

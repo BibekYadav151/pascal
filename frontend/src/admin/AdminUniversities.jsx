@@ -14,7 +14,8 @@ const AdminUniversities = () => {
     location: '',
     website: '',
     logo: '',
-    status: 'Active'
+    status: 'Active',
+    isPartner: false
   });
 
   const handleAddUniversity = () => {
@@ -25,7 +26,8 @@ const AdminUniversities = () => {
       location: '',
       website: '',
       logo: '',
-      status: 'Active'
+      status: 'Active',
+      isPartner: false
     });
     setShowModal(true);
   };
@@ -38,7 +40,8 @@ const AdminUniversities = () => {
       location: uni.location,
       website: uni.website,
       logo: uni.logo,
-      status: uni.status
+      status: uni.status,
+      isPartner: uni.isPartner || false
     });
     setShowModal(true);
   };
@@ -58,6 +61,15 @@ const AdminUniversities = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setEditingUniversity(null);
+    setFormData({
+      name: '',
+      country: '',
+      location: '',
+      website: '',
+      logo: '',
+      status: 'Active',
+      isPartner: false
+    });
   };
 
   const handleDelete = (id) => {
@@ -219,6 +231,21 @@ const AdminUniversities = () => {
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
+                </div>
+
+                <div>
+                  <label className="flex items-center text-sm font-semibold text-gray-700">
+                    <input
+                      type="checkbox"
+                      checked={formData.isPartner}
+                      onChange={(e) => setFormData({ ...formData, isPartner: e.target.checked })}
+                      className="mr-2 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    Add to Partner Universities
+                  </label>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Check this to display this university in the home page partner universities section
+                  </p>
                 </div>
 
                 <div className="flex gap-3 pt-4">

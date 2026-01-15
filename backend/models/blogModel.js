@@ -48,6 +48,17 @@ CMU offers one of the most comprehensive Computer Science programs with various 
 - Strong alumni network
 
 And seven more top universities...`,
+        tableOfContents: `1. Introduction
+2. Massachusetts Institute of Technology (MIT)
+3. Stanford University
+4. Carnegie Mellon University
+5. University of California, Berkeley
+6. Harvard University
+7. Princeton University
+8. California Institute of Technology
+9. Yale University
+10. University of Cambridge
+11. Conclusion`,
         author: 'Dr. Sarah Mitchell',
         category: 'Education',
         tags: ['Universities', 'Computer Science', 'Admissions'],

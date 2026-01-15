@@ -6,25 +6,25 @@ const appointmentTypes = [
     id: 'counseling',
     name: 'Study Abroad Counseling',
     description: 'Get guidance on studying abroad options',
-    icon: '🎓',
+    
   },
   {
     id: 'course-selection',
     name: 'Course Selection',
     description: 'Find the right course for your goals',
-    icon: '📚',
+    
   },
   {
     id: 'visa-guidance',
     name: 'Visa Guidance',
     description: 'Professional visa application assistance',
-    icon: '🛂',
+    
   },
   {
     id: 'test-prep',
     name: 'Test Preparation',
     description: 'Prepare for IELTS, TOEFL, and more',
-    icon: '📝',
+    
   },
 ];
 
@@ -121,7 +121,7 @@ const BookAppointmentModal = ({ isOpen, onClose }) => {
                 <div
                   key={type.id}
                   onClick={() => setSelectedType(type.id)}
-                  className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                  className={`p-6 rounded-xl hover:bg-orange-50 dark:hover:bg-orange-900/20 border-2 cursor-pointer transition-all duration-300 ${
                     selectedType === type.id
                       ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
                       : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'

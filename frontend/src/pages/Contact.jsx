@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Card, AnimatedButton } from '../components/ui';
+import { FiMapPin } from "react-icons/fi";
+import { FaPhoneAlt } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import { FaFacebook } from "react-icons/fa";
+import { FaSquareInstagram } from "react-icons/fa6";
 
 const Contact = () => {
   const { addContactMessage } = useApp();
@@ -37,27 +42,27 @@ const Contact = () => {
 
   const contactInfo = [
     {
-      icon: '📍',
-      title: 'Address',
-      details: 'Kathmandu, Nepal'
+      icon: <FiMapPin className="w-4 h-4" />,
+      title: "Address",
+      details: "Kathmandu, Nepal",
     },
     {
-      icon: '📞',
-      title: 'Phone',
-      details: '+977-1-44XXXXXX'
+      icon: <FaPhoneAlt className="w-4 h-4" />,
+      title: "Phone",
+      details: "+977-1-44XXXXXX",
     },
     {
-      icon: '📧',
-      title: 'Email',
-      details: 'info@pascalinstitute.edu.np'
-    }
+      icon: <MdEmail className="w-4 h-4" />,
+      title: "Email",
+      details: "info@pascalinstitute.edu.np",
+    },
   ];
 
   const socialLinks = [
-    { name: 'Facebook', icon: '📘', url: '#' },
-    { name: 'Twitter', icon: '🐦', url: '#' },
-    { name: 'Instagram', icon: '📷', url: '#' },
-    { name: 'LinkedIn', icon: '💼', url: '#' }
+    { name: "Facebook", icon: <FaFacebook />, url: "#" },
+    // { name: "Twitter", icon: "🐦", url: "#" },
+    { name: "Instagram", icon: <FaSquareInstagram />, url: "#" },
+    // { name: "LinkedIn", icon: "💼", url: "#" },
   ];
 
   return (
@@ -66,9 +71,7 @@ const Contact = () => {
       <section className="page-top bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
-              📞 Contact Us
-            </div>
+           
             <h1 className="text-display-lg text-gray-900 mb-4">
               Contact Us
             </h1>
@@ -227,9 +230,7 @@ const Contact = () => {
       <section className="section-spacing bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
-              📍 Our Location
-            </div>
+           
             <h2 className="text-display-md text-gray-900 mb-4">
               Find Us
             </h2>

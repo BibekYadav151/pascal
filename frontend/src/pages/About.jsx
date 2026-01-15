@@ -48,9 +48,7 @@ const About = () => {
       <section className="page-top bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
-              👥 About Pascal Institute
-            </div>
+            
             <h1 className="text-display-lg text-gray-900 mb-4">
               About Us
             </h1>

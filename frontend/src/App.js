@@ -25,6 +25,7 @@ import AdminUniversities from './admin/AdminUniversities';
 import AdminMessages from './admin/AdminMessages';
 import AdminAppointments from './admin/AdminAppointments';
 import AdminBlogs from './admin/AdminBlogs';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const [isBookAppointmentOpen, setIsBookAppointmentOpen] = useState(false);
@@ -33,6 +34,7 @@ function App() {
     <ThemeProvider>
       <AppProvider>
         <Router>
+          <ScrollToTop />
           <Routes>
             {/* Public Routes with Navbar and Footer */}
             <Route path="/*" element={

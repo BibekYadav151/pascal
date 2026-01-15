@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import MDEditor from '@uiw/react-md-editor';
+import '@uiw/react-md-editor/markdown-editor.css';
+import '@uiw/react-markdown-preview/markdown.css';
 
 const AdminBlogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -15,6 +18,7 @@ const AdminBlogs = () => {
     slug: '',
     excerpt: '',
     content: '',
+    tableOfContents: '',
     author: '',
     category: '',
     tags: '',
@@ -139,6 +143,7 @@ const AdminBlogs = () => {
       slug: '',
       excerpt: '',
       content: '',
+      tableOfContents: '',
       author: '',
       category: '',
       tags: '',
@@ -159,6 +164,7 @@ const AdminBlogs = () => {
       slug: blog.slug,
       excerpt: blog.excerpt,
       content: blog.content,
+      tableOfContents: blog.tableOfContents || '',
       author: blog.author,
       category: blog.category,
       tags: blog.tags ? blog.tags.join(', ') : '',
@@ -264,6 +270,7 @@ const AdminBlogs = () => {
       slug: '',
       excerpt: '',
       content: '',
+      tableOfContents: '',
       author: '',
       category: '',
       tags: '',
@@ -291,17 +298,6 @@ const AdminBlogs = () => {
     return `${readTime} min`;
   };
 
-  // Auto-calculate read time when content changes
-  const handleContentChange = (e) => {
-    const content = e.target.value;
-    const readTime = calculateReadTime(content);
-    
-    setFormData({
-      ...formData,
-      content,
-      readTime: readTime
-    });
-  };
 
   const handleTitleChange = (e) => {
     const title = e.target.value;
@@ -527,20 +523,59 @@ const AdminBlogs = () => {
                 </p>
               </div>
 
+              {/* Table of Contents */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Table of Contents
+                </label>
+                <textarea
+                  value={formData.tableOfContents}
+                  onChange={(e) => setFormData({ ...formData, tableOfContents: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-32 resize-y"
+                  placeholder="1. Introduction
+2. Main Topic
+3. Conclusion
+..."
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Optional: List the main sections of your blog post
+                </p>
+              </div>
+
               {/* Content */}
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Content *
                 </label>
-                <textarea
-                  value={formData.content}
-                  onChange={handleContentChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-64 resize-y font-mono text-sm"
-                  placeholder="Write your blog content here. You can use markdown formatting."
-                  required
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Supports basic markdown: ## Headers, **bold**, *italic*, * lists
+                <div data-color-mode="light">
+                  <MDEditor
+                    value={formData.content}
+                    onChange={(value) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        content: value || ''
+                      }));
+                      // Update read time when content changes
+                      if (value) {
+                        const wordCount = value.split(/\s+/).length;
+                        const readTime = Math.ceil(wordCount / 200);
+                        setFormData(prev => ({
+                          ...prev,
+                          readTime: `${readTime} min`
+                        }));
+                      }
+                    }}
+                    preview="edit"
+                    hideToolbar={false}
+                    visibleDragBar={false}
+                    height={400}
+                    textareaProps={{
+                      placeholder: 'Write your blog content here using rich text formatting...'
+                    }}
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Use the toolbar for rich text formatting. Supports markdown syntax.
                 </p>
               </div>
 
