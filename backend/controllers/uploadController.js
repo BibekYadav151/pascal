@@ -37,6 +37,30 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
+// Configure multer for university logo uploads
+const logoStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, '../uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, 'university-logo-' + uniqueSuffix + ext);
+  }
+});
+
+const logoUpload = multer({
+  storage: logoStorage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  },
+  fileFilter: fileFilter
+});
+
 const uploadController = {
   // Handle blog cover image upload
   uploadBlogCover: (req, res) => {
@@ -75,6 +99,49 @@ const uploadController = {
       res.json({
         success: true,
         message: 'Image uploaded successfully',
+        data: {
+          filename: req.file.filename,
+          originalName: req.file.originalname,
+          size: req.file.size,
+          url: fileUrl
+        }
+      });
+    });
+  },
+
+  // Handle university logo upload
+  uploadUniversityLogo: (req, res) => {
+    logoUpload.single('logo')(req, res, function(err) {
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({
+            success: false,
+            message: 'File too large. Maximum size allowed is 5MB.'
+          });
+        }
+        return res.status(400).json({
+          success: false,
+          message: `Upload error: ${err.message}`
+        });
+      } else if (err) {
+        return res.status(400).json({
+          success: false,
+          message: err.message
+        });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: 'No file uploaded'
+        });
+      }
+
+      const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+      
+      res.json({
+        success: true,
+        message: 'Logo uploaded successfully',
         data: {
           filename: req.file.filename,
           originalName: req.file.originalname,

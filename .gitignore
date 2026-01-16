@@ -12,10 +12,16 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+server.log
+frontend.log
 
 # Environment files
 **/.env
 **/.env.*
+
+# Uploads
+**/uploads/*
+!**/uploads/.gitkeep
 
 # OS / Editor
 .DS_Store
