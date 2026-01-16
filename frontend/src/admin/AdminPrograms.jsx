@@ -242,7 +242,9 @@ const AdminPrograms = () => {
                     >
                       <option value="">Select University</option>
                       {universities.map(uni => (
-                        <option key={uni.id} value={uni.name}>{uni.name}</option>
+                        <option key={uni.id} value={uni.name}>
+                          {uni.name} - {uni.country}{uni.location ? `, ${uni.location}` : ''}
+                        </option>
                       ))}
                     </select>
                   </div>

@@ -1,6 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { useApp } from "../context/AppContext";
 import { Card, AnimatedButton } from "../components/ui";
+import { SiGooglemaps } from "react-icons/si";
+import { GiDuration } from "react-icons/gi";
+import { GiTakeMyMoney } from "react-icons/gi";
+import { BsAwardFill } from "react-icons/bs";
+
 
 const Courses = () => {
   const { programs, universities, addProgramInquiry } = useApp();
@@ -325,36 +330,14 @@ const Courses = () => {
                   </div>
 
                   <div className="flex items-center text-sm text-gray-700">
-                    <svg
-                      className="w-4 h-4 mr-2 text-blue-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>{program.country}</span>
+                    <SiGooglemaps size={16} className="mr-2 text-blue-500" />
+
+                    <span>{program.country}{program.location && `, ${program.location}`}</span>
                   </div>
 
                   <div className="flex items-center text-sm text-gray-700">
-                    <svg
-                      className="w-4 h-4 mr-2 text-blue-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    <GiDuration size={16} className="mr-2 text-blue-500" />
+
                     <span>{program.duration}</span>
                     {program.studyMode !== program.duration && (
                       <span className="ml-2 text-gray-500">
@@ -392,19 +375,7 @@ const Courses = () => {
                 <div className="space-y-4 mb-6">
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <svg
-                        className="w-4 h-4 mr-2 text-green-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+                      <GiTakeMyMoney size={16} className="mr-2 text-blue-500" />
                       Tuition Fees
                     </h4>
                     <p className="text-gray-700 text-sm">
@@ -437,7 +408,7 @@ const Courses = () => {
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
                       <svg
-                        className="w-4 h-4 mr-2 text-purple-600"
+                        className="w-4 h-4 mr-2 text-blue-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -461,7 +432,7 @@ const Courses = () => {
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
                       <svg
-                        className="w-4 h-4 mr-2 text-orange-600"
+                        className="w-4 h-4 mr-2 text-blue-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -483,7 +454,7 @@ const Courses = () => {
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
                       <svg
-                        className="w-4 h-4 mr-2 text-indigo-600"
+                        className="w-4 h-4 mr-2 text-blue-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -504,19 +475,7 @@ const Courses = () => {
 
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <svg
-                        className="w-4 h-4 mr-2 text-teal-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0V8a2 2 0 01-2 2H8a2 2 0 01-2-2V6m8 0H8m0 0V4"
-                        />
-                      </svg>
+                      <BsAwardFill size={16} className="mr-2 text-blue-600" />
                       Career Opportunities
                     </h4>
                     <div className="flex flex-wrap gap-2">

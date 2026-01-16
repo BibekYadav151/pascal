@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import heroStudentImage from "../assets/hero-student.png";
+import { RiMapPinFill } from "react-icons/ri";
 import {
   AnimatedButton,
   AnimatedCounter,
@@ -759,7 +760,9 @@ const Home = () => {
 
                   {/* Country */}
                   <div className="inline-flex items-center px-2 py-1 rounded-md bg-gray-100 text-gray-600 text-xs font-medium">
-                    <span className="mr-1">📍</span>
+                    <span className="mr-1">
+                      <RiMapPinFill />
+                    </span>
                     {uni.country}
                   </div>
                 </Card>

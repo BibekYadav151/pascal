@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { Button } from "./ui";
+import pascalLogo from "../assets/pascal-logo.jpg";
 
 const Navbar = ({ onBookAppointment }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -56,11 +57,19 @@ const Navbar = ({ onBookAppointment }) => {
             to="/"
             className="flex items-center gap-2 font-bold text-lg hover:opacity-70 transition-opacity shrink-0"
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-blue-500 flex items-center justify-center text-white text-sm font-black">
-              PI
-            </div>
+            <img
+              src={pascalLogo}
+              alt="Pascal Education Consultancy Logo"
+              className="
+    w-9 h-9 md:w-10 md:h-10
+     rounded-lg
+    transition-all  
+    hover:scale-125 hover:drop-lg
+  "
+            />
+
             <span className="hidden lg:inline text-black">
-              Pascal Institute
+              Pascal Education Consultancy
             </span>
             <span className="hidden md:inline lg:hidden text-black">
               Pascal

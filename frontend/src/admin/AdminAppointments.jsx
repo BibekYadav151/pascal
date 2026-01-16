@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { CheckCircle, XCircle, Clock, Calendar, User, Mail, Phone, MapPin, Edit, Trash2, Search, Filter, X } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Calendar, User, Mail, Phone, MapPin, Edit, Trash2, Search, Filter, X, Eye } from 'lucide-react';
 
 const AdminAppointments = () => {
   const { 
@@ -16,6 +16,8 @@ const AdminAppointments = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [viewModal, setViewModal] = useState(false);
+  const [viewingAppointment, setViewingAppointment] = useState(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -285,6 +287,16 @@ const AdminAppointments = () => {
                     {/* Actions */}
                     <div className="flex flex-col sm:flex-row gap-2 lg:ml-4">
                       <button
+                        onClick={() => {
+                          setViewingAppointment(appointment);
+                          setViewModal(true);
+                        }}
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+                      >
+                        <Eye className="h-4 w-4" />
+                        View
+                      </button>
+                      <button
                         onClick={() => handleEditAppointment(appointment)}
                         className="bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
                       >
@@ -490,6 +502,92 @@ const AdminAppointments = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* View Appointment Modal */}
+      {viewModal && viewingAppointment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-gray-900">Appointment Details</h2>
+                <button
+                  onClick={() => {
+                    setViewModal(false);
+                    setViewingAppointment(null);
+                  }}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
+                  <p className="text-gray-900 font-medium">{viewingAppointment.fullName}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Appointment Type</label>
+                  <p className="text-gray-900">{getAppointmentTypeInfo(viewingAppointment.appointmentType).name}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                  <p className="text-gray-900">{viewingAppointment.email}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
+                  <p className="text-gray-900">{viewingAppointment.phoneNumber}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Date</label>
+                  <p className="text-gray-900">{new Date(viewingAppointment.appointmentDate).toLocaleDateString()}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Time</label>
+                  <p className="text-gray-900">{viewingAppointment.appointmentTime}</p>
+                </div>
+              </div>
+
+              {viewingAppointment.preferredCountry && (
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Preferred Country</label>
+                  <p className="text-gray-900">{viewingAppointment.preferredCountry}</p>
+                </div>
+              )}
+
+              {viewingAppointment.message && (
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Message</label>
+                  <div className="bg-gray-50 rounded-lg p-4 mt-1">
+                    <p className="text-gray-700 whitespace-pre-wrap">{viewingAppointment.message}</p>
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Status</label>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadge(viewingAppointment.status).bg} ${getStatusBadge(viewingAppointment.status).text}`}>
+                  {viewingAppointment.status}
+                </span>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                <button
+                  onClick={() => {
+                    setViewModal(false);
+                    setViewingAppointment(null);
+                  }}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

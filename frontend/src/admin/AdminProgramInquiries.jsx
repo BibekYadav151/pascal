@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import { Eye, X } from 'lucide-react';
 
 const AdminProgramInquiries = () => {
   const { programInquiries, updateProgramInquiryStatus, deleteProgramInquiry } = useApp();
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
 
   const handleStatusChange = (id, newStatus) => {
     updateProgramInquiryStatus(id, newStatus);
@@ -102,7 +104,6 @@ const AdminProgramInquiries = () => {
                   <th className="px-6 py-4 text-left text-sm font-semibold">Country</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">IELTS</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Status</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Message</th>
                   <th className="px-6 py-4 text-center text-sm font-semibold">Actions</th>
                 </tr>
               </thead>
@@ -142,12 +143,14 @@ const AdminProgramInquiries = () => {
                         </select>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-gray-600 max-w-xs truncate">
-                          {inquiry.message || '-'}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center justify-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            onClick={() => setSelectedInquiry(inquiry)}
+                            className="bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-1 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1"
+                          >
+                            <Eye className="w-4 h-4" />
+                            View
+                          </button>
                           <button
                             onClick={() => handleDelete(inquiry.id)}
                             className="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1 rounded-lg text-sm font-semibold transition-colors"
@@ -160,7 +163,7 @@ const AdminProgramInquiries = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="9" className="px-6 py-12 text-center text-gray-500">
+                    <td colSpan="8" className="px-6 py-12 text-center text-gray-500">
                       No inquiries yet. Students will submit inquiries from the Courses page.
                     </td>
                   </tr>
@@ -169,6 +172,110 @@ const AdminProgramInquiries = () => {
             </table>
           </div>
         </div>
+
+        {/* Inquiry Detail Modal */}
+        {selectedInquiry && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold text-gray-900">Program Inquiry Details</h2>
+                  <button
+                    onClick={() => setSelectedInquiry(null)}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Student Name</label>
+                    <p className="text-gray-900 font-medium">{selectedInquiry.studentName}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Date</label>
+                    <p className="text-gray-900">
+                      {new Date(selectedInquiry.date).toLocaleDateString()} at {new Date(selectedInquiry.date).toLocaleTimeString()}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                    <p className="text-gray-900">{selectedInquiry.email}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
+                    <p className="text-gray-900">{selectedInquiry.phone}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Program</label>
+                    <p className="text-gray-900">{selectedInquiry.programName}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">University</label>
+                    <p className="text-gray-900">{selectedInquiry.university}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Country</label>
+                    <p className="text-gray-900">{selectedInquiry.country}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">IELTS Score</label>
+                    <p className="text-gray-900">{selectedInquiry.ieltsScore || 'Not specified'}</p>
+                  </div>
+                </div>
+
+                {selectedInquiry.message && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Message</label>
+                    <div className="bg-gray-50 rounded-lg p-4 mt-1">
+                      <p className="text-gray-700 whitespace-pre-wrap">{selectedInquiry.message}</p>
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Status</label>
+                  <select
+                    value={selectedInquiry.status}
+                    onChange={(e) => {
+                      handleStatusChange(selectedInquiry.id, e.target.value);
+                      setSelectedInquiry({...selectedInquiry, status: e.target.value});
+                    }}
+                    className="bg-blue-100 text-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                  >
+                    <option value="New">New</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="Converted">Converted</option>
+                  </select>
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                  <button
+                    onClick={() => setSelectedInquiry(null)}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleDelete(selectedInquiry.id);
+                      setSelectedInquiry(null);
+                    }}
+                    className="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
