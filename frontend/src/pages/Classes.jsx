@@ -219,24 +219,26 @@ const Classes = () => {
                 </div>
 
                 <div className="flex gap-6 mb-6 pb-6 border-b border-gray-100">
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <div className="w-5 h-5 bg-gray-100 rounded-md flex items-center justify-center">
-                      <svg
-                        className="w-3.5 h-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+                  {classItem.duration && (
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <div className="w-5 h-5 bg-gray-100 rounded-md flex items-center justify-center">
+                        <svg
+                          className="w-3.5 h-3.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <span className="text-body-sm">{classItem.duration}</span>
                     </div>
-                    <span className="text-body-sm">{classItem.duration}</span>
-                  </div>
+                  )}
                   {classItem.fee && (
                     <div className="flex items-center gap-2 text-gray-600">
                       <div className="w-5 h-5 bg-gray-100 rounded-md flex items-center justify-center">

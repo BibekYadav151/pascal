@@ -5,7 +5,7 @@ import { SiGooglemaps } from "react-icons/si";
 import { GiDuration } from "react-icons/gi";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { BsAwardFill } from "react-icons/bs";
-
+import backgroundImage from "../assets/background.jpg";
 
 const Courses = () => {
   const { programs, universities, addProgramInquiry } = useApp();
@@ -287,13 +287,22 @@ const Courses = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Card Header */}
-              <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-4 text-white">
-                <div className="text-xs uppercase tracking-wide opacity-80 mb-1">
-                  {program.studyLevel}
+              <div
+                className="p-4 text-white bg-cover bg-center rounded-t-lg relative overflow-hidden"
+                style={{ backgroundImage: `url(${backgroundImage})` }}
+              >
+                {/* Optional overlay to make text readable */}
+                <div className="absolute inset-0 bg-black/40"></div>
+
+                {/* Header content */}
+                <div className="relative z-10">
+                  <div className="text-xs uppercase tracking-wide opacity-80 mb-1">
+                    {program.studyLevel}
+                  </div>
+                  <h3 className="text-lg font-bold line-clamp-2">
+                    {program.title}
+                  </h3>
                 </div>
-                <h3 className="text-lg font-bold line-clamp-2">
-                  {program.title}
-                </h3>
               </div>
 
               {/* Card Body */}
@@ -332,7 +341,10 @@ const Courses = () => {
                   <div className="flex items-center text-sm text-gray-700">
                     <SiGooglemaps size={16} className="mr-2 text-blue-500" />
 
-                    <span>{program.country}{program.location && `, ${program.location}`}</span>
+                    <span>
+                      {program.country}
+                      {program.location && `, ${program.location}`}
+                    </span>
                   </div>
 
                   <div className="flex items-center text-sm text-gray-700">
@@ -496,7 +508,7 @@ const Courses = () => {
                   onClick={() => handleApplyInquiry(program)}
                   variant="outline"
                   size="md"
-                  className="w-full border-orange-500 text-orange-500 hover:bg-orange-50"
+                  className="w-full border-orange-500 text-orange-500 hover:bg-orange-600 hover:text-white"
                 >
                   Apply for This Program
                 </AnimatedButton>
