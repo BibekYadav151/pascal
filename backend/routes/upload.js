@@ -6,6 +6,9 @@ const router = express.Router();
 // Upload blog cover image
 router.post('/blog-cover', uploadController.uploadBlogCover);
 
+// Upload university logo
+router.post('/university-logo', uploadController.uploadUniversityLogo);
+
 // Delete uploaded file
 router.delete('/file/:filename', uploadController.deleteFile);
 

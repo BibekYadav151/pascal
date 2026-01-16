@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 
 const AdminUniversities = () => {
@@ -7,6 +6,8 @@ const AdminUniversities = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [editingUniversity, setEditingUniversity] = useState(null);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [logoPreview, setLogoPreview] = useState(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -20,6 +21,7 @@ const AdminUniversities = () => {
 
   const handleAddUniversity = () => {
     setEditingUniversity(null);
+    setLogoPreview(null);
     setFormData({
       name: '',
       country: '',
@@ -34,6 +36,7 @@ const AdminUniversities = () => {
 
   const handleEditUniversity = (uni) => {
     setEditingUniversity(uni);
+    setLogoPreview(uni.logo || null);
     setFormData({
       name: uni.name,
       country: uni.country,
@@ -61,6 +64,7 @@ const AdminUniversities = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setEditingUniversity(null);
+    setLogoPreview(null);
     setFormData({
       name: '',
       country: '',
@@ -70,6 +74,52 @@ const AdminUniversities = () => {
       status: 'Active',
       isPartner: false
     });
+  };
+
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size should not exceed 5MB');
+      return;
+    }
+
+    setUploadingLogo(true);
+
+    const formDataToUpload = new FormData();
+    formDataToUpload.append('logo', file);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/upload/university-logo', {
+        method: 'POST',
+        body: formDataToUpload,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setFormData({ ...formData, logo: data.data.url });
+        setLogoPreview(data.data.url);
+      } else {
+        alert('Failed to upload logo: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error uploading logo:', error);
+      alert('Failed to upload logo. Please try again.');
+    } finally {
+      setUploadingLogo(false);
+    }
+  };
+
+  const handleRemoveLogo = () => {
+    setFormData({ ...formData, logo: '' });
+    setLogoPreview(null);
   };
 
   const handleDelete = (id) => {
@@ -104,8 +154,12 @@ const AdminUniversities = () => {
             <div key={uni.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all">
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center text-3xl">
-                    🎓
+                  <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center text-3xl overflow-hidden">
+                    {uni.logo ? (
+                      <img src={uni.logo} alt={uni.name} className="w-full h-full object-contain p-1" />
+                    ) : (
+                      <span>🎓</span>
+                    )}
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                     uni.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -217,6 +271,49 @@ const AdminUniversities = () => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     placeholder="e.g., https://www.utoronto.ca"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    University Logo
+                  </label>
+                  <p className="text-xs text-gray-500 mb-2">
+                    Upload a logo to display in the partner universities section (Max 5MB)
+                  </p>
+                  
+                  {logoPreview ? (
+                    <div className="space-y-3">
+                      <div className="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border-2 border-gray-300">
+                        <img 
+                          src={logoPreview} 
+                          alt="Logo preview" 
+                          className="w-full h-full object-contain p-2"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleRemoveLogo}
+                        className="text-sm text-red-600 hover:text-red-700 font-medium"
+                      >
+                        Remove Logo
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="relative">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoUpload}
+                        disabled={uploadingLogo}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                      />
+                      {uploadingLogo && (
+                        <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-lg">
+                          <span className="text-sm text-gray-600">Uploading...</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div>

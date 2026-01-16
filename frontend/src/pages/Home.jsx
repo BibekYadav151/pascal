@@ -186,9 +186,9 @@ const Home = () => {
     },
   ];
 
-  // Filter only partner universities
+  // Filter only partner universities with logos
   const partnerUniversities = universities.filter(
-    (uni) => uni.isPartner && uni.status === "Active"
+    (uni) => uni.isPartner && uni.status === "Active" && uni.logo
   );
 
   // Auto-sliding carousel effect
@@ -737,9 +737,17 @@ const Home = () => {
                   className="p-6 text-center group h-full"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
-                  {/* University icon */}
-                  <div className="w-12 h-12 bg-gray-100 rounded-lg mx-auto mb-4 flex items-center justify-center">
-                    <span className="text-2xl">🎓</span>
+                  {/* University logo */}
+                  <div className="w-20 h-20 bg-white rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden border border-gray-200">
+                    <img 
+                      src={uni.logo} 
+                      alt={uni.name}
+                      className="w-full h-full object-contain p-2"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="50%" y="50%" font-size="40" text-anchor="middle" dy=".3em">🎓</text></svg>';
+                      }}
+                    />
                   </div>
 
                   {/* University name */}
