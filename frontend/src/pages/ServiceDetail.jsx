@@ -18,7 +18,7 @@ const ServiceDetail = () => {
   const serviceDetails = {
     "student-visa-counseling": {
       title: "Student Visa Counseling",
-      icon: "🎓",
+     
       shortDesc: "Expert guidance for student visa applications",
       heroImage: "/api/placeholder/800/400",
       overview:
@@ -84,7 +84,7 @@ const ServiceDetail = () => {
     },
     "study-abroad-programs": {
       title: "Study Abroad Programs",
-      icon: "🌍",
+      
       shortDesc: "Wide range of programs in top universities",
       heroImage: "/api/placeholder/800/400",
       overview:
@@ -152,7 +152,7 @@ const ServiceDetail = () => {
     },
     "ielts-pte-language-classes": {
       title: "IELTS / PTE / Language Classes",
-      icon: "📘",
+     
       shortDesc: "Comprehensive test preparation",
       heroImage: "/api/placeholder/800/400",
       overview:
@@ -219,7 +219,7 @@ const ServiceDetail = () => {
     },
     "documentation-interview-prep": {
       title: "Documentation & Interview Prep",
-      icon: "📝",
+      
       shortDesc: "Complete support for applications",
       heroImage: "/api/placeholder/800/400",
       overview:
@@ -371,7 +371,7 @@ const ServiceDetail = () => {
                 href="/contact"
                 variant="primary"
                 size="lg"
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-orange-600 hover:bg-orange-700"
               >
                 Get Started Today
               </AnimatedButton>
@@ -404,13 +404,13 @@ const ServiceDetail = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 ">
             {service.process.map((step, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow text-center"
               >
-                <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-lg font-bold mb-4">
+                <div className="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center text-lg font-bold leading-none mb-4 mx-auto">
                   {step.step}
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">

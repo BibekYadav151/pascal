@@ -186,37 +186,50 @@ const Home = () => {
     },
   ];
 
-  // Filter only partner universities with logos
-  const partnerUniversities = universities.filter(
-    (uni) => uni.isPartner && uni.status === "Active" && uni.logo
+  // Filter only partner universities
+  const basePartnerUniversities = universities.filter(
+    (uni) => uni.isPartner && uni.status === "Active"
   );
+
+  // Duplicate universities for seamless infinite scroll
+  const partnerUniversities = [
+    ...basePartnerUniversities,
+    ...basePartnerUniversities,
+    ...basePartnerUniversities,
+  ];
 
   // Auto-sliding carousel effect
   useEffect(() => {
-    if (partnerUniversities.length <= 6) return; // Don't auto-slide if all fit on screen
+    const container = carouselRef.current;
+    if (!container || basePartnerUniversities.length <= 6) return;
 
-    const interval = setInterval(() => {
-      if (carouselRef.current) {
-        const container = carouselRef.current;
-        const cardWidth = 200; // Approximate card width
-        const gap = 24; // Gap between cards
-        const totalCardWidth = cardWidth + gap;
-        const maxScroll = container.scrollWidth - container.clientWidth;
-        const currentScroll = container.scrollLeft;
-        const nextScroll = currentScroll + totalCardWidth;
+    let scrollSpeed = 0.5; // adjust speed (0.3 slow | 1 fast)
+    let isPaused = false;
 
-        if (nextScroll >= maxScroll) {
-          // Reset to beginning when reaching the end
-          container.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          // Scroll to next card
-          container.scrollBy({ left: totalCardWidth, behavior: "smooth" });
+    const scroll = () => {
+      if (!isPaused) {
+        container.scrollLeft += scrollSpeed;
+
+        // Reset when scrolled past the first set (seamless infinite loop)
+        const firstSetWidth = basePartnerUniversities.length * 208; // 192px card + 16px gap
+        if (container.scrollLeft >= firstSetWidth) {
+          container.scrollLeft = 0;
         }
       }
-    }, 3000); // Change slide every 3 seconds
+    };
 
-    return () => clearInterval(interval);
-  }, [partnerUniversities.length]);
+    const interval = setInterval(scroll, 16); // ~60fps
+
+    // Pause on hover
+    container.addEventListener("mouseenter", () => (isPaused = true));
+    container.addEventListener("mouseleave", () => (isPaused = false));
+
+    return () => {
+      clearInterval(interval);
+      container.removeEventListener("mouseenter", () => (isPaused = true));
+      container.removeEventListener("mouseleave", () => (isPaused = false));
+    };
+  }, [basePartnerUniversities.length]);
 
   return (
     <div className="min-h-screen relative">
@@ -586,7 +599,7 @@ const Home = () => {
                       variant="primary"
                       size="md"
                       className="w-full"
-                      icon="📝"
+                      
                     >
                       Apply Now
                     </AnimatedButton>
@@ -686,24 +699,24 @@ const Home = () => {
                 </div>
 
                 {/* Additional stats */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <div className="text-2xl font-bold text-green-600 mb-2">
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div className="bg-gray-50 rounded-xl p-3 sm:p-6">
+                    <div className="text-xl sm:text-2xl font-bold text-green-600 mb-1 sm:mb-2">
                       <AnimatedCounter value={95} suffix="%" />
                     </div>
-                    <p className="text-caption text-gray-600">Success Rate</p>
+                    <p className="text-xs sm:text-caption text-gray-600">Success Rate</p>
                   </div>
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <div className="text-2xl font-bold text-blue-600 mb-2">
+                  <div className="bg-gray-50 rounded-xl p-3 sm:p-6">
+                    <div className="text-xl sm:text-2xl font-bold text-blue-600 mb-1 sm:mb-2">
                       <AnimatedCounter value={25} suffix="+" />
                     </div>
-                    <p className="text-caption text-gray-600">Countries</p>
+                    <p className="text-xs sm:text-caption text-gray-600">Countries</p>
                   </div>
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <div className="text-2xl font-bold text-purple-600 mb-2">
+                  <div className="bg-gray-50 rounded-xl p-3 sm:p-6">
+                    <div className="text-xl sm:text-2xl font-bold text-purple-600 mb-1 sm:mb-2">
                       <AnimatedCounter value={8} suffix="+" />
                     </div>
-                    <p className="text-caption text-gray-600">
+                    <p className="text-xs sm:text-caption text-gray-600">
                       Years Experience
                     </p>
                   </div>
@@ -726,26 +739,23 @@ const Home = () => {
             </p>
           </div>
 
-          <div
-            ref={carouselRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
+          <div ref={carouselRef} className="flex gap-0 overflow-hidden pb-2">
             {partnerUniversities.map((uni, index) => (
               <div key={index} className="flex-shrink-0 w-48">
                 <Card
-                  className="p-6 text-center group h-full"
+                  className="p-2 text-center group h-full !bg-transparent !border-0 !shadow-none"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   {/* University logo */}
-                  <div className="w-20 h-20 bg-white rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden border border-gray-200">
-                    <img 
-                      src={uni.logo} 
+                  <div className="w-20 h-20  rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden  ">
+                    <img
+                      src={uni.logo}
                       alt={uni.name}
                       className="w-full h-full object-contain p-2"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="50%" y="50%" font-size="40" text-anchor="middle" dy=".3em">🎓</text></svg>';
+                        e.target.src =
+                          'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="50%" y="50%" font-size="40" text-anchor="middle" dy=".3em">🎓</text></svg>';
                       }}
                     />
                   </div>
@@ -777,18 +787,6 @@ const Home = () => {
               </div>
             ))}
           </div>
-
-          {partnerUniversities.length === 0 && (
-            <div className="text-center py-16">
-              <div className="text-6xl mb-4">🎓</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                Partner Universities
-              </h3>
-              <p className="text-gray-600">
-                Our partner universities will be displayed here soon.
-              </p>
-            </div>
-          )}
         </div>
       </section>
 

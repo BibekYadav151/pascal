@@ -141,7 +141,7 @@ const AdminUniversities = () => {
         <div className="flex flex-wrap gap-3">
           <button
             onClick={handleAddUniversity}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+            className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
           >
             <span>➕</span> Add University
           </button>

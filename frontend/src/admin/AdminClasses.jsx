@@ -112,7 +112,7 @@ const AdminClasses = () => {
         <div className="flex flex-wrap gap-3">
           <button
             onClick={handleAddClass}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+            className="bg-orange-600 hover:bg-orange-800 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
           >
             <span>➕</span> Add Class
           </button>
@@ -123,7 +123,7 @@ const AdminClasses = () => {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+              <thead className="bg-gradient-to-r from-orange-500 to-orange-700 text-white">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Class Name</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Time Slots</th>

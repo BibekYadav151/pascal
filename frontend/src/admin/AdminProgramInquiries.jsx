@@ -95,7 +95,7 @@ const AdminProgramInquiries = () => {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+              <thead className="bg-gradient-to-r from-orange-500 to-orange-700 text-white">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Date</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">Student</th>

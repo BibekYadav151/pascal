@@ -71,7 +71,7 @@ const Navbar = ({ onBookAppointment }) => {
             {/* Large screens */}
             <span className="hidden lg:inline">
               <span className="text-orange-600">Pascal</span>{" "}
-              <span className="text-blue-600">Education Consultancy</span>
+              <span className="text-blue-600">Edu. Consultancy</span>
             </span>
 
             {/* Medium screens */}

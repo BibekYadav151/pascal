@@ -35,70 +35,70 @@ const AdminDashboard = () => {
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">📊</span>
                   </div>
-                  <div className="text-3xl font-bold text-blue-600">{stats.totalInquiries}</div>
+                  <div className="text-3xl font-bold text-gray-600">{stats.totalInquiries}</div>
                 </div>
-                <p className="text-sm text-gray-500">Total Inquiries</p>
+                <p className="text-sm text-gray-900">Total Inquiries</p>
               </div>
 
               <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">🎓</span>
                   </div>
-                  <div className="text-3xl font-bold text-green-600">{stats.classApplications}</div>
+                  <div className="text-3xl font-bold text-gray-600">{stats.classApplications}</div>
                 </div>
                 <p className="text-sm text-gray-500">Class Applications</p>
               </div>
 
               <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">📚</span>
                   </div>
-                  <div className="text-3xl font-bold text-purple-600">{stats.programApplications}</div>
+                  <div className="text-3xl font-bold text-gray-600">{stats.programApplications}</div>
                 </div>
                 <p className="text-sm text-gray-500">Program Applications</p>
               </div>
 
               <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">🏫</span>
                   </div>
-                  <div className="text-3xl font-bold text-orange-600">{stats.activeClasses}</div>
+                  <div className="text-3xl font-bold text-gray-600">{stats.activeClasses}</div>
                 </div>
                 <p className="text-sm text-gray-500">Active Classes</p>
               </div>
 
               <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">📖</span>
                   </div>
-                  <div className="text-3xl font-bold text-pink-600">{stats.activePrograms}</div>
+                  <div className="text-3xl font-bold text-gray-600">{stats.activePrograms}</div>
                 </div>
                 <p className="text-sm text-gray-500">Active Programs</p>
               </div>
 
               <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">💬</span>
                   </div>
-                  <div className="text-3xl font-bold text-red-600">{stats.unreadMessages}</div>
+                  <div className="text-3xl font-bold text-gray-600">{stats.unreadMessages}</div>
                 </div>
                 <p className="text-sm text-gray-500">Unread Messages</p>
               </div>
 
               <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">📅</span>
                   </div>
-                  <div className="text-3xl font-bold text-indigo-600">{stats.pendingAppointments}</div>
+                  <div className="text-3xl font-bold text-gray-600">{stats.pendingAppointments}</div>
                 </div>
                 <p className="text-sm text-gray-500">Pending Appointments</p>
               </div>

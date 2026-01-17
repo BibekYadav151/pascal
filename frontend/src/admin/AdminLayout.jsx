@@ -137,7 +137,7 @@ const AdminLayout = () => {
                   key={item.path}
                   to={item.path}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-50 ${
-                    location.pathname.includes(item.path) ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                    location.pathname.includes(item.path) ? 'bg-orange-50 text-orange-600' : 'text-gray-700'
                   }`}
                 >
                   <span className="text-lg">{item.icon}</span>
