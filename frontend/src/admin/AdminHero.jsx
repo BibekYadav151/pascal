@@ -69,10 +69,47 @@ const AdminHero = () => {
     }
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    // Handle image upload logic here
-    console.log('Images to upload:', files);
+    
+    if (files.length === 0) return;
+
+    setLoading(true);
+    const uploadedImages = [];
+
+    try {
+      for (const file of files) {
+        const formDataUpload = new FormData();
+        formDataUpload.append('heroImage', file);
+
+        const response = await fetch('http://localhost:5000/api/upload/hero-image', {
+          method: 'POST',
+          body: formDataUpload
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          uploadedImages.push({
+            url: result.data.url,
+            alt: file.name.split('.')[0]
+          });
+        } else {
+          console.error('Failed to upload image:', file.name);
+        }
+      }
+
+      setFormData({
+        ...formData,
+        images: [...formData.images, ...uploadedImages]
+      });
+
+      alert(`Successfully uploaded ${uploadedImages.length} image(s)`);
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      alert('Error uploading images');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const addImage = () => {
@@ -234,18 +271,50 @@ const AdminHero = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Hero Images
                 </label>
-                <AnimatedButton
-                  type="button"
-                  onClick={addImage}
-                  variant="secondary"
-                  size="sm"
-                >
-                  Add Image
-                </AnimatedButton>
+                <div className="flex gap-2">
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageUpload}
+                      className="hidden"
+                      disabled={loading}
+                    />
+                    <AnimatedButton
+                      type="button"
+                      variant="primary"
+                      size="sm"
+                      disabled={loading}
+                    >
+                      {loading ? 'Uploading...' : 'Upload from Device'}
+                    </AnimatedButton>
+                  </label>
+                  <AnimatedButton
+                    type="button"
+                    onClick={addImage}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    Add by URL
+                  </AnimatedButton>
+                </div>
               </div>
 
               {formData.images.map((image, index) => (
                 <div key={index} className="flex gap-4 mb-4 p-4 border border-gray-200 rounded-lg">
+                  {image.url && (
+                    <div className="w-24 h-24 flex-shrink-0">
+                      <img
+                        src={image.url}
+                        alt={image.alt || 'Preview'}
+                        className="w-full h-full object-cover rounded-lg"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <input
                       type="text"
