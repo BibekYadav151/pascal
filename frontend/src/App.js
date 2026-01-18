@@ -26,6 +26,9 @@ import AdminUniversities from './admin/AdminUniversities';
 import AdminMessages from './admin/AdminMessages';
 import AdminAppointments from './admin/AdminAppointments';
 import AdminBlogs from './admin/AdminBlogs';
+import AdminHero from './admin/AdminHero';
+import AdminOffers from './admin/AdminOffers';
+import AdminBranches from './admin/AdminBranches';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -70,6 +73,9 @@ function App() {
               <Route path="program-inquiries" element={<AdminProgramInquiries />} />
               <Route path="institute-classes" element={<AdminInstituteClasses />} />
               <Route path="universities" element={<AdminUniversities />} />
+              <Route path="hero" element={<AdminHero />} />
+              <Route path="offers" element={<AdminOffers />} />
+              <Route path="branches" element={<AdminBranches />} />
               <Route path="messages" element={<AdminMessages />} />
               <Route path="appointments" element={<AdminAppointments />} />
               <Route path="blogs" element={<AdminBlogs />} />

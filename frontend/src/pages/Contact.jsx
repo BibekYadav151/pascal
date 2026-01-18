@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { Card, AnimatedButton } from '../components/ui';
 import { FiMapPin } from "react-icons/fi";
@@ -9,6 +9,8 @@ import { FaSquareInstagram } from "react-icons/fa6";
 
 const Contact = () => {
   const { addContactMessage } = useApp();
+  const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -17,6 +19,33 @@ const Contact = () => {
     subject: '',
     message: ''
   });
+
+  useEffect(() => {
+    fetchBranches();
+  }, []);
+
+  const fetchBranches = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:5000/api/branches/active');
+      if (response.ok) {
+        const data = await response.json();
+        setBranches(data);
+      }
+    } catch (error) {
+      console.error('Error fetching branches:', error);
+      // Set default branch if fetch fails
+      setBranches([{
+        id: 1,
+        name: "Main Office",
+        address: "Kathmandu, Nepal",
+        phone: "+977-1-44XXXXXX",
+        email: "info@pascalinstitute.edu.np"
+      }]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,24 +68,6 @@ const Contact = () => {
       message: ''
     });
   };
-
-  const contactInfo = [
-    {
-      icon: <FiMapPin className="w-4 h-4" />,
-      title: "Address",
-      details: "Kathmandu, Nepal",
-    },
-    {
-      icon: <FaPhoneAlt className="w-4 h-4" />,
-      title: "Phone",
-      details: "+977-1-44XXXXXX",
-    },
-    {
-      icon: <MdEmail className="w-4 h-4" />,
-      title: "Email",
-      details: "info@pascalinstitute.edu.np",
-    },
-  ];
 
   const socialLinks = [
     { name: "Facebook", icon: <FaFacebook />, url: "#" },
@@ -100,19 +111,41 @@ const Contact = () => {
 
               {/* Contact Details */}
               <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <Card key={index} className="p-6">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <span className="text-2xl">{info.icon}</span>
+                {loading ? (
+                  <div className="text-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mx-auto"></div>
+                    <p className="text-gray-600 mt-2">Loading branches...</p>
+                  </div>
+                ) : (
+                  branches.map((branch, index) => (
+                    <Card key={branch.id || index} className="p-6">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                          <span className="text-2xl">🏢</span>
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-title-sm text-gray-900 mb-2 font-semibold">
+                            {branch.name}
+                          </h3>
+                          <div className="space-y-2">
+                            <div className="flex items-start space-x-2">
+                              <FiMapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                              <span className="text-body-sm text-gray-600">{branch.address}</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <FaPhoneAlt className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                              <span className="text-body-sm text-gray-600">{branch.phone}</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <MdEmail className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                              <span className="text-body-sm text-gray-600">{branch.email}</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-title-sm text-gray-900 mb-1">{info.title}</h3>
-                        <p className="text-body-sm text-gray-600">{info.details}</p>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  ))
+                )}
               </div>
 
               {/* Social Media */}

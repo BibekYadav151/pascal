@@ -19,6 +19,8 @@ const Home = () => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [selectedClass, setSelectedClass] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [heroContent, setHeroContent] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -27,6 +29,46 @@ const Home = () => {
     message: "",
   });
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
+
+  // Fetch hero content
+  useEffect(() => {
+    const fetchHeroContent = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/hero/active');
+        if (response.ok) {
+          const data = await response.json();
+          setHeroContent(data);
+        }
+      } catch (error) {
+        console.error('Error fetching hero content:', error);
+        // Set default content if fetch fails
+        setHeroContent({
+          title: "Let's Work Together to Create Wonders with Us",
+          description: "A visionary educational consultancy, crafting captivating opportunities through expert guidance and personalized support. Adept at turning your study abroad dreams into extraordinary reality.",
+          buttonText1: "Let's Talk.",
+          buttonText2: "Select Courses",
+          buttonLink1: "/contact",
+          buttonLink2: "/courses",
+          images: []
+        });
+      }
+    };
+
+    fetchHeroContent();
+  }, []);
+
+  // Auto-slide hero images
+  useEffect(() => {
+    if (heroContent?.images?.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => 
+          (prevIndex + 1) % heroContent.images.length
+        );
+      }, 3000); // Change image every 3 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [heroContent?.images]);
 
   // Modal handlers
   const handleApplyNow = (classItem) => {
@@ -254,34 +296,31 @@ const Home = () => {
             <div className="space-y-6 z-10">
               {/* Main Headline */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight animate-fade-in-up animation-delay-300">
-                Let's Work Together to Create Wonders with Us
+                {heroContent?.title || "Let's Work Together to Create Wonders with Us"}
               </h1>
 
               {/* Description */}
               <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-2xl animate-fade-in-up animation-delay-500">
-                A visionary educational consultancy, crafting captivating
-                opportunities through expert guidance and personalized support.
-                Adept at turning your study abroad dreams into extraordinary
-                reality.
+                {heroContent?.description || "A visionary educational consultancy, crafting captivating opportunities through expert guidance and personalized support. Adept at turning your study abroad dreams into extraordinary reality."}
               </p>
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-2 animate-fade-in-up animation-delay-700">
                 <AnimatedButton
-                  href="/contact"
+                  href={heroContent?.buttonLink1 || "/contact"}
                   variant="primary"
                   size="md"
                   className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg text-sm md:text-base font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
                 >
-                  Let's Talk.
+                  {heroContent?.buttonText1 || "Let's Talk."}
                 </AnimatedButton>
                 <AnimatedButton
-                  href="/courses"
+                  href={heroContent?.buttonLink2 || "/courses"}
                   variant="secondary"
                   size="md"
                   className="bg-white hover:bg-gray-50 text-gray-900 hover:text-orange-600 border border-gray-200 hover:border-orange-300 px-6 py-3 rounded-lg text-sm md:text-base font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
                 >
-                  Select Courses
+                  {heroContent?.buttonText2 || "Select Courses"}
                 </AnimatedButton>
               </div>
 
@@ -317,17 +356,60 @@ const Home = () => {
             {/* Right Content - Image with Floating Tags */}
             <div className="relative z-10 flex justify-center lg:justify-end animate-scale-in animation-delay-1500">
               <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
-                <img
-                  src={heroStudentImage}
-                  alt="Student counseling illustration"
-                  className="w-full h-auto rounded-3xl shadow-2xl border border-white/60 transform hover:scale-105 transition-transform duration-500"
-                  loading="eager"
-                />
+                {/* Single Image */}
+                {!heroContent?.images?.length && (
+                  <img
+                    src={heroStudentImage}
+                    alt="Student counseling illustration"
+                    className="w-full h-auto rounded-3xl shadow-2xl border border-white/60 transform hover:scale-105 transition-transform duration-500"
+                    loading="eager"
+                  />
+                )}
+
+                {/* Multiple Images with Auto-sliding */}
+                {heroContent?.images?.length > 0 && (
+                  <div className="relative w-full h-auto rounded-3xl shadow-2xl border border-white/60 overflow-hidden">
+                    <div className="relative">
+                      {heroContent.images.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image.url}
+                          alt={image.alt || "Hero image"}
+                          className={`w-full h-auto rounded-3xl transition-opacity duration-1000 ${
+                            index === currentImageIndex ? 'opacity-100' : 'opacity-0 absolute inset-0'
+                          }`}
+                          loading="eager"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = heroStudentImage;
+                          }}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Image Indicators */}
+                    {heroContent.images.length > 1 && (
+                      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                        {heroContent.images.map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentImageIndex(index)}
+                            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                              index === currentImageIndex 
+                                ? 'bg-white shadow-lg' 
+                                : 'bg-white/50 hover:bg-white/75'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Floating Tags (desktop only) */}
                 <div className="hidden lg:block">
-                  <div className="absolute -top-6 right-4 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center  animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center ">
+                  <div className="absolute -top-6 right-4 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center">
                       <span className="text-lg">🎓</span>
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
@@ -336,10 +418,10 @@ const Home = () => {
                   </div>
 
                   <div
-                    className="absolute top-1/2 -left-6 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center  animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300"
+                    className="absolute top-1/2 -left-6 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300"
                     style={{ animationDelay: "0.5s" }}
                   >
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center ">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center">
                       <span className="text-lg">🌍</span>
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
@@ -351,7 +433,7 @@ const Home = () => {
                     className="absolute -bottom-6 right-8 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center gap-3 animate-float z-20"
                     style={{ animationDelay: "1s" }}
                   >
-                    <div className="w-9 h-9  rounded-xl flex items-center justify-center ">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center">
                       <span className="text-lg">📚</span>
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
