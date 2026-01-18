@@ -16,7 +16,7 @@ const Footer = () => {
                 className="w-10 h-10 rounded-lg object-contain"
               />
               <span className="text-xl font-bold">
-                Pascal Education Consultancy
+                Pascal Edu. Consultancy
               </span>
             </div>
             <p className="text-gray-400 mb-4">
@@ -93,6 +93,14 @@ const Footer = () => {
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Courses
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/offers"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Offers
                 </Link>
               </li>
               <li>

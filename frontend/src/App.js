@@ -10,6 +10,7 @@ import About from './pages/About';
 import Classes from './pages/Classes';
 import Courses from './pages/Courses';
 import Contact from './pages/Contact';
+import Offers from './pages/Offers';
 import ServiceDetail from './pages/ServiceDetail';
 import Blogs from './pages/Blogs';
 import BlogDetail from './pages/BlogDetail';
@@ -46,6 +47,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/classes" element={<Classes onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
                     <Route path="/courses" element={<Courses onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
+                    <Route path="/offers" element={<Offers />} />
                     <Route path="/contact" element={<Contact onBookAppointment={() => setIsBookAppointmentOpen(true)} />} />
                     <Route path="/services/:serviceId" element={<ServiceDetail />} />
                     <Route path="/blogs" element={<Blogs />} />

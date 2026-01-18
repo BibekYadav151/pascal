@@ -237,15 +237,15 @@ const Home = () => {
       <FloatingElements className="opacity-30" />
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden min-h-[70vh] flex items-center">
+      <section className="relative pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden min-h-[70vh] flex items-center animate-fade-in">
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50"></div>
 
         {/* Subtle Background Shapes */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-16 right-10 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-16 left-10 w-80 h-80 bg-purple-200/20 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-blue-100/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-16 right-10 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl animate-float animation-delay-300"></div>
+          <div className="absolute bottom-16 left-10 w-80 h-80 bg-purple-200/20 rounded-full blur-3xl animate-float animation-delay-700"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-blue-100/10 rounded-full blur-3xl animate-float animation-delay-1100"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto container-spacing w-full mt-8 md:mt-12">
@@ -253,12 +253,12 @@ const Home = () => {
             {/* Left Content */}
             <div className="space-y-6 z-10">
               {/* Main Headline */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight animate-fade-in-up animation-delay-300">
                 Let's Work Together to Create Wonders with Us
               </h1>
 
               {/* Description */}
-              <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-2xl">
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-2xl animate-fade-in-up animation-delay-500">
                 A visionary educational consultancy, crafting captivating
                 opportunities through expert guidance and personalized support.
                 Adept at turning your study abroad dreams into extraordinary
@@ -266,12 +266,12 @@ const Home = () => {
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row gap-4 pt-2 animate-fade-in-up animation-delay-700">
                 <AnimatedButton
                   href="/contact"
                   variant="primary"
                   size="md"
-                  className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg text-sm md:text-base font-medium"
+                  className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg text-sm md:text-base font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
                 >
                   Let's Talk.
                 </AnimatedButton>
@@ -279,7 +279,7 @@ const Home = () => {
                   href="/courses"
                   variant="secondary"
                   size="md"
-                  className="bg-white hover:bg-gray-50 text-gray-900 hover:text-orange-600   px-6 py-3 rounded-lg text-sm md:text-base font-medium"
+                  className="bg-white hover:bg-gray-50 text-gray-900 hover:text-orange-600 border border-gray-200 hover:border-orange-300 px-6 py-3 rounded-lg text-sm md:text-base font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
                 >
                   Select Courses
                 </AnimatedButton>
@@ -287,24 +287,24 @@ const Home = () => {
 
               {/* Statistics */}
               <div className="flex flex-wrap gap-8 pt-8 md:pt-10">
-                <div>
-                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1">
+                <div className="animate-fade-in-up animation-delay-900">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
                     <AnimatedCounter value={8} suffix="+" />
                   </div>
                   <p className="text-sm text-gray-600 font-medium">
                     years experience
                   </p>
                 </div>
-                <div>
-                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1">
+                <div className="animate-fade-in-up animation-delay-1100">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
                     <AnimatedCounter value={1000} suffix="+" />
                   </div>
                   <p className="text-sm text-gray-600 font-medium">
                     students success
                   </p>
                 </div>
-                <div>
-                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1">
+                <div className="animate-fade-in-up animation-delay-1300">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
                     <AnimatedCounter value={95} suffix="%" />
                   </div>
                   <p className="text-sm text-gray-600 font-medium">
@@ -315,19 +315,19 @@ const Home = () => {
             </div>
 
             {/* Right Content - Image with Floating Tags */}
-            <div className="relative z-10 flex justify-center lg:justify-end">
+            <div className="relative z-10 flex justify-center lg:justify-end animate-scale-in animation-delay-1500">
               <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
                 <img
                   src={heroStudentImage}
                   alt="Student counseling illustration"
-                  className="w-full h-auto rounded-3xl shadow-2xl border border-white/60"
+                  className="w-full h-auto rounded-3xl shadow-2xl border border-white/60 transform hover:scale-105 transition-transform duration-500"
                   loading="eager"
                 />
 
                 {/* Floating Tags (desktop only) */}
                 <div className="hidden lg:block">
-                  <div className="absolute -top-6 right-4 bg-white/40 backdrop-blur-md  rounded-2xl px-3 py-2 shadow-xl  flex items-center gap-3 animate-float z-20">
-                    <div className="w-9 h-9  rounded-xl flex items-center justify-center  ">
+                  <div className="absolute -top-6 right-4 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center  animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center ">
                       <span className="text-lg">🎓</span>
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
@@ -336,10 +336,10 @@ const Home = () => {
                   </div>
 
                   <div
-                    className="absolute top-1/2 -left-6 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl  flex items-center gap-3 animate-float z-20"
+                    className="absolute top-1/2 -left-6 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center  animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300"
                     style={{ animationDelay: "0.5s" }}
                   >
-                    <div className="w-9 h-9  rounded-xl flex items-center justify-center ">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center ">
                       <span className="text-lg">🌍</span>
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
@@ -383,7 +383,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2  lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
               <Card
                 key={index}
