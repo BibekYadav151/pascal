@@ -283,7 +283,7 @@ const Courses = () => {
           {filteredPrograms.map((program, index) => (
             <Card
               key={program.id}
-              className="overflow-hidden"
+              className="group overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Card Header */}
@@ -299,7 +299,7 @@ const Courses = () => {
                   <div className="text-xs uppercase tracking-wide opacity-80 mb-1">
                     {program.studyLevel}
                   </div>
-                  <h3 className="text-lg font-bold line-clamp-2">
+                  <h3 className="text-lg font-bold line-clamp-2 group-hover:text-orange-600 transition-colors">
                     {program.title}
                   </h3>
                 </div>

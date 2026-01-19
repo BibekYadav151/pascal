@@ -4,6 +4,23 @@ import { useApp } from "../context/AppContext";
 import heroStudentImage from "../assets/hero-student.png";
 import { RiMapPinFill } from "react-icons/ri";
 import {
+  GraduationCap,
+  Globe,
+  BookOpen,
+  FileText,
+  Users,
+  Diamond,
+  UserCheck,
+  Target,
+  DollarSign,
+  Building2,
+  Award,
+  CheckCircle,
+  Zap,
+  ClipboardList,
+  TrendingUp
+} from "lucide-react";
+import {
   AnimatedButton,
   AnimatedCounter,
   Card,
@@ -161,25 +178,25 @@ const Home = () => {
 
   const services = [
     {
-      icon: "🎓",
+      icon: GraduationCap,
       title: "Student Visa Counseling",
       description: "Expert guidance for student visa applications",
       slug: "student-visa-counseling",
     },
     {
-      icon: "🌍",
+      icon: Globe,
       title: "Study Abroad Programs",
       description: "Wide range of programs in top universities",
       slug: "study-abroad-programs",
     },
     {
-      icon: "📘",
+      icon: BookOpen,
       title: "IELTS / PTE / Language Classes",
       description: "Comprehensive test preparation",
       slug: "ielts-pte-language-classes",
     },
     {
-      icon: "📝",
+      icon: FileText,
       title: "Documentation & Interview Prep",
       description: "Complete support for applications",
       slug: "documentation-interview-prep",
@@ -328,7 +345,7 @@ const Home = () => {
                 <div className="hidden lg:block">
                   <div className="absolute -top-6 right-4 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center  animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300">
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center ">
-                      <span className="text-lg">🎓</span>
+                      <GraduationCap className="w-5 h-5 text-gray-700" />
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
                       Student Visa Counseling
@@ -340,7 +357,7 @@ const Home = () => {
                     style={{ animationDelay: "0.5s" }}
                   >
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center ">
-                      <span className="text-lg">🌍</span>
+                      <Globe className="w-5 h-5 text-gray-700" />
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
                       Study Abroad Programs
@@ -352,7 +369,7 @@ const Home = () => {
                     style={{ animationDelay: "1s" }}
                   >
                     <div className="w-9 h-9  rounded-xl flex items-center justify-center ">
-                      <span className="text-lg">📚</span>
+                      <BookOpen className="w-5 h-5 text-gray-700" />
                     </div>
                     <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
                       Test Preparation
@@ -370,7 +387,7 @@ const Home = () => {
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center mb-12">
             <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
-              <span className="mr-2">💎</span>
+              <Diamond className="w-4 h-4 mr-2" />
               Our Expertise
             </div>
             <h2 className="text-display-lg text-gray-900 mb-6">
@@ -387,17 +404,17 @@ const Home = () => {
             {services.map((service, index) => (
               <Card
                 key={index}
-                className="group p-8"
+                className="group p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="space-y-6">
                   {/* Icon with clean background */}
                   <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                    <span className="text-2xl">{service.icon}</span>
+                    <service.icon className="w-6 h-6 text-gray-700" />
                   </div>
 
                   {/* Service title */}
-                  <h3 className="text-title-lg text-gray-900">
+                  <h3 className="text-title-lg text-gray-900 group-hover:text-orange-600 transition-colors">
                     {service.title}
                   </h3>
 
@@ -409,11 +426,11 @@ const Home = () => {
                   {/* Learn more link */}
                   <Link
                     to={`/services/${service.slug}`}
-                    className="flex items-center text-gray-900 font-medium group-hover:text-gray-700 transition-colors pt-2"
+                    className="flex items-center gap-1 text-orange-600 group-hover:gap-2 transition-all pt-2"
                   >
-                    <span>Learn more</span>
+                    <span className="font-medium">Learn more</span>
                     <svg
-                      className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                      className="w-4 h-4"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -626,7 +643,7 @@ const Home = () => {
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div>
               <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
-                <span className="mr-2">⭐</span>
+                <Award className="w-4 h-4 mr-2" />
                 Why Choose Us
               </div>
 
@@ -644,21 +661,21 @@ const Home = () => {
 
               <div className="space-y-4">
                 {[
-                  { text: "Certified Counselors", icon: "👨‍🏫" },
-                  { text: "High Visa Success Rate", icon: "🎯" },
-                  { text: "Affordable Fees", icon: "💰" },
-                  { text: "Personalized Guidance", icon: "🎓" },
-                  { text: "Trusted Partner Institutions", icon: "🏛️" },
+                  { text: "Certified Counselors", icon: UserCheck },
+                  { text: "High Visa Success Rate", icon: Target },
+                  { text: "Affordable Fees", icon: DollarSign },
+                  { text: "Personalized Guidance", icon: GraduationCap },
+                  { text: "Trusted Partner Institutions", icon: Building2 },
                 ].map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-4 p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200 group"
+                    className="flex items-center gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-200 group-hover:border-gray-300 transition-colors">
-                      <span className="text-lg">{item.icon}</span>
+                      <item.icon className="w-5 h-5 text-gray-700" />
                     </div>
-                    <span className="text-body-md font-medium text-gray-900">
+                    <span className="text-body-md font-medium text-gray-900 group-hover:text-orange-600 transition-colors">
                       {item.text}
                     </span>
                     <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
@@ -755,7 +772,7 @@ const Home = () => {
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src =
-                          'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="50%" y="50%" font-size="40" text-anchor="middle" dy=".3em">🎓</text></svg>';
+                          'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>';
                       }}
                     />
                   </div>
@@ -821,7 +838,6 @@ const Home = () => {
               href="/courses"
               variant="outline"
               size="lg"
-              icon="🎓"
               className="border-gray-600 text-white hover:bg-gray-800"
             >
               Browse Programs
@@ -832,7 +848,7 @@ const Home = () => {
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 text-gray-300">
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-xl">⚡</span>
+                <Zap className="w-6 h-6 text-gray-300" />
               </div>
               <div className="font-medium mb-1">Free Consultation</div>
               <div className="text-sm text-gray-400">No obligation</div>
@@ -840,7 +856,7 @@ const Home = () => {
 
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-xl">📋</span>
+                <ClipboardList className="w-6 h-6 text-gray-300" />
               </div>
               <div className="font-medium mb-1">Expert Guidance</div>
               <div className="text-sm text-gray-400">Professional support</div>
@@ -848,7 +864,7 @@ const Home = () => {
 
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-xl">🎯</span>
+                <Target className="w-6 h-6 text-gray-300" />
               </div>
               <div className="font-medium mb-1">Proven Results</div>
               <div className="text-sm text-gray-400">95% success rate</div>

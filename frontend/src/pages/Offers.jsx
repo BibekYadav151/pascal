@@ -121,15 +121,10 @@ const Offers = () => {
             {offers.map((offer, index) => (
               <div
                 key={offer.id}
-                className="group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 animate-fade-in-up border border-gray-100 hover:border-orange-200 overflow-hidden"
+                className="group relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-500 animate-fade-in-up border border-gray-100 overflow-hidden"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                {/* Background Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-transparent to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                {/* Floating Elements */}
-                <div className="absolute -top-2 -right-2 w-20 h-20 bg-gradient-to-br from-orange-200 to-red-200 rounded-full opacity-10 group-hover:scale-125 transition-transform duration-700"></div>
-                <div className="absolute -bottom-3 -left-3 w-24 h-24 bg-gradient-to-tr from-blue-200 to-purple-200 rounded-full opacity-10 group-hover:scale-110 transition-transform duration-700 delay-100"></div>
 
                 {/* Discount Badge */}
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1.5 rounded-xl text-sm font-bold shadow-lg transform rotate-3 group-hover:rotate-0 transition-transform duration-300 z-10">
@@ -159,8 +154,6 @@ const Offers = () => {
                   </div>
                 </div>
 
-                {/* Hover Effect Border */}
-                <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-orange-300 transition-all duration-300"></div>
               </div>
             ))}
           </div>

@@ -86,9 +86,9 @@ const Classes = () => {
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {classes.map((classItem) => (
-              <Card key={classItem.id} className="group p-6">
+              <Card key={classItem.id} className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-title-md text-gray-900 flex-1">
+                  <h3 className="text-title-md text-gray-900 flex-1 group-hover:text-orange-600 transition-colors">
                     {classItem.title}
                   </h3>
                   <span
@@ -202,9 +202,9 @@ const Classes = () => {
 
           <div className="grid md:grid-cols-2 gap-6">
             {instituteClasses.map((classItem) => (
-              <Card key={classItem.id} className="p-6">
+              <Card key={classItem.id} className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
                 <div className="flex justify-between items-start mb-6">
-                  <h3 className="text-title-lg text-gray-900 flex-1">
+                  <h3 className="text-title-lg text-gray-900 flex-1 group-hover:text-orange-600 transition-colors">
                     {classItem.title}
                   </h3>
                   <span

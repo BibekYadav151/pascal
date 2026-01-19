@@ -1,42 +1,43 @@
 import React from "react";
 import { Card, AnimatedButton } from "../components/ui";
+import { Building2, Briefcase, Sparkles, Globe, BookOpen, FileText, Users, Plane, GraduationCap } from "lucide-react";
 import logo from "../assets/pascal-logos.png";
 import backgroundImage from "../assets/background.jpg";
 
 const About = () => {
   const services = [
     {
-      icon: "🌍",
+      icon: Globe,
       title: "Country & Course Selection",
       description:
         "Expert guidance to help you choose the right country and course based on your interests, qualifications, and career goals.",
     },
     {
-      icon: "📚",
+      icon: BookOpen,
       title: "Test Preparation",
       description:
         "Comprehensive preparation for IELTS, PTE, Japanese JLPT, and other language proficiency tests.",
     },
     {
-      icon: "📝",
+      icon: FileText,
       title: "Visa Documentation",
       description:
         "Complete support in preparing and reviewing all necessary documents for visa applications.",
     },
     {
-      icon: "💼",
+      icon: Users,
       title: "Interview Preparation",
       description:
         "Mock interviews and coaching to help you prepare for visa and university admission interviews.",
     },
     {
-      icon: "✈️",
+      icon: Plane,
       title: "Pre-departure Briefing",
       description:
         "Essential information and tips to help you prepare for life and studies in your destination country.",
     },
     {
-      icon: "🎓",
+      icon: GraduationCap,
       title: "University Application",
       description:
         "Assistance with university applications, personal statements, and admission requirements.",
@@ -71,7 +72,8 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div>
               <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white text-gray-700 text-sm font-medium mb-6 border border-gray-200">
-                🏢 Our Story
+                <Building2 className="w-4 h-4 mr-2" />
+                Our Story
               </div>
               <h2 className="text-display-md text-gray-900 mb-6">Who We Are</h2>
               <Card className="">
@@ -131,14 +133,11 @@ const About = () => {
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Mission */}
-            <Card className="p-8">
-              <h3 className="text-title-lg text-gray-900 mb-4 flex items-center justify-between">
+            <Card className="group p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-lg text-gray-900 text-center mb-4 group-hover:text-orange-600 transition-colors">
                 Our Mission
-                <span className="text-3xl bg-gray-100 rounded-full w-12 h-12 flex items-center justify-center">
-                  🎯
-                </span>
               </h3>
-              <p className="text-body-sm text-gray-600 leading-relaxed">
+              <p className="text-body-sm text-gray-600 leading-relaxed text-center">
                 To provide honest, transparent, and result-driven education
                 consulting services that empower students to achieve their
                 dreams of studying abroad. We are committed to personalized
@@ -148,14 +147,11 @@ const About = () => {
             </Card>
 
             {/* Vision */}
-            <Card className="p-8">
-              <h3 className="text-title-lg text-gray-900 mb-4 flex items-center justify-between">
+            <Card className="group p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-lg text-gray-900 text-center mb-4 group-hover:text-orange-600 transition-colors">
                 Our Vision
-                <span className="text-3xl bg-gray-100 rounded-full w-12 h-12 flex items-center justify-center">
-                  🌟
-                </span>
               </h3>
-              <p className="text-body-sm text-gray-600 leading-relaxed">
+              <p className="text-body-sm text-gray-600 leading-relaxed text-center">
                 To be the most trusted global education partner, known for our
                 commitment to student success, integrity, and innovative
                 approaches to educational consulting. We aim to create a network
@@ -188,7 +184,8 @@ const About = () => {
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center mb-12">
             <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white text-gray-700 text-sm font-medium mb-6 border border-gray-200">
-              💼 Our Services
+              <Briefcase className="w-4 h-4 mr-2" />
+              Our Services
             </div>
             <h2 className="text-display-md text-gray-900 mb-6">What We Do</h2>
             <p className="text-body-lg text-gray-600 max-w-2xl mx-auto">
@@ -199,11 +196,11 @@ const About = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="p-6">
+              <Card key={index} className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
                 <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-6">
-                  <span className="text-2xl">{service.icon}</span>
+                  <service.icon className="w-6 h-6 text-gray-700" />
                 </div>
-                <h3 className="text-title-md text-gray-900 mb-3">
+                <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">
                   {service.title}
                 </h3>
                 <p className="text-body-sm text-gray-600">
@@ -219,34 +216,35 @@ const About = () => {
       <section className="section-spacing bg-white">
         <div className="relative max-w-4xl mx-auto container-spacing text-center">
           <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-8 border border-gray-200">
-            ✨ Our Values
+            <Sparkles className="w-4 h-4 mr-2" />
+            Our Values
           </div>
           <h2 className="text-display-md text-gray-900 mb-12">
             Our Core Values
           </h2>
           <div className="grid sm:grid-cols-2 gap-6">
-            <Card className="p-6 text-center">
-              <h3 className="text-title-md text-gray-900 mb-3">Integrity</h3>
+            <Card className="group p-6 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">Integrity</h3>
               <p className="text-body-sm text-gray-600">
                 Honest and ethical practices in all our dealings
               </p>
             </Card>
-            <Card className="p-6 text-center">
-              <h3 className="text-title-md text-gray-900 mb-3">Excellence</h3>
+            <Card className="group p-6 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">Excellence</h3>
               <p className="text-body-sm text-gray-600">
                 Commitment to delivering the highest quality service
               </p>
             </Card>
-            <Card className="p-6 text-center">
-              <h3 className="text-title-md text-gray-900 mb-3">
+            <Card className="group p-6 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">
                 Student Focus
               </h3>
               <p className="text-body-sm text-gray-600">
                 Putting students' needs and success first
               </p>
             </Card>
-            <Card className="p-6 text-center">
-              <h3 className="text-title-md text-gray-900 mb-3">Innovation</h3>
+            <Card className="group p-6 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">Innovation</h3>
               <p className="text-body-sm text-gray-600">
                 Continuously improving our services and processes
               </p>
