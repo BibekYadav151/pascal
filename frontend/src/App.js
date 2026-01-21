@@ -28,6 +28,7 @@ import AdminAppointments from './admin/AdminAppointments';
 import AdminBlogs from './admin/AdminBlogs';
 import AdminHero from './admin/AdminHero';
 import ScrollToTop from './components/ScrollToTop';
+import WhatsAppButton from './components/WhatsAppButton';
 
 function App() {
   const [isBookAppointmentOpen, setIsBookAppointmentOpen] = useState(false);
@@ -56,6 +57,7 @@ function App() {
                   </Routes>
                 </main>
                 <Footer />
+                <WhatsAppButton />
               </div>
             }>
             </Route>

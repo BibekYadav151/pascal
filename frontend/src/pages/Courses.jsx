@@ -442,12 +442,12 @@ const Courses = () => {
                     {/* Career Opportunities */}
                     {program.careerOpportunities && program.careerOpportunities.length > 0 && program.careerOpportunities.some(career => career.trim() !== "") && (
                       <div className="flex items-start text-sm">
-                        <BsAwardFill size={16} className="mr-2 mt-0.5 text-orange-500 flex-shrink-0" />
+                        <BsAwardFill size={16} className="mr-2 mt-0.5 text-yellow-500 flex-shrink-0" />
                         <div className="flex-1">
                           <span className="font-medium text-gray-900">Career Opportunities: </span>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {program.careerOpportunities.map((career, index) => (
-                              <span key={index} className="bg-gray-100 text-black-500 px-2 py-1 rounded text-xs font-medium ">
+                              <span key={index} className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium border border-yellow-200">
                                 {career}
                               </span>
                             ))}

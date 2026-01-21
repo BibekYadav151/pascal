@@ -270,118 +270,189 @@ const Home = () => {
       {/* Background Elements */}
       <FloatingElements className="opacity-30" />
 
-        {/* Hero Section */}
-      <section className="w-full pt-20 md:pt-24 lg:pt-28 pb-14 md:pb-16 lg:pb-20 relative">
-        {/* HERO GRID */}
-        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
-          
-          {/* TITLE AND STATS SECTION */}
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-8  pt-12 lg:pt-16">
-            {/* MAIN TITLE */}
-            <div className="flex-1">
-              <h1 className="text-4xl sm:text-5xl font-bold leading-tight text-black drop-shadow-lg font-serif text-left">
-                Let's Work Together to Create<br />
-                Wonders with Us
+      {/* Hero Section */} <section className="relative pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden min-h-[70vh] flex items-center animate-fade-in"> {/* Gradient Background */} <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50"></div>
+       
+
+        {/* Subtle Background Shapes */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-16 right-10 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl animate-float animation-delay-300"></div>
+          <div className="absolute bottom-16 left-10 w-80 h-80 bg-purple-200/20 rounded-full blur-3xl animate-float animation-delay-700"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-blue-100/10 rounded-full blur-3xl animate-float animation-delay-1100"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto container-spacing w-full mt-8 md:mt-12">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
+            {/* Left Content */}
+            <div className="space-y-6 z-10">
+              {/* Main Headline */}
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight animate-fade-in-up animation-delay-300">
+                Let's Work Together to Create Wonders with Us
               </h1>
-            </div>
 
-            {/* STATS */}
-            <div className="flex gap-6 lg:gap-8 lg:justify-end">
-              <div className="text-left lg:text-right">
-                <h3 className="text-orange-500 text-2xl lg:text-3xl xl:text-4xl font-bold">15+</h3>
-                <p className="text-sm text-mutedText">Years Of Experience</p>
-              </div>
-              <div className="text-left lg:text-right">
-                <h3 className="text-orange-500 text-2xl lg:text-3xl xl:text-4xl font-bold">100+</h3>
-                <p className="text-sm text-mutedText">Projects Delivered</p>
-              </div>
-              <div className="text-left lg:text-right">
-                <h3 className="text-orange-500 text-2xl lg:text-3xl xl:text-4xl font-bold">98%</h3>
-                <p className="text-sm text-mutedText">Client's Satisfaction</p>
-              </div>
-            </div>
-          </div>
+              {/* Description */}
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-2xl animate-fade-in-up animation-delay-500">
+                A visionary educational consultancy, crafting captivating
+                opportunities through expert guidance and personalized support.
+                Adept at turning your study abroad dreams into extraordinary
+                reality.
+              </p>
 
-          {/* CONTENT GRID */}
-          <div className="grid grid-cols-1 lg:grid-cols-12">
-
-          {/* LEFT CONTENT */}
-          <div className="lg:col-span-5 flex flex-col justify-center md:space-y-20">
-
-            <p className="text-mutedText max-w-xl leading-relaxed text-base md:text-lg mx-auto lg:mx-0 text-center lg:text-left">
-              A visionary educational consultancy, crafting captivating opportunities through expert guidance and personalized support. Adept at turning your study abroad dreams into extraordinary reality.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
-              <button
-                className="bg-orange-500 text-white px-6 py-3 font-semibold hover:bg-orange-600 transition rounded-lg"
-              >
-                Select Courses
-              </button>
-              <button
-                className="bg-white text-orange-600 border-2 border-orange-500 px-6 py-3 font-semibold hover:bg-orange-50 transition rounded-lg"
-              >
-                Let's Talk
-              </button>
-            </div>
-
-            {/* ARROWS */}
-            <div className="flex gap-3 justify-center lg:justify-start">
-              <button className="w-10 h-10 border flex items-center justify-center">
-                ←
-              </button>
-              <button className="w-10 h-10 border flex items-center justify-center">
-                →
-              </button>
-            </div>
-          </div>
-
-          {/* RIGHT IMAGE AREA */}
-          <div className="lg:col-span-7 relative mt-1">
-
-            {/* IMAGE */}
-            <img
-              src={heroStudentImage}
-              alt="Building"
-              className="w-full md:w-5/6 lg:w-3/4 xl:w-4/5 h-64 md:h-80 lg:h-[460px] object-cover mt-4 md:mt-8 lg:mt-12 ml-auto rounded-lg lg:rounded-none"
-            />
-{/* 
-            <div className="hidden lg:block absolute top-28 -left-12 z-10">
-              <img
-                src={heroStudentImage}
-                alt="Small decorative image"
-                className="w-56 h-40 object-cover shadow-lg rounded-lg"
-              />
-            </div> 
-
-            {/* SERVICE CARDS */}
-            <div className="hidden lg:flex absolute bottom-0 -left-40 gap-4">
-              <div className="bg-orange-500 text-white w-44 xl:w-48 h-72 xl:h-80 p-4 flex flex-col justify-center rounded-lg">
-                <div
-                  className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mb-3"
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-2 animate-fade-in-up animation-delay-700">
+                <AnimatedButton
+                  href="/contact"
+                  variant="primary"
+                  size="md"
+                  className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg text-sm md:text-base font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
                 >
-                  🏠
-                </div>
-                <h4 className="font-semibold text-sm mb-2 text-center">A Network Built Over Decades</h4>
-                <p className="text-xs leading-relaxed opacity-90 text-center">
-                  Thirty years of operation has allowed us to build direct, rock-solid relationships with prestigious universities and international partners across Canada, Australia, the UK, and Korea.
-                </p>
+                  Let's Talk.
+                </AnimatedButton>
+                <AnimatedButton
+                  href="/courses"
+                  variant="secondary"
+                  size="md"
+                  className="bg-white hover:bg-gray-50 text-gray-900 hover:text-orange-600 border border-gray-200 hover:border-orange-300 px-6 py-3 rounded-lg text-sm md:text-base font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
+                >
+                  Select Courses
+                </AnimatedButton>
               </div>
 
-              <div className="bg-orange-500 text-white w-44 xl:w-48 h-72 xl:h-80 p-4 flex flex-col justify-center rounded-lg">
-                <div
-                  className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mb-3"
-                >
-                  🏢
+              {/* Statistics */}
+              <div className="flex flex-wrap gap-8 pt-8 md:pt-10">
+                <div className="animate-fade-in-up animation-delay-900">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
+                    <AnimatedCounter value={parseInt(heroStats?.experience?.replace('+', '') || '8')} suffix="+" />
+                  </div>
+                  <p className="text-sm text-gray-600 font-medium">
+                    years experience
+                  </p>
                 </div>
-                <h4 className="font-semibold text-sm mb-2 text-center">Reliability You Can Trust</h4>
-                <p className="text-xs leading-relaxed opacity-90 text-center">
-                  We have seen the dreams of over 12,000 students through to completion. Our longevity is proof of our ethical practices—we were here yesterday, we are here today, and we will be here for your entire journey.
-                </p>
+                <div className="animate-fade-in-up animation-delay-1100">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
+                    <AnimatedCounter value={parseInt(heroStats?.students?.replace(/[^\d]/g, '') || '1000')} suffix="+" />
+                  </div>
+                  <p className="text-sm text-gray-600 font-medium">
+                    students success
+                  </p>
+                </div>
+                <div className="animate-fade-in-up animation-delay-1300">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
+                    <AnimatedCounter value={parseInt(heroStats?.satisfaction?.replace('%', '') || '95')} suffix="%" />
+                  </div>
+                  <p className="text-sm text-gray-600 font-medium">
+                    satisfied rate
+                  </p>
+                </div>
               </div>
             </div>
 
-          </div>
+            {/* Right Content - Image Carousel with Floating Tags */}
+            <div className="relative z-10 flex justify-center lg:justify-end animate-scale-in animation-delay-1500">
+              {/* Image Container */}
+              <div
+                className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl aspect-[4/3] rounded-3xl overflow-hidden shadow-2x1  transform hover:scale-105 transition-transform duration-500 cursor-pointer"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+              >
+                {/* Image Slideshow */}
+                <div className="relative w-full h-full">
+                  {heroImages && heroImages.length > 0 ? (
+                    heroImages.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                        alt={`Hero image ${index + 1}`}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                          index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        loading={index === 0 ? "eager" : "lazy"}
+                      />
+                    ))
+                  ) : (
+                    <img
+                      src={heroStudentImage}
+                      alt="Student counseling illustration"
+                      className="w-full h-full object-cover"
+                      loading="eager"
+                    />
+                  )}
+                </div>
+
+                {/* Image indicators with progress */}
+                {heroImages && heroImages.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-3 z-10">
+                    {/* Pause indicator */}
+                    {isPaused && (
+                      <div className="flex items-center space-x-1 text-white/80 text-xs">
+                        <div className="w-1 h-3 bg-white/60 rounded-sm"></div>
+                        <div className="w-1 h-3 bg-white/60 rounded-sm ml-0.5"></div>
+                      </div>
+                    )}
+
+                    {/* Progress indicators */}
+                    {heroImages.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`relative w-8 h-2 rounded-full transition-all duration-300 overflow-hidden ${
+                          index === currentImageIndex
+                            ? 'bg-white/80'
+                            : 'bg-white/30 hover:bg-white/50'
+                        }`}
+                      >
+                        {index === currentImageIndex && !isPaused && (
+                          <div
+                            className="absolute left-0 top-0 h-full bg-white rounded-full"
+                            style={{
+                              animation: 'slide-right 4s linear infinite',
+                              width: '100%'
+                            }}
+                          />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Floating Tags (desktop only) - Outside container to avoid clipping */}
+              <div className="hidden lg:block absolute inset-0 pointer-events-none">
+                <div className="relative w-full h-full">
+                  <div className="absolute top-0 right-4 bg-white backdrop-blur-md rounded-2xl px-3 py-1 shadow-xl flex items-center animate-float z-20 cursor-pointer hover:bg-white/600 hover:scale-105 transition-all duration-300 pointer-events-auto">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center">
+                      <GraduationCap className="w-5 h-5 text-gray-700" />
+                    </div>
+                    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap ml-2">
+                      Student Visa Counseling
+                    </span>
+                  </div>
+
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 -left-6 bg-white backdrop-blur-md rounded-2xl px-3 py-1 shadow-xl flex items-center animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300 pointer-events-auto"
+                    style={{ animationDelay: "0.5s" }}
+                  >
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center">
+                      <Globe className="w-5 h-5 text-gray-700" />
+                    </div>
+                    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap ml-2">
+                      Study Abroad Programs
+                    </span>
+                  </div>
+
+                  <div
+                    className="absolute bottom-0 right-8 bg-white backdrop-blur-md rounded-2xl px-3 py-1 shadow-xl flex items-center gap-3 animate-float z-20 pointer-events-auto"
+                    style={{ animationDelay: "1s" }}
+                  >
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center">
+                      <BookOpen className="w-5 h-5 text-gray-700" />
+                    </div>
+                    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                      Test Preparation
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -816,7 +887,7 @@ const Home = () => {
                 {/* Main statistic */}
                 <div className="mb-8">
                   <div className="text-6xl font-bold text-gray-900 mb-4">
-                    <AnimatedCounter value={1000} suffix="+" />
+                    <AnimatedCounter value={12000} suffix="+" />
                   </div>
                   <p className="text-title-lg text-gray-900 mb-3">
                     Students Placed
@@ -831,19 +902,19 @@ const Home = () => {
                 <div className="grid grid-cols-3 gap-2 sm:gap-4">
                   <div className="bg-gray-50 rounded-xl p-3 sm:p-6">
                     <div className="text-xl sm:text-2xl font-bold text-green-600 mb-1 sm:mb-2">
-                      <AnimatedCounter value={95} suffix="%" />
+                      <AnimatedCounter value={99} suffix="%" />
                     </div>
                     <p className="text-xs sm:text-caption text-gray-600">Success Rate</p>
                   </div>
                   <div className="bg-gray-50 rounded-xl p-3 sm:p-6">
                     <div className="text-xl sm:text-2xl font-bold text-blue-600 mb-1 sm:mb-2">
-                      <AnimatedCounter value={25} suffix="+" />
+                      <AnimatedCounter value={50} suffix="+" />
                     </div>
                     <p className="text-xs sm:text-caption text-gray-600">Countries</p>
                   </div>
                   <div className="bg-gray-50 rounded-xl p-3 sm:p-6">
                     <div className="text-xl sm:text-2xl font-bold text-purple-600 mb-1 sm:mb-2">
-                      <AnimatedCounter value={8} suffix="+" />
+                      <AnimatedCounter value={30} suffix="+" />
                     </div>
                     <p className="text-xs sm:text-caption text-gray-600">
                       Years Experience
@@ -1143,6 +1214,5 @@ const Home = () => {
     </div>
   );
 };
-
 
 export default Home;

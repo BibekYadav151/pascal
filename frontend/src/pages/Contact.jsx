@@ -65,6 +65,36 @@ const Contact = () => {
     // { name: "LinkedIn", icon: "💼", url: "#" },
   ];
 
+  const branches = [
+    {
+      name: "Main Branch - Kathmandu",
+      location: "Kathmandu, Nepal",
+      address: "Putalisadak, Kathmandu 44600",
+      phone: "+977-1-44XXXXXX",
+      email: "info@pascalinstitute.edu.np",
+      hours: "Sun-Fri: 9:00 AM - 6:00 PM",
+      mapUrl: "#"
+    },
+    {
+      name: "Branch Office - Pokhara",
+      location: "Pokhara, Nepal",
+      address: "Lakeside Road, Pokhara 33700",
+      phone: "+977-61-XXXXXX",
+      email: "pokhara@pascalinstitute.edu.np",
+      hours: "Sun-Fri: 9:00 AM - 5:00 PM",
+      mapUrl: "#"
+    },
+    {
+      name: "Branch Office - Chitwan",
+      location: "Chitwan, Nepal",
+      address: "Bharatpur, Chitwan 44200",
+      phone: "+977-56-XXXXXX",
+      email: "chitwan@pascalinstitute.edu.np",
+      hours: "Sun-Fri: 9:00 AM - 5:00 PM",
+      mapUrl: "#"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Page Header */}
@@ -226,16 +256,84 @@ const Contact = () => {
         </div>
       </section>
 
+      {/* Branches Section */}
+      <section className="section-spacing bg-white">
+        <div className="relative max-w-7xl mx-auto container-spacing">
+          <div className="text-center mb-12">
+            <h2 className="text-display-md text-gray-900 mb-4">
+              Our Branches
+            </h2>
+            <p className="text-body-lg text-gray-600">
+              Visit us at any of our convenient locations across Nepal
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {branches.map((branch, index) => (
+              <Card key={index} className="p-6 hover:shadow-lg transition-all duration-300">
+                <div className="space-y-4">
+                  {/* Branch Header */}
+                  <div>
+                    <h3 className="text-title-md text-gray-900 mb-2">
+                      {branch.name}
+                    </h3>
+                    <div className="flex items-center text-sm text-gray-600 mb-3">
+                      <FiMapPin className="w-4 h-4 mr-2 text-blue-500" />
+                      {branch.location}
+                    </div>
+                  </div>
+
+                  {/* Branch Details */}
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <FiMapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm text-gray-700">{branch.address}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <FaPhoneAlt className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <p className="text-sm text-gray-700">{branch.phone}</p>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <MdEmail className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <p className="text-sm text-gray-700">{branch.email}</p>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <span className="w-4 h-4 text-gray-400 flex-shrink-0">🕒</span>
+                      <p className="text-sm text-gray-700">{branch.hours}</p>
+                    </div>
+                  </div>
+
+                  {/* Visit Button */}
+                  <AnimatedButton
+                    href={branch.mapUrl}
+                    variant="outline"
+                    size="sm"
+                    className="w-full mt-4 border-blue-500 text-blue-600 hover:bg-blue-50"
+                  >
+                    Get Directions
+                  </AnimatedButton>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Map Section */}
       <section className="section-spacing bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center mb-12">
-           
+
             <h2 className="text-display-md text-gray-900 mb-4">
               Find Us
             </h2>
             <p className="text-body-lg text-gray-600">
-              Visit our office in Kathmandu
+              Visit any of our branches across Nepal
             </p>
           </div>
 
@@ -248,7 +346,7 @@ const Contact = () => {
                   Map Integration Coming Soon
                 </p>
                 <p className="text-body-sm text-gray-600">
-                  Our office is located in Kathmandu, Nepal
+                  Our branches are located across Nepal - Kathmandu, Pokhara, and Chitwan
                 </p>
               </div>
             </div>
