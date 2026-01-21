@@ -271,26 +271,48 @@ const Home = () => {
       <FloatingElements className="opacity-30" />
 
         {/* Hero Section */}
-      <section className="w-full py-16 relative">
-        {/* MAIN TITLE */}
-        <div className="absolute top-32 left-4 z-10">
-          <h1 className="text-5xl font-bold leading-tight text-black drop-shadow-lg font-serif">
-            Let's Work Together to Create<br />
-            Wonders with Us
-          </h1>
-        </div>
+      <section className="w-full pt-20 md:pt-24 lg:pt-28 pb-14 md:pb-16 lg:pb-20 relative">
+        {/* HERO GRID */}
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
+          
+          {/* TITLE AND STATS SECTION */}
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-8  pt-12 lg:pt-16">
+            {/* MAIN TITLE */}
+            <div className="flex-1">
+              <h1 className="text-4xl sm:text-5xl font-bold leading-tight text-black drop-shadow-lg font-serif text-left">
+                Let's Work Together to Create<br />
+                Wonders with Us
+              </h1>
+            </div>
 
-        <div className="w-full px-6 grid grid-cols-12 gap-10">
+            {/* STATS */}
+            <div className="flex gap-6 lg:gap-8 lg:justify-end">
+              <div className="text-left lg:text-right">
+                <h3 className="text-orange-500 text-2xl lg:text-3xl xl:text-4xl font-bold">15+</h3>
+                <p className="text-sm text-mutedText">Years Of Experience</p>
+              </div>
+              <div className="text-left lg:text-right">
+                <h3 className="text-orange-500 text-2xl lg:text-3xl xl:text-4xl font-bold">100+</h3>
+                <p className="text-sm text-mutedText">Projects Delivered</p>
+              </div>
+              <div className="text-left lg:text-right">
+                <h3 className="text-orange-500 text-2xl lg:text-3xl xl:text-4xl font-bold">98%</h3>
+                <p className="text-sm text-mutedText">Client's Satisfaction</p>
+              </div>
+            </div>
+          </div>
+
+          {/* CONTENT GRID */}
+          <div className="grid grid-cols-1 lg:grid-cols-12">
 
           {/* LEFT CONTENT */}
-          <div className="col-span-5 flex flex-col justify-center">
+          <div className="lg:col-span-5 flex flex-col justify-center md:space-y-20">
 
-            <p className="mt-14 text-mutedText max-w-sm  leading-loose">
+            <p className="text-mutedText max-w-xl leading-relaxed text-base md:text-lg mx-auto lg:mx-0 text-center lg:text-left">
               A visionary educational consultancy, crafting captivating opportunities through expert guidance and personalized support. Adept at turning your study abroad dreams into extraordinary reality.
-
             </p>
 
-            <div className="flex gap-4 mt-8">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
               <button
                 className="bg-orange-500 text-white px-6 py-3 font-semibold hover:bg-orange-600 transition rounded-lg"
               >
@@ -304,7 +326,7 @@ const Home = () => {
             </div>
 
             {/* ARROWS */}
-            <div className="flex gap-3 mt-10">
+            <div className="flex gap-3 justify-center lg:justify-start">
               <button className="w-10 h-10 border flex items-center justify-center">
                 ←
               </button>
@@ -315,69 +337,51 @@ const Home = () => {
           </div>
 
           {/* RIGHT IMAGE AREA */}
-          <div className="col-span-7 relative">
-
-
-            {/* STATS */}
-            <div className="absolute top-14 right-6 flex gap-10 z-10">
-              <div className="text-right">
-                <h3 className="text-orange-500 text-4xl font-bold">15+</h3>
-                <p className="text-sm text-mutedText">Years Of Experience</p>
-              </div>
-              <div className="text-right">
-                <h3 className="text-orange-500 text-4xl font-bold">100+</h3>
-                <p className="text-sm text-mutedText">Projects Delivered</p>
-              </div>
-              <div className="text-right">
-                <h3 className="text-orange-500 text-4xl font-bold">98%</h3>
-                <p className="text-sm text-mutedText">Client's Satisfaction</p>
-              </div>
-            </div>
+          <div className="lg:col-span-7 relative mt-1">
 
             {/* IMAGE */}
             <img
               src={heroStudentImage}
               alt="Building"
-              className="w-3/4 h-[520px] object-cover mt-40 ml-auto"
+              className="w-full md:w-5/6 lg:w-3/4 xl:w-4/5 h-64 md:h-80 lg:h-[460px] object-cover mt-4 md:mt-8 lg:mt-12 ml-auto rounded-lg lg:rounded-none"
             />
-
-            {/* SMALL IMAGE SECTION */}
-            <div className="absolute top-40 -left-12 z-10">
+{/* 
+            <div className="hidden lg:block absolute top-28 -left-12 z-10">
               <img
                 src={heroStudentImage}
                 alt="Small decorative image"
-                className="w-64 h-48 object-cover  shadow-lg"
+                className="w-56 h-40 object-cover shadow-lg rounded-lg"
               />
-            </div>
+            </div> 
 
             {/* SERVICE CARDS */}
-            <div className="absolute bottom-0 -left-48 flex gap-4">
-              <div className="bg-orange-500 text-white w-48 h-80 p-4 flex flex-col justify-center">
+            <div className="hidden lg:flex absolute bottom-0 -left-40 gap-4">
+              <div className="bg-orange-500 text-white w-44 xl:w-48 h-72 xl:h-80 p-4 flex flex-col justify-center rounded-lg">
                 <div
                   className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mb-3"
                 >
                   🏠
                 </div>
-                <h4 className="font-semibold text-sm mb-2">A Network Built Over Decades</h4>
-                <p className="text-xs leading-relaxed opacity-90">
-                  
-Thirty years of operation has allowed us to build direct, rock-solid relationships with prestigious universities and international partners across Canada, Australia, the UK, and Korea.
+                <h4 className="font-semibold text-sm mb-2 text-center">A Network Built Over Decades</h4>
+                <p className="text-xs leading-relaxed opacity-90 text-center">
+                  Thirty years of operation has allowed us to build direct, rock-solid relationships with prestigious universities and international partners across Canada, Australia, the UK, and Korea.
                 </p>
               </div>
 
-              <div className="bg-orange-500 text-white w-48 h-80 p-4 flex flex-col justify-center">
+              <div className="bg-orange-500 text-white w-44 xl:w-48 h-72 xl:h-80 p-4 flex flex-col justify-center rounded-lg">
                 <div
                   className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mb-3"
                 >
                   🏢
                 </div>
-                <h4 className="font-semibold text-sm mb-2">Reliability You Can Trust</h4>
-                <p className="text-xs leading-relaxed opacity-90">
+                <h4 className="font-semibold text-sm mb-2 text-center">Reliability You Can Trust</h4>
+                <p className="text-xs leading-relaxed opacity-90 text-center">
                   We have seen the dreams of over 12,000 students through to completion. Our longevity is proof of our ethical practices—we were here yesterday, we are here today, and we will be here for your entire journey.
                 </p>
               </div>
             </div>
 
+          </div>
           </div>
         </div>
       </section>
