@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Gift, Calendar } from 'lucide-react';
+import { FloatingElements } from '../components/ui';
 
 const Offers = () => {
   const [activeTab, setActiveTab] = useState('current');
@@ -67,15 +68,25 @@ const Offers = () => {
   const offers = activeTab === 'current' ? currentOffers : upcomingOffers;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen relative">
+      {/* Background Elements */}
+      <FloatingElements className="opacity-30" />
+
       {/* Hero Section */}
-      <section className="page-top bg-gradient-to-r from-orange-50 to-blue-50">
+      <section className="relative page-top overflow-hidden">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-50 via-pink-50 to-blue-50"></div>
+
+        {/* Subtle Background Shapes */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 right-16 w-96 h-96 bg-orange-200/20 rounded-full blur-3xl animate-float animation-delay-300"></div>
+          <div className="absolute bottom-20 left-16 w-80 h-80 bg-pink-200/20 rounded-full blur-3xl animate-float animation-delay-700"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/15 rounded-full blur-3xl animate-float animation-delay-1100"></div>
+        </div>
+
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-800 text-sm font-medium mb-6">
-              <Gift className="w-4 h-4 mr-2" />
-              Special Offers & Discounts
-            </div>
+            
             <h1 className="text-display-lg text-gray-900 mb-4">
               Exclusive Offers Just for You
             </h1>
@@ -89,7 +100,7 @@ const Offers = () => {
 
       {/* Offers Section */}
       <section className="section-spacing bg-white">
-        <div className="max-w-7xl mx-auto container-spacing">
+        <div className="relative max-w-7xl mx-auto container-spacing">
           {/* Tab Navigation */}
           <div className="flex justify-center mb-12">
             <div className="bg-gray-100 p-1 rounded-lg">

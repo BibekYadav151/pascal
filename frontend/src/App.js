@@ -26,6 +26,7 @@ import AdminUniversities from './admin/AdminUniversities';
 import AdminMessages from './admin/AdminMessages';
 import AdminAppointments from './admin/AdminAppointments';
 import AdminBlogs from './admin/AdminBlogs';
+import AdminHero from './admin/AdminHero';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
               <Route path="messages" element={<AdminMessages />} />
               <Route path="appointments" element={<AdminAppointments />} />
               <Route path="blogs" element={<AdminBlogs />} />
+              <Route path="hero" element={<AdminHero />} />
             </Route>
           </Routes>
           

@@ -359,11 +359,10 @@ const AdminPrograms = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                      Tuition Fee *
+                      Tuition Fee
                     </label>
                     <input
                       type="text"
-                      required
                       value={formData.tuitionFee}
                       onChange={(e) => setFormData({ ...formData, tuitionFee: e.target.value })}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -415,11 +414,10 @@ const AdminPrograms = () => {
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Scholarship Info *
+                    Scholarship Info
                   </label>
                   <input
                     type="text"
-                    required
                     value={formData.scholarshipInfo}
                     onChange={(e) => setFormData({ ...formData, scholarshipInfo: e.target.value })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -429,11 +427,10 @@ const AdminPrograms = () => {
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Career Opportunities *
+                    Career Opportunities
                   </label>
                   <input
                     type="text"
-                    required
                     value={formData.careerOpportunities}
                     onChange={(e) => setFormData({ ...formData, careerOpportunities: e.target.value })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"

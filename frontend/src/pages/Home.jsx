@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import heroStudentImage from "../assets/hero-student.png";
 import { RiMapPinFill } from "react-icons/ri";
+
 import {
   GraduationCap,
   Globe,
@@ -28,12 +29,13 @@ import {
 } from "../components/ui";
 
 const Home = () => {
-  const { classes, addClassInquiry, universities } = useApp();
+  const { classes, addClassInquiry, universities, heroStats, heroImages } = useApp();
   const scrollContainerRef = useRef(null);
   const carouselRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedClass, setSelectedClass] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -44,6 +46,21 @@ const Home = () => {
     message: "",
   });
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
+
+  // Auto-slide hero images with pause on hover
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (heroImages && heroImages.length > 1 && !isPaused) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prevIndex) =>
+          prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
+        );
+      }, 4000); // Change image every 4 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [heroImages, isPaused]);
 
   // Modal handlers
   const handleApplyNow = (classItem) => {
@@ -253,131 +270,114 @@ const Home = () => {
       {/* Background Elements */}
       <FloatingElements className="opacity-30" />
 
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden min-h-[70vh] flex items-center animate-fade-in">
-        {/* Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50"></div>
-
-        {/* Subtle Background Shapes */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-16 right-10 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl animate-float animation-delay-300"></div>
-          <div className="absolute bottom-16 left-10 w-80 h-80 bg-purple-200/20 rounded-full blur-3xl animate-float animation-delay-700"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-blue-100/10 rounded-full blur-3xl animate-float animation-delay-1100"></div>
+        {/* Hero Section */}
+      <section className="w-full py-16 relative">
+        {/* MAIN TITLE */}
+        <div className="absolute top-32 left-4 z-10">
+          <h1 className="text-5xl font-bold leading-tight text-black drop-shadow-lg font-serif">
+            Let's Work Together to Create<br />
+            Wonders with Us
+          </h1>
         </div>
 
-        <div className="relative max-w-7xl mx-auto container-spacing w-full mt-8 md:mt-12">
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
-            {/* Left Content */}
-            <div className="space-y-6 z-10">
-              {/* Main Headline */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight animate-fade-in-up animation-delay-300">
-                Let's Work Together to Create Wonders with Us
-              </h1>
+        <div className="w-full px-6 grid grid-cols-12 gap-10">
 
-              {/* Description */}
-              <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-2xl animate-fade-in-up animation-delay-500">
-                A visionary educational consultancy, crafting captivating
-                opportunities through expert guidance and personalized support.
-                Adept at turning your study abroad dreams into extraordinary
-                reality.
-              </p>
+          {/* LEFT CONTENT */}
+          <div className="col-span-5 flex flex-col justify-center">
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-2 animate-fade-in-up animation-delay-700">
-                <AnimatedButton
-                  href="/contact"
-                  variant="primary"
-                  size="md"
-                  className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg text-sm md:text-base font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
-                >
-                  Let's Talk.
-                </AnimatedButton>
-                <AnimatedButton
-                  href="/courses"
-                  variant="secondary"
-                  size="md"
-                  className="bg-white hover:bg-gray-50 text-gray-900 hover:text-orange-600 border border-gray-200 hover:border-orange-300 px-6 py-3 rounded-lg text-sm md:text-base font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
-                >
-                  Select Courses
-                </AnimatedButton>
+            <p className="mt-14 text-mutedText max-w-sm  leading-loose">
+              A visionary educational consultancy, crafting captivating opportunities through expert guidance and personalized support. Adept at turning your study abroad dreams into extraordinary reality.
+
+            </p>
+
+            <div className="flex gap-4 mt-8">
+              <button
+                className="bg-orange-500 text-white px-6 py-3 font-semibold hover:bg-orange-600 transition rounded-lg"
+              >
+                Select Courses
+              </button>
+              <button
+                className="bg-white text-orange-600 border-2 border-orange-500 px-6 py-3 font-semibold hover:bg-orange-50 transition rounded-lg"
+              >
+                Let's Talk
+              </button>
+            </div>
+
+            {/* ARROWS */}
+            <div className="flex gap-3 mt-10">
+              <button className="w-10 h-10 border flex items-center justify-center">
+                ←
+              </button>
+              <button className="w-10 h-10 border flex items-center justify-center">
+                →
+              </button>
+            </div>
+          </div>
+
+          {/* RIGHT IMAGE AREA */}
+          <div className="col-span-7 relative">
+
+
+            {/* STATS */}
+            <div className="absolute top-14 right-6 flex gap-10 z-10">
+              <div className="text-right">
+                <h3 className="text-orange-500 text-4xl font-bold">15+</h3>
+                <p className="text-sm text-mutedText">Years Of Experience</p>
               </div>
-
-              {/* Statistics */}
-              <div className="flex flex-wrap gap-8 pt-8 md:pt-10">
-                <div className="animate-fade-in-up animation-delay-900">
-                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
-                    <AnimatedCounter value={8} suffix="+" />
-                  </div>
-                  <p className="text-sm text-gray-600 font-medium">
-                    years experience
-                  </p>
-                </div>
-                <div className="animate-fade-in-up animation-delay-1100">
-                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
-                    <AnimatedCounter value={1000} suffix="+" />
-                  </div>
-                  <p className="text-sm text-gray-600 font-medium">
-                    students success
-                  </p>
-                </div>
-                <div className="animate-fade-in-up animation-delay-1300">
-                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
-                    <AnimatedCounter value={95} suffix="%" />
-                  </div>
-                  <p className="text-sm text-gray-600 font-medium">
-                    satisfied rate
-                  </p>
-                </div>
+              <div className="text-right">
+                <h3 className="text-orange-500 text-4xl font-bold">100+</h3>
+                <p className="text-sm text-mutedText">Projects Delivered</p>
+              </div>
+              <div className="text-right">
+                <h3 className="text-orange-500 text-4xl font-bold">98%</h3>
+                <p className="text-sm text-mutedText">Client's Satisfaction</p>
               </div>
             </div>
 
-            {/* Right Content - Image with Floating Tags */}
-            <div className="relative z-10 flex justify-center lg:justify-end animate-scale-in animation-delay-1500">
-              <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
-                <img
-                  src={heroStudentImage}
-                  alt="Student counseling illustration"
-                  className="w-full h-auto rounded-3xl shadow-2xl border border-white/60 transform hover:scale-105 transition-transform duration-500"
-                  loading="eager"
-                />
+            {/* IMAGE */}
+            <img
+              src={heroStudentImage}
+              alt="Building"
+              className="w-3/4 h-[520px] object-cover mt-40 ml-auto"
+            />
 
-                {/* Floating Tags (desktop only) */}
-                <div className="hidden lg:block">
-                  <div className="absolute -top-6 right-4 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center  animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center ">
-                      <GraduationCap className="w-5 h-5 text-gray-700" />
-                    </div>
-                    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
-                      Student Visa Counseling
-                    </span>
-                  </div>
+            {/* SMALL IMAGE SECTION */}
+            <div className="absolute top-40 -left-12 z-10">
+              <img
+                src={heroStudentImage}
+                alt="Small decorative image"
+                className="w-64 h-48 object-cover  shadow-lg"
+              />
+            </div>
 
-                  <div
-                    className="absolute top-1/2 -left-6 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center  animate-float z-20 cursor-pointer hover:bg-white/60 hover:scale-105 transition-all duration-300"
-                    style={{ animationDelay: "0.5s" }}
-                  >
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center ">
-                      <Globe className="w-5 h-5 text-gray-700" />
-                    </div>
-                    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
-                      Study Abroad Programs
-                    </span>
-                  </div>
-
-                  <div
-                    className="absolute -bottom-6 right-8 bg-white/40 backdrop-blur-md rounded-2xl px-3 py-2 shadow-xl flex items-center gap-3 animate-float z-20"
-                    style={{ animationDelay: "1s" }}
-                  >
-                    <div className="w-9 h-9  rounded-xl flex items-center justify-center ">
-                      <BookOpen className="w-5 h-5 text-gray-700" />
-                    </div>
-                    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
-                      Test Preparation
-                    </span>
-                  </div>
+            {/* SERVICE CARDS */}
+            <div className="absolute bottom-0 -left-48 flex gap-4">
+              <div className="bg-orange-500 text-white w-48 h-80 p-4 flex flex-col justify-center">
+                <div
+                  className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mb-3"
+                >
+                  🏠
                 </div>
+                <h4 className="font-semibold text-sm mb-2">A Network Built Over Decades</h4>
+                <p className="text-xs leading-relaxed opacity-90">
+                  
+Thirty years of operation has allowed us to build direct, rock-solid relationships with prestigious universities and international partners across Canada, Australia, the UK, and Korea.
+                </p>
+              </div>
+
+              <div className="bg-orange-500 text-white w-48 h-80 p-4 flex flex-col justify-center">
+                <div
+                  className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mb-3"
+                >
+                  🏢
+                </div>
+                <h4 className="font-semibold text-sm mb-2">Reliability You Can Trust</h4>
+                <p className="text-xs leading-relaxed opacity-90">
+                  We have seen the dreams of over 12,000 students through to completion. Our longevity is proof of our ethical practices—we were here yesterday, we are here today, and we will be here for your entire journey.
+                </p>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -448,18 +448,7 @@ const Home = () => {
             ))}
           </div>
 
-          {/* Call to action */}
-          <div className="text-center mt-16">
-            <p className="text-gray-600 mb-6">Ready to get started?</p>
-            <AnimatedButton
-              href="/contact"
-              variant="gradient"
-              size="lg"
-              icon="📞"
-            >
-              Get Free Consultation
-            </AnimatedButton>
-          </div>
+          
         </div>
       </section>
 
@@ -468,10 +457,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto container-spacing">
           <div className="flex justify-between items-center mb-10">
             <div>
-              <h2 className="text-display-md text-gray-900 mb-2">
+              <h2 className="text-display-sm text-gray-900 mb-2">
                 Popular Classes
               </h2>
-              <p className="text-body-md text-gray-600">
+              <p className="text-body-sm text-gray-600">
                 Join our most sought-after preparation classes
               </p>
             </div>
@@ -616,7 +605,7 @@ const Home = () => {
                       variant="primary"
                       size="md"
                       className="w-full"
-                      
+
                     >
                       Apply Now
                     </AnimatedButton>
@@ -633,6 +622,125 @@ const Home = () => {
             >
               View All Classes
             </Link>
+          </div>
+        </div>
+      </section>
+
+      
+      {/* Why Experience Matters */}
+      <section className="section-spacing bg-white">
+        <div className="relative max-w-7xl mx-auto container-spacing">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
+              
+              The Pascal Advantage
+            </div>
+            <h2 className="text-display-md text-gray-900 mb-6">Why Experience Matters: The Pascal Advantage</h2>
+            <p className="text-body-lg text-gray-600 max-w-3xl mx-auto mb-8">
+              In the world of international education, policies change, visa rules shift, and university requirements evolve. When you choose Pascal Education, you aren't just hiring a consultant; you are partnering with three decades of expertise.
+            </p>
+            <h3 className="text-title-lg text-gray-900 mb-8 font-semibold">
+              What does our 30+ year legacy mean for you?
+            </h3>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            <Card className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors font-semibold">
+                Unmatched Industry Knowledge
+              </h3>
+              <p className="text-body-sm text-gray-600">
+                Since 1995, we have navigated every major change in global education. We know the "ins and outs" of visa systems that newer agencies are still learning.
+              </p>
+            </Card>
+            <Card className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors font-semibold">
+                A Network Built Over Decades
+              </h3>
+              <p className="text-body-sm text-gray-600">
+                Thirty years of operation has allowed us to build direct, rock-solid relationships with prestigious universities and international partners across Canada, Australia, the UK, and Korea.
+              </p>
+            </Card>
+            <Card className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors font-semibold">
+                Reliability You Can Trust
+              </h3>
+              <p className="text-body-sm text-gray-600">
+                We have seen the dreams of over 12,000 students through to completion. Our longevity is proof of our ethical practices—we were here yesterday, we are here today, and we will be here for your entire journey.
+              </p>
+            </Card>
+            <Card className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors font-semibold">
+                Expertise in Complex Cases
+              </h3>
+              <p className="text-body-sm text-gray-600">
+                With 30 years of documentation experience, we know how to handle complex profiles and turn potential rejections into success stories.
+              </p>
+            </Card>
+          
+          </div>
+        </div>
+      </section>
+
+      {/* Why 12,000+ Students Chose Pascal */}
+      <section className="section-spacing bg-gray-50">
+        <div className="relative max-w-7xl mx-auto container-spacing">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white text-gray-700 text-sm font-medium mb-6 border border-gray-200">
+              <Users className="w-4 h-4 mr-2" />
+              Student Success
+            </div>
+            <h2 className="text-display-md text-gray-900 mb-6">Why 12,000+ Students Chose Pascal</h2>
+            <p className="text-body-lg text-gray-600 max-w-3xl mx-auto mb-8">
+              Experience matters. With 30+ years in the industry, we offer a level of expertise that few can match:
+            </p>
+          </div>
+          <div className="space-y-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors font-semibold">
+                  Three Decades of Trust
+                </h3>
+                <p className="text-body-sm text-gray-600">
+                  Serving students and parents since 1995.
+                </p>
+              </Card>
+              <Card className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors font-semibold">
+                  MOE Certified
+                </h3>
+                <p className="text-body-sm text-gray-600">
+                  Fully recognized and certified by the Ministry of Education (MOE), Nepal.
+                </p>
+              </Card>
+              <Card className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors font-semibold">
+                  Proven Success
+                </h3>
+                <p className="text-body-sm text-gray-600">
+                  A massive alumni network of over 12,000 successfully placed students worldwide.
+                </p>
+              </Card>
+            </div>
+            <div className="flex justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
+                <Card className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                  <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors font-semibold">
+                    Expert Counselors
+                  </h3>
+                  <p className="text-body-sm text-gray-600">
+                    Our team consists of veteran consultants who stay updated on the latest visa policies and immigration rules.
+                  </p>
+                </Card>
+                <Card className="group p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                  <h3 className="text-title-md text-gray-900 mb-3 group-hover:text-orange-600 transition-colors font-semibold">
+                    High Visa Approval
+                  </h3>
+                  <p className="text-body-sm text-gray-600">
+                    Our meticulous documentation process leads to one of the highest visa success rates in the capital.
+                  </p>
+                </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1031,5 +1139,6 @@ const Home = () => {
     </div>
   );
 };
+
 
 export default Home;

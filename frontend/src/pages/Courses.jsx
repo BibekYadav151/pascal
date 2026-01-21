@@ -5,7 +5,7 @@ import { SiGooglemaps } from "react-icons/si";
 import { GiDuration } from "react-icons/gi";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { BsAwardFill } from "react-icons/bs";
-import backgroundImage from "../assets/background.jpg";
+import { ChevronDown } from "lucide-react";
 
 const Courses = () => {
   const { programs, universities, addProgramInquiry } = useApp();
@@ -21,6 +21,7 @@ const Courses = () => {
   });
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [expandedCards, setExpandedCards] = useState(new Set());
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -48,7 +49,9 @@ const Courses = () => {
     return programs.filter((program) => {
       const matchesSearch =
         program.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        program.university.toLowerCase().includes(searchQuery.toLowerCase());
+        program.university.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        program.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (program.location && program.location.toLowerCase().includes(searchQuery.toLowerCase()));
 
       const matchesCountry =
         !filters.country || program.country === filters.country;
@@ -91,6 +94,18 @@ const Courses = () => {
       studyLevel: "",
     });
     setSearchQuery("");
+  };
+
+  const toggleCardExpansion = (programId) => {
+    setExpandedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(programId)) {
+        newSet.delete(programId);
+      } else {
+        newSet.add(programId);
+      }
+      return newSet;
+    });
   };
 
   const handleApplyInquiry = (program) => {
@@ -152,7 +167,7 @@ const Courses = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search by course name or university..."
+                placeholder="Search by course name, university, country, or location..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="input-field w-full pl-12"
@@ -279,239 +294,169 @@ const Courses = () => {
 
       {/* Program Cards */}
       <div className="max-w-7xl mx-auto container-spacing pb-12">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-col gap-3">
           {filteredPrograms.map((program, index) => (
             <Card
               key={program.id}
-              className="group overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="group hover:shadow-lg transition-all duration-200"
+              style={{ animationDelay: `${index * 0.05}s` }}
             >
-              {/* Card Header */}
-              <div
-                className="p-4 text-white bg-cover bg-center rounded-t-lg relative overflow-hidden"
-                style={{ backgroundImage: `url(${backgroundImage})` }}
-              >
-                {/* Optional overlay to make text readable */}
-                <div className="absolute inset-0 bg-black/40"></div>
+              <div className="p-4">
+                {/* Header Row */}
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs uppercase tracking-wide text-orange-600 font-semibold mb-1">
+                      {program.studyLevel}
+                    </div>
+                    <h3 className="text-base font-bold text-gray-900 line-clamp-2 mb-2">
+                      {program.title}
+                    </h3>
 
-                {/* Header content */}
-                <div className="relative z-10">
-                  <div className="text-xs uppercase tracking-wide opacity-80 mb-1">
-                    {program.studyLevel}
+                    {/* Essential Info in Row */}
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center">
+                        <svg className="w-4 h-4 mr-1 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        <span className="truncate ml-1">
+                          {getUniversityWebsite(program.university) ? (
+                            <a href={getUniversityWebsite(program.university)} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">
+                              {program.university}
+                            </a>
+                          ) : (
+                            program.university
+                          )}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center">
+                        <SiGooglemaps size={14} className="mr-1 text-blue-500 flex-shrink-0" />
+                        <span>{program.country}{program.location && `, ${program.location}`}</span>
+                      </div>
+
+                      <div className="flex items-center">
+                        <GiDuration size={14} className="mr-1 text-blue-500 flex-shrink-0" />
+                        <span>{program.duration}</span>
+                        {program.studyMode !== program.duration && (
+                          <span className="ml-1 text-gray-500">({program.studyMode})</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-bold line-clamp-2 group-hover:text-orange-600 transition-colors">
-                    {program.title}
-                  </h3>
-                </div>
-              </div>
 
-              {/* Card Body */}
-              <div className="p-6">
-                <div className="space-y-3 mb-4">
-                  <div className="flex items-center text-sm text-gray-700">
-                    <svg
-                      className="w-4 h-4 mr-2 text-blue-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                  {/* Expand/Apply Buttons */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <button
+                      onClick={() => toggleCardExpansion(program.id)}
+                      className="p-2 bg-gray-100 hover:bg-orange-200 text-gray-600 hover:text-gray-800 rounded-full transition-colors shadow-sm hover:shadow-md"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform duration-200 ${expandedCards.has(program.id) ? 'rotate-180' : ''}`}
                       />
-                    </svg>
-                    <span className="truncate">
-                      {getUniversityWebsite(program.university) ? (
-                        <a
-                          href={getUniversityWebsite(program.university)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-gray-600 hover:text-gray-800 hover:underline transition-colors"
-                        >
-                          {program.university}
-                        </a>
-                      ) : (
-                        program.university
-                      )}
-                    </span>
+                    </button>
+                    <AnimatedButton
+                      onClick={() => handleApplyInquiry(program)}
+                      variant="outline"
+                      size="sm"
+                      className="border-orange-500 text-orange-500 hover:bg-orange-600 hover:text-white"
+                    >
+                      Apply
+                    </AnimatedButton>
                   </div>
+                </div>
 
-                  <div className="flex items-center text-sm text-gray-700">
-                    <SiGooglemaps size={16} className="mr-2 text-blue-500" />
+                {/* Expanded Content */}
+                {expandedCards.has(program.id) && (
+                  <div className="mt-4 pt-4 border-t border-gray-100 space-y-4">
+                    {/* IELTS Score */}
+                    {program.ieltsRequired && (
+                      <div className="flex items-center text-sm">
+                        <svg className="w-4 h-4 mr-2 text-orange-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="font-medium text-orange-700">IELTS: {program.ieltsScore}</span>
+                      </div>
+                    )}
 
-                    <span>
-                      {program.country}
-                      {program.location && `, ${program.location}`}
-                    </span>
-                  </div>
+                    {/* Tuition Fee */}
+                    {program.tuitionFee && program.tuitionFee.trim() !== "" && (
+                      <div className="flex items-start text-sm">
+                        <GiTakeMyMoney size={16} className="mr-2 mt-0.5 text-green-500 flex-shrink-0" />
+                        <div>
+                          <span className="font-medium text-gray-900">Tuition Fee: </span>
+                          <span className="text-gray-700">{program.tuitionFee}</span>
+                        </div>
+                      </div>
+                    )}
 
-                  <div className="flex items-center text-sm text-gray-700">
-                    <GiDuration size={16} className="mr-2 text-blue-500" />
+                    {/* Intake Dates */}
+                    <div className="flex items-start text-sm">
+                      <svg className="w-4 h-4 mr-2 mt-0.5 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <div>
+                        <span className="font-medium text-gray-900">Intake Dates: </span>
+                        <span className="text-gray-700">{program.intakeDates.join(", ")}</span>
+                      </div>
+                    </div>
 
-                    <span>{program.duration}</span>
-                    {program.studyMode !== program.duration && (
-                      <span className="ml-2 text-gray-500">
-                        ({program.studyMode})
-                      </span>
+                    {/* Entry Requirements */}
+                    <div className="flex items-start text-sm">
+                      <svg className="w-4 h-4 mr-2 mt-0.5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <div className="flex-1">
+                        <span className="font-medium text-gray-900">Entry Requirements:</span>
+                        <ul className="mt-1 ml-6 list-disc text-gray-700 space-y-1">
+                          {program.requirements.map((req, index) => (
+                            <li key={index} className="text-xs">{req}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <div className="flex items-start text-sm">
+                      <svg className="w-4 h-4 mr-2 mt-0.5 text-indigo-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <div className="flex-1">
+                        <span className="font-medium text-gray-900">Description: </span>
+                        <span className="text-gray-700">{program.description}</span>
+                      </div>
+                    </div>
+
+                    {/* Scholarship Info */}
+                    {program.scholarshipInfo && program.scholarshipInfo.trim() !== "" && (
+                      <div className="flex items-start text-sm">
+                        <svg className="w-4 h-4 mr-2 mt-0.5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div className="flex-1">
+                          <span className="font-medium text-gray-900">Scholarship Info: </span>
+                          <span className="text-gray-700">{program.scholarshipInfo}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Career Opportunities */}
+                    {program.careerOpportunities && program.careerOpportunities.length > 0 && program.careerOpportunities.some(career => career.trim() !== "") && (
+                      <div className="flex items-start text-sm">
+                        <BsAwardFill size={16} className="mr-2 mt-0.5 text-orange-500 flex-shrink-0" />
+                        <div className="flex-1">
+                          <span className="font-medium text-gray-900">Career Opportunities: </span>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {program.careerOpportunities.map((career, index) => (
+                              <span key={index} className="bg-gray-100 text-black-500 px-2 py-1 rounded text-xs font-medium ">
+                                {career}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </div>
-                </div>
-
-                {/* IELTS Requirement */}
-                {program.ieltsRequired && (
-                  <div className="bg-orange-50 rounded-lg p-3 mb-4">
-                    <div className="flex items-center text-sm text-orange-900">
-                      <svg
-                        className="w-4 h-4 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span className="font-semibold">
-                        IELTS: {program.ieltsScore}
-                      </span>
-                    </div>
-                  </div>
                 )}
-
-                {/* Program Details */}
-                <div className="space-y-4 mb-6">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <GiTakeMyMoney size={16} className="mr-2 text-blue-500" />
-                      Tuition Fees
-                    </h4>
-                    <p className="text-gray-700 text-sm">
-                      {program.tuitionFee}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <svg
-                        className="w-4 h-4 mr-2 text-blue-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                      Intake Dates
-                    </h4>
-                    <p className="text-gray-700 text-sm">
-                      {program.intakeDates.join(", ")}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <svg
-                        className="w-4 h-4 mr-2 text-blue-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                      </svg>
-                      Entry Requirements
-                    </h4>
-                    <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
-                      {program.requirements.map((req, index) => (
-                        <li key={index}>{req}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <svg
-                        className="w-4 h-4 mr-2 text-blue-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      Description
-                    </h4>
-                    <p className="text-gray-700 text-sm">
-                      {program.description}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <svg
-                        className="w-4 h-4 mr-2 text-blue-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      Scholarship Info
-                    </h4>
-                    <p className="text-gray-700 text-sm">
-                      {program.scholarshipInfo}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
-                      <BsAwardFill size={16} className="mr-2 text-blue-600" />
-                      Career Opportunities
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {program.careerOpportunities.map((career, index) => (
-                        <span
-                          key={index}
-                          className="bg-gray-to-r from-gray-100 to-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium border border-gray-200"
-                        >
-                          {career}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Apply Button */}
-                <AnimatedButton
-                  onClick={() => handleApplyInquiry(program)}
-                  variant="outline"
-                  size="md"
-                  className="w-full border-orange-500 text-orange-500 hover:bg-orange-600 hover:text-white"
-                >
-                  Apply for This Program
-                </AnimatedButton>
               </div>
             </Card>
           ))}

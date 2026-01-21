@@ -84,6 +84,7 @@ const AdminLayout = () => {
 
   const menuItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: '📊' },
+    { name: 'Hero Section', path: '/admin/hero', icon: '🎨' },
     { name: 'Classes', path: '/admin/classes', icon: '🎓' },
     { name: 'Class Inquiries', path: '/admin/class-inquiries', icon: '📨' },
     { name: 'Programs', path: '/admin/programs', icon: '📚' },
@@ -98,6 +99,7 @@ const AdminLayout = () => {
   const getPageTitle = () => {
     const path = location.pathname;
     if (path.includes('dashboard')) return 'Dashboard Overview';
+    if (path.includes('hero')) return 'Hero Section Management';
     if (path.includes('classes') && !path.includes('class-inquiries') && !path.includes('institute-classes')) return 'Class Management';
     if (path.includes('class-inquiries')) return 'Class Inquiries';
     if (path.includes('programs') && !path.includes('program-inquiries')) return 'Program Management';

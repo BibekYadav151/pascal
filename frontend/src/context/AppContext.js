@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { classesData, instituteClassesData } from '../data/classesData';
 import { programsData, universitiesData } from '../data/programsData';
+import heroStudentImage from '../assets/hero-student.png';
 
 const AppContext = createContext();
 
@@ -56,6 +57,21 @@ export const AppProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // Hero Section
+  const [heroStats, setHeroStats] = useState(() => {
+    const saved = localStorage.getItem('heroStats');
+    return saved ? JSON.parse(saved) : {
+      experience: '8+',
+      students: '1,000+',
+      satisfaction: '95%'
+    };
+  });
+
+  const [heroImages, setHeroImages] = useState(() => {
+    const saved = localStorage.getItem('heroImages');
+    return saved ? JSON.parse(saved) : [heroStudentImage];
+  });
+
   // Persist data to localStorage
   useEffect(() => {
     localStorage.setItem('classes', JSON.stringify(classes));
@@ -84,6 +100,14 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('contactMessages', JSON.stringify(contactMessages));
   }, [contactMessages]);
+
+  useEffect(() => {
+    localStorage.setItem('heroStats', JSON.stringify(heroStats));
+  }, [heroStats]);
+
+  useEffect(() => {
+    localStorage.setItem('heroImages', JSON.stringify(heroImages));
+  }, [heroImages]);
 
   // Admin Login
   const adminLogin = (email, password) => {
@@ -264,6 +288,23 @@ export const AppProvider = ({ children }) => {
     setAppointments(appointments.filter(a => a.id !== id));
   };
 
+  // Hero Management
+  const updateHeroStats = (newStats) => {
+    setHeroStats(newStats);
+  };
+
+  const addHeroImage = (imageUrl) => {
+    if (heroImages.length >= 10) {
+      alert('Maximum 10 images allowed. Please remove some images before adding more.');
+      return;
+    }
+    setHeroImages([...heroImages, imageUrl]);
+  };
+
+  const removeHeroImage = (imageUrl) => {
+    setHeroImages(heroImages.filter(img => img !== imageUrl));
+  };
+
   // Dashboard Stats
   const getDashboardStats = () => {
     return {
@@ -327,6 +368,13 @@ export const AppProvider = ({ children }) => {
         addAppointment,
         updateAppointment,
         deleteAppointment,
+
+        // Hero Section
+        heroStats,
+        heroImages,
+        updateHeroStats,
+        addHeroImage,
+        removeHeroImage,
 
         // Stats
         getDashboardStats
