@@ -92,6 +92,9 @@ const AdminLayout = () => {
     { name: 'Institute Classes', path: '/admin/institute-classes', icon: '🏫' },
     { name: 'Universities', path: '/admin/universities', icon: '🏛️' },
     { name: 'Blogs', path: '/admin/blogs', icon: '📝' },
+    { name: 'Gallery', path: '/admin/gallery', icon: '🖼️' },
+    { name: 'Offers', path: '/admin/offers', icon: '🎁' },
+    { name: 'Branches', path: '/admin/branches', icon: '📍' },
     { name: 'Contact Messages', path: '/admin/messages', icon: '💬' },
     { name: 'Appointments', path: '/admin/appointments', icon: '📅' }
   ];
@@ -107,6 +110,9 @@ const AdminLayout = () => {
     if (path.includes('institute-classes')) return 'Institute Classes';
     if (path.includes('universities')) return 'University Management';
     if (path.includes('blogs')) return 'Blog Management';
+    if (path.includes('gallery')) return 'Gallery Management';
+    if (path.includes('offers')) return 'Offer Management';
+    if (path.includes('branches')) return 'Branch Management';
     if (path.includes('messages')) return 'Contact Messages';
     if (path.includes('appointments')) return 'Appointment Management';
     return 'Admin Panel';

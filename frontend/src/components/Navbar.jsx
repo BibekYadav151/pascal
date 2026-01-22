@@ -27,6 +27,7 @@ const Navbar = ({ onBookAppointment }) => {
       { name: "Courses", path: "/courses" },
       { name: "Offers", path: "/offers" },
       { name: "Blogs", path: "/blogs" },
+      { name: "Gallery", path: "/gallery" },
       { name: "Contact", path: "/contact" },
     ],
     []

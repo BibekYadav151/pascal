@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { Card, AnimatedButton } from '../components/ui';
 import { FiMapPin } from "react-icons/fi";
@@ -9,6 +9,26 @@ import { FaSquareInstagram } from "react-icons/fa6";
 
 const Contact = () => {
   const { addContactMessage } = useApp();
+  const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBranches();
+  }, []);
+
+  const fetchBranches = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/branches');
+      const data = await response.json();
+      if (data.success) {
+        setBranches(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching branches:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -65,35 +85,6 @@ const Contact = () => {
     // { name: "LinkedIn", icon: "💼", url: "#" },
   ];
 
-  const branches = [
-    {
-      name: "Main Branch - Kathmandu",
-      location: "Kathmandu, Nepal",
-      address: "Putalisadak, Kathmandu 44600",
-      phone: "+977-1-44XXXXXX",
-      email: "info@pascalinstitute.edu.np",
-      hours: "Sun-Fri: 9:00 AM - 6:00 PM",
-      mapUrl: "#"
-    },
-    {
-      name: "Branch Office - Pokhara",
-      location: "Pokhara, Nepal",
-      address: "Lakeside Road, Pokhara 33700",
-      phone: "+977-61-XXXXXX",
-      email: "pokhara@pascalinstitute.edu.np",
-      hours: "Sun-Fri: 9:00 AM - 5:00 PM",
-      mapUrl: "#"
-    },
-    {
-      name: "Branch Office - Chitwan",
-      location: "Chitwan, Nepal",
-      address: "Bharatpur, Chitwan 44200",
-      phone: "+977-56-XXXXXX",
-      email: "chitwan@pascalinstitute.edu.np",
-      hours: "Sun-Fri: 9:00 AM - 5:00 PM",
-      mapUrl: "#"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -268,19 +259,20 @@ const Contact = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {branches.map((branch, index) => (
-              <Card key={index} className="p-6 hover:shadow-lg transition-all duration-300">
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+            </div>
+          ) : branches.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {branches.map((branch) => (
+                <Card key={branch.id} className="p-6 hover:shadow-lg transition-all duration-300">
                 <div className="space-y-4">
                   {/* Branch Header */}
                   <div>
-                    <h3 className="text-title-md text-gray-900 mb-2">
+                    <h3 className="text-title-md text-gray-900 mb-4">
                       {branch.name}
                     </h3>
-                    <div className="flex items-center text-sm text-gray-600 mb-3">
-                      <FiMapPin className="w-4 h-4 mr-2 text-blue-500" />
-                      {branch.location}
-                    </div>
                   </div>
 
                   {/* Branch Details */}
@@ -319,8 +311,13 @@ const Contact = () => {
                   </AnimatedButton>
                 </div>
               </Card>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No branches available at the moment.</p>
+            </div>
+          )}
         </div>
       </section>
 

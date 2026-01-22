@@ -28,6 +28,123 @@ import {
   FloatingElements,
 } from "../components/ui";
 
+// Offers Slider Component
+const OffersSlider = () => {
+  const [offers, setOffers] = useState([]);
+  const offersCarouselRef = useRef(null);
+
+  useEffect(() => {
+    fetchOffers();
+  }, []);
+
+  const fetchOffers = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/offers?status=current');
+      const data = await response.json();
+      if (data.success && data.data.length > 0) {
+        // Duplicate offers for seamless infinite scroll
+        setOffers([...data.data, ...data.data, ...data.data]);
+      }
+    } catch (error) {
+      console.error('Error fetching offers:', error);
+    }
+  };
+
+  // Auto-sliding carousel effect (same as Partner Universities)
+  useEffect(() => {
+    const container = offersCarouselRef.current;
+    if (!container || offers.length === 0) return;
+
+    const uniqueOffersCount = offers.length / 3;
+    if (uniqueOffersCount < 1) return;
+
+    let scrollSpeed = 0.5;
+    let isPaused = false;
+
+    const scroll = () => {
+      if (!isPaused && container) {
+        container.scrollLeft += scrollSpeed;
+
+        // Reset when scrolled past the first set (seamless infinite loop)
+        // Calculate width: each item is approximately 300-400px (title + discount + gap)
+        const firstSetWidth = uniqueOffersCount * 350; // estimated width per item
+        if (container.scrollLeft >= firstSetWidth) {
+          container.scrollLeft = 0;
+        }
+      }
+    };
+
+    const interval = setInterval(scroll, 16); // ~60fps
+
+    // Pause on hover
+    const handleMouseEnter = () => {
+      isPaused = true;
+    };
+    const handleMouseLeave = () => {
+      isPaused = false;
+    };
+
+    container.addEventListener("mouseenter", handleMouseEnter);
+    container.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      clearInterval(interval);
+      container.removeEventListener("mouseenter", handleMouseEnter);
+      container.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [offers.length]);
+
+  return (
+    <section className="section-spacing bg-white">
+      <div className="max-w-7xl mx-auto container-spacing">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+          <div className="text-center md:text-left">
+            <h2 className="text-display-md text-gray-900 mb-3">
+              Special Offers
+            </h2>
+            <p className="text-body-md text-gray-600">
+              Don't miss out on our exclusive deals
+            </p>
+          </div>
+          <Link
+            to="/offers"
+            className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap"
+          >
+            <span>View Offers</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+
+        {offers.length > 0 ? (
+          <div ref={offersCarouselRef} className="flex gap-8 overflow-hidden pb-2 cursor-grab active:cursor-grabbing" style={{ scrollBehavior: 'auto' }}>
+            {offers.map((offer, index) => (
+              <Link
+                key={`${offer.id}-${index}`}
+                to="/offers"
+                className="flex-shrink-0 flex items-center gap-4 whitespace-nowrap hover:opacity-80 transition-opacity"
+                style={{ minWidth: 'fit-content' }}
+              >
+                <span className="text-lg md:text-xl font-bold text-gray-900">
+                  {offer.title}
+                </span>
+                <span className={`px-4 py-2 rounded-lg font-black text-white text-lg ${offer.bgColor || 'bg-orange-500'}`}>
+                  {offer.discount} OFF
+                </span>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8 text-gray-500">
+            <p>No current offers available</p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
 const Home = () => {
   const { classes, addClassInquiry, universities, heroStats, heroImages } = useApp();
   const scrollContainerRef = useRef(null);
@@ -456,6 +573,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Offers Slider Section */}
+      <OffersSlider />
 
       {/* Services Section */}
       <section className="section-spacing bg-white relative">

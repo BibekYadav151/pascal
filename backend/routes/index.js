@@ -3,12 +3,18 @@ const router = express.Router();
 
 // Import route modules
 const blogRoutes = require('./blogs');
+const galleryRoutes = require('./gallery');
+const offerRoutes = require('./offers');
+const branchRoutes = require('./branches');
 const uploadRoutes = require('./upload');
 // const userRoutes = require('./users');
 // const authRoutes = require('./auth');
 
 // Mount routes
 router.use('/blogs', blogRoutes);
+router.use('/gallery', galleryRoutes);
+router.use('/offers', offerRoutes);
+router.use('/branches', branchRoutes);
 router.use('/upload', uploadRoutes);
 // router.use('/users', userRoutes);
 // router.use('/auth', authRoutes);
@@ -21,6 +27,9 @@ router.get('/', (req, res) => {
     endpoints: {
       health: '/health',
       blogs: '/blogs',
+      gallery: '/gallery',
+      offers: '/offers',
+      branches: '/branches',
       // users: '/users',
       // auth: '/auth'
     }

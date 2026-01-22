@@ -1,92 +1,56 @@
-import React, { useState } from 'react';
-import { Gift, Calendar } from 'lucide-react';
-import { FloatingElements } from '../components/ui';
+import React, { useState, useEffect } from 'react';
+import { Calendar } from 'lucide-react';
 
 const Offers = () => {
   const [activeTab, setActiveTab] = useState('current');
+  const [offers, setOffers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const currentOffers = [
-    {
-      id: 1,
-      title: 'Early Bird Registration',
-      description: 'Get 20% off on IELTS/PTE preparation classes when you register 30 days before the course starts.',
-      discount: '20%',
-      validUntil: 'December 31, 2025',
-      category: 'Test Prep',
-      terms: ['Valid for new registrations only', 'Cannot be combined with other offers', 'Minimum course duration: 4 weeks']
-    },
-    {
-      id: 2,
-      title: 'Student Bundle Package',
-      description: 'Complete study abroad package including visa counseling, test prep, and university application assistance.',
-      discount: '₹15,000',
-      validUntil: 'Ongoing',
-      category: 'Package',
-      terms: ['Includes IELTS preparation', 'Visa consultation included', 'University shortlisting assistance']
-    },
-    {
-      id: 3,
-      title: 'Group Discount',
-      description: 'Bring 3 or more friends and get 15% off for each member of the group.',
-      discount: '15%',
-      validUntil: 'January 15, 2026',
-      category: 'Group',
-      terms: ['Minimum 3 participants', 'Same course enrollment required', 'Valid for all courses']
-    },
-    {
-      id: 4,
-      title: 'Referral Program',
-      description: 'Refer a friend who enrolls in any course and both get ₹5,000 off.',
-      discount: '₹5,000',
-      validUntil: 'Ongoing',
-      category: 'Referral',
-      terms: ['Valid for first-time students only', 'Friend must complete enrollment', 'Maximum 3 referrals per student']
+  useEffect(() => {
+    fetchOffers();
+  }, []);
+
+  const fetchOffers = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/offers');
+      const data = await response.json();
+      if (data.success) {
+        setOffers(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching offers:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const upcomingOffers = [
-    {
-      id: 5,
-      title: 'Summer Special',
-      description: 'Special summer rates for all language courses and visa services.',
-      discount: 'Up to 25%',
-      validUntil: 'March 15, 2026',
-      category: 'Seasonal',
-      terms: ['Valid during summer months', 'Limited time offer', 'Selected courses only']
-    },
-    {
-      id: 6,
-      title: 'University Partnership Deal',
-      description: 'Exclusive discounts for students applying to our partner universities.',
-      discount: '₹10,000',
-      validUntil: 'April 30, 2026',
-      category: 'Partnership',
-      terms: ['Valid for partner universities only', 'Additional application fee waiver', 'Conditional offer']
+  const currentOffers = offers.filter(offer => offer.status === 'current');
+  const upcomingOffers = offers.filter(offer => offer.status === 'upcoming');
+  const displayedOffers = activeTab === 'current' ? currentOffers : upcomingOffers;
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return dateString; // Return as-is if not a valid date
+      }
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch (error) {
+      return dateString;
     }
-  ];
-
-  const offers = activeTab === 'current' ? currentOffers : upcomingOffers;
+  };
 
   return (
-    <div className="min-h-screen relative">
-      {/* Background Elements */}
-      <FloatingElements className="opacity-30" />
-
-      {/* Hero Section */}
-      <section className="relative page-top overflow-hidden">
-        {/* Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-50 via-pink-50 to-blue-50"></div>
-
-        {/* Subtle Background Shapes */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 right-16 w-96 h-96 bg-orange-200/20 rounded-full blur-3xl animate-float animation-delay-300"></div>
-          <div className="absolute bottom-20 left-16 w-80 h-80 bg-pink-200/20 rounded-full blur-3xl animate-float animation-delay-700"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/15 rounded-full blur-3xl animate-float animation-delay-1100"></div>
-        </div>
-
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <section className="page-top bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center">
-            
             <h1 className="text-display-lg text-gray-900 mb-4">
               Exclusive Offers Just for You
             </h1>
@@ -99,7 +63,7 @@ const Offers = () => {
       </section>
 
       {/* Offers Section */}
-      <section className="section-spacing bg-white">
+      <section className="section-spacing bg-gray-50">
         <div className="relative max-w-7xl mx-auto container-spacing">
           {/* Tab Navigation */}
           <div className="flex justify-center mb-12">
@@ -127,47 +91,108 @@ const Offers = () => {
             </div>
           </div>
 
-          {/* Offers Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {offers.map((offer, index) => (
+          {/* Offers Grid - Banner Style */}
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+            </div>
+          ) : displayedOffers.length > 0 ? (
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              {displayedOffers.map((offer, index) => (
               <div
                 key={offer.id}
-                className="group relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-500 animate-fade-in-up border border-gray-100 overflow-hidden"
+                className={`group relative ${offer.bgColor} rounded-3xl p-8 shadow-2xl transition-all duration-500 animate-fade-in-up overflow-hidden min-h-[400px] flex flex-col justify-between`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-
-
-                {/* Discount Badge */}
-                <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1.5 rounded-xl text-sm font-bold shadow-lg transform rotate-3 group-hover:rotate-0 transition-transform duration-300 z-10">
-                  {offer.discount} OFF
+                {/* Decorative Background Elements */}
+                <div className="absolute inset-0 opacity-20">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2"></div>
                 </div>
 
-                {/* Main Content */}
-                <div className="relative z-10">
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-orange-600 transition-colors duration-300">
-                    {offer.title}
-                  </h3>
+                {/* Pattern Overlay */}
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute inset-0" style={{
+                    backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+                    backgroundSize: '40px 40px'
+                  }}></div>
+                </div>
 
-                  {/* Description */}
-                  <p className="text-gray-600 leading-relaxed text-sm mb-6 line-clamp-3">
-                    {offer.description}
-                  </p>
-
-                  {/* Category Tag */}
-                  <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 text-xs font-semibold border border-blue-200 mb-4">
-                    {offer.category}
+                {/* Content */}
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Top Section */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div>
+                      <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-semibold border border-white/30">
+                        {offer.category}
+                      </div>
+                    </div>
+                    
+                    {/* Discount Badge - Large and Prominent */}
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-white/30 blur-xl rounded-full"></div>
+                      <div className="relative bg-white/95 backdrop-blur-sm px-6 py-3 rounded-2xl shadow-2xl transform rotate-3 group-hover:rotate-0 transition-transform duration-300">
+                        <div className="text-center">
+                          <div className="text-3xl font-black text-gray-900">
+                            {offer.discount}
+                          </div>
+                          <div className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                            OFF
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Validity */}
-                  <div className="flex items-center justify-between text-xs text-gray-500">
-                    <span className="bg-gray-100 px-3 py-1 rounded-full"><span className="font-bold">Valid:</span> {offer.validUntil}</span>
+                  {/* Main Content */}
+                  <div className="flex-1 flex flex-col justify-center">
+                    <h3 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight drop-shadow-lg group-hover:scale-105 transition-transform duration-300">
+                      {offer.title}
+                    </h3>
+                    <p className="text-white/90 text-lg leading-relaxed mb-6 drop-shadow-md line-clamp-3">
+                      {offer.description}
+                    </p>
+                  </div>
+
+                  {/* Bottom Section */}
+                  <div className="flex flex-col items-center gap-2 pt-6 border-t border-white/20">
+                    {offer.startDate && activeTab === 'upcoming' && (
+                      <div className="flex items-center gap-2 text-white/90">
+                        <Calendar className="w-5 h-5" />
+                        <span className="text-sm font-medium">
+                          Starts: <span className="font-bold">{formatDate(offer.startDate)}</span>
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2 text-white/90">
+                      <Calendar className="w-5 h-5" />
+                      <span className="text-sm font-medium">
+                        Valid until: <span className="font-bold">{offer.validUntil}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
 
+                {/* Shine Effect on Hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="inline-block p-4 bg-gray-100 rounded-full mb-4">
+                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v1M12 8.5l-3 3m6 0l-3-3m3 3V21" />
+                </svg>
+              </div>
+              <h3 className="text-title-md text-gray-900 mb-2">No offers found</h3>
+              <p className="text-body text-gray-600">
+                {activeTab === 'current' 
+                  ? 'No current offers available at the moment'
+                  : 'No upcoming offers scheduled'}
+              </p>
+            </div>
+          )}
 
         </div>
       </section>

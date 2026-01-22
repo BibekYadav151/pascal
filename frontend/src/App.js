@@ -14,6 +14,7 @@ import Offers from './pages/Offers';
 import ServiceDetail from './pages/ServiceDetail';
 import Blogs from './pages/Blogs';
 import BlogDetail from './pages/BlogDetail';
+import Gallery from './pages/Gallery';
 import AdminLogin from './admin/AdminLogin';
 import AdminLayout from './admin/AdminLayout';
 import AdminDashboard from './admin/AdminDashboard';
@@ -27,6 +28,9 @@ import AdminMessages from './admin/AdminMessages';
 import AdminAppointments from './admin/AdminAppointments';
 import AdminBlogs from './admin/AdminBlogs';
 import AdminHero from './admin/AdminHero';
+import AdminGallery from './admin/AdminGallery';
+import AdminOffers from './admin/AdminOffers';
+import AdminBranches from './admin/AdminBranches';
 import ScrollToTop from './components/ScrollToTop';
 import WhatsAppButton from './components/WhatsAppButton';
 
@@ -54,6 +58,7 @@ function App() {
                     <Route path="/services/:serviceId" element={<ServiceDetail />} />
                     <Route path="/blogs" element={<Blogs />} />
                     <Route path="/blogs/:slug" element={<BlogDetail />} />
+                    <Route path="/gallery" element={<Gallery />} />
                   </Routes>
                 </main>
                 <Footer />
@@ -77,9 +82,12 @@ function App() {
               <Route path="appointments" element={<AdminAppointments />} />
               <Route path="blogs" element={<AdminBlogs />} />
               <Route path="hero" element={<AdminHero />} />
+              <Route path="gallery" element={<AdminGallery />} />
+              <Route path="offers" element={<AdminOffers />} />
+              <Route path="branches" element={<AdminBranches />} />
             </Route>
           </Routes>
-          
+
           {/* Book Appointment Modal */}
           <BookAppointmentModal
             isOpen={isBookAppointmentOpen}
