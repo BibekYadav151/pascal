@@ -64,12 +64,12 @@ const Contact = () => {
     {
       icon: <FiMapPin className="w-4 h-4" />,
       title: "Address",
-      details: "Kathmandu, Nepal",
+      details: "Chabahil-7, Kathmandu, Nepal",
     },
     {
       icon: <FaPhoneAlt className="w-4 h-4" />,
       title: "Phone",
-      details: "+977-1-44XXXXXX",
+      details: "01-4586292, 01-4586733",
     },
     {
       icon: <MdEmail className="w-4 h-4" />,
@@ -264,7 +264,7 @@ const Contact = () => {
               <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
             </div>
           ) : branches.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {branches.map((branch) => (
                 <Card key={branch.id} className="p-6 hover:shadow-lg transition-all duration-300">
                 <div className="space-y-4">
@@ -311,8 +311,8 @@ const Contact = () => {
                   </AnimatedButton>
                 </div>
               </Card>
-              ))}
-            </div>
+            ))}
+          </div>
           ) : (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg">No branches available at the moment.</p>

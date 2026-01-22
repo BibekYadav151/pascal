@@ -142,16 +142,16 @@ const Offers = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                </div>
 
-                  {/* Main Content */}
+                {/* Main Content */}
                   <div className="flex-1 flex flex-col justify-center">
                     <h3 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight drop-shadow-lg group-hover:scale-105 transition-transform duration-300">
-                      {offer.title}
-                    </h3>
+                    {offer.title}
+                  </h3>
                     <p className="text-white/90 text-lg leading-relaxed mb-6 drop-shadow-md line-clamp-3">
-                      {offer.description}
-                    </p>
+                    {offer.description}
+                  </p>
                   </div>
 
                   {/* Bottom Section */}
@@ -176,8 +176,8 @@ const Offers = () => {
                 {/* Shine Effect on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </div>
-              ))}
-            </div>
+            ))}
+          </div>
           ) : (
             <div className="text-center py-12">
               <div className="inline-block p-4 bg-gray-100 rounded-full mb-4">

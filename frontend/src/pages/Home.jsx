@@ -145,7 +145,7 @@ const OffersSlider = () => {
   );
 };
 
-const Home = () => {
+const Home = ({ onBookAppointment }) => {
   const { classes, addClassInquiry, universities, heroStats, heroImages } = useApp();
   const scrollContainerRef = useRef(null);
   const carouselRef = useRef(null);
@@ -387,7 +387,10 @@ const Home = () => {
       {/* Background Elements */}
       <FloatingElements className="opacity-30" />
 
-      {/* Hero Section */} <section className="relative pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden min-h-[70vh] flex items-center animate-fade-in"> {/* Gradient Background */} <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50"></div>
+      {/* Hero Section */}
+      <section className="relative pt-24 pb-0 md:pt-28 md:pb-0 overflow-hidden min-h-[70vh] flex flex-col animate-fade-in">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50"></div>
        
 
         {/* Subtle Background Shapes */}
@@ -397,13 +400,13 @@ const Home = () => {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-blue-100/10 rounded-full blur-3xl animate-float animation-delay-1100"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto container-spacing w-full mt-8 md:mt-12">
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
+        <div className="relative max-w-7xl mx-auto container-spacing w-full mt-8 md:mt-12 flex-1 flex items-center">
+          <div className="grid lg:grid-cols-2 gap-10 items-center w-full">
             {/* Left Content */}
             <div className="space-y-6 z-10">
               {/* Main Headline */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight animate-fade-in-up animation-delay-300">
-                Let's Work Together to Create Wonders with Us
+                Let's Work Together to <span className="text-orange-600">Create Wonders</span> with Us
               </h1>
 
               {/* Description */}
@@ -453,7 +456,7 @@ const Home = () => {
                   </p>
                 </div>
                 <div className="animate-fade-in-up animation-delay-1300">
-                  <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-1 transform hover:scale-110 transition-transform duration-300">
+                  <div className="text-4xl md:text-5xl font-bold text-gray-000 mb-1 transform hover:scale-110 transition-transform duration-300">
                     <AnimatedCounter value={parseInt(heroStats?.satisfaction?.replace('%', '') || '95')} suffix="%" />
                   </div>
                   <p className="text-sm text-gray-600 font-medium">
@@ -570,6 +573,18 @@ const Home = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Appointment Booking Intro Section - Bottom of Hero */}
+        <div className="w-full relative z-10 mt-auto pt-8 md:pt-10 pb-8 md:pb-10">
+          <div className="max-w-7xl mx-auto container-spacing">
+            <p className="text-base md:text-lg text-gray-700 w-full text-left">
+              Schedule a personalized appointment with our expert counselors to discuss your study abroad journey. 
+              Get guidance on course selection, visa requirements, university applications, and class enrollment. 
+              Explore our comprehensive classes and programs designed to help you achieve your educational goals. 
+              Your future starts with a conversation.
+            </p>
           </div>
         </div>
       </section>

@@ -313,9 +313,9 @@ const ServiceDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-50 to-purple-50 py-16 md:py-24">
+      <section className="page-top bg-white">
         <div className="max-w-7xl mx-auto container-spacing">
           <div className="flex items-center mb-6">
             <Link
@@ -340,7 +340,7 @@ const ServiceDetail = () => {
       </section>
 
       {/* Overview Section */}
-      <section className="section-spacing bg-white">
+      <section className="section-spacing bg-gray-50">
         <div className="max-w-7xl mx-auto container-spacing">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -356,8 +356,8 @@ const ServiceDetail = () => {
                   const Icon = IconComponent[benefit.icon] || Star;
                   return (
                     <div key={index} className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-5 h-5 text-blue-600" />
+                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-6 h-6 text-gray-700" />
                       </div>
                       <span className="text-sm font-medium text-gray-900">
                         {benefit.text}
@@ -377,7 +377,7 @@ const ServiceDetail = () => {
               </AnimatedButton>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8">
+            <div className="bg-white rounded-2xl p-8 shadow-lg">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
                 What We Offer
               </h3>
@@ -395,7 +395,7 @@ const ServiceDetail = () => {
       </section>
 
       {/* Process Section */}
-      <section className="section-spacing bg-gray-50">
+      <section className="section-spacing bg-white">
         <div className="max-w-7xl mx-auto container-spacing">
           <div className="text-center mb-12">
             <h2 className="text-display-md text-gray-900 mb-4">Our Process</h2>
@@ -426,7 +426,7 @@ const ServiceDetail = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="section-spacing bg-white">
+      <section className="section-spacing bg-gray-50">
         <div className="max-w-7xl mx-auto container-spacing">
           <div className="text-center mb-12">
             <h2 className="text-display-md text-gray-900 mb-4">
@@ -480,12 +480,12 @@ const ServiceDetail = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="section-spacing bg-blue-600">
+      <section className="section-spacing bg-gray-900">
         <div className="max-w-4xl mx-auto container-spacing text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Start Your Journey?
           </h2>
-          <p className="text-xl text-blue-100 mb-8">
+          <p className="text-xl text-gray-300 mb-8">
             Join thousands of successful students who have achieved their dreams
             with our guidance.
           </p>
@@ -494,7 +494,7 @@ const ServiceDetail = () => {
               href="/contact"
               variant="secondary"
               size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-50"
+              className="bg-white text-gray-900 hover:bg-gray-100"
             >
               Contact Us Today
             </AnimatedButton>
@@ -502,7 +502,7 @@ const ServiceDetail = () => {
               href="/classes"
               variant="outline"
               size="lg"
-              className="border-white text-white hover:bg-white hover:text-blue-600"
+              className="border-gray-600 text-white hover:bg-gray-800"
             >
               View Our Classes
             </AnimatedButton>
