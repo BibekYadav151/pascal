@@ -1,13 +1,11 @@
-const GalleryModel = require('../models/galleryModel');
+const Gallery = require('../models/galleryModel');
 
 const galleryController = {
   // Get all events
   getAllEvents: async (req, res) => {
     try {
-      const events = await GalleryModel.findAll();
-      
       // Sort by createdAt (newest first)
-      events.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const events = await Gallery.find().sort({ createdAt: -1 });
 
       res.json({
         success: true,
@@ -25,7 +23,7 @@ const galleryController = {
   // Get single event by ID
   getEventById: async (req, res) => {
     try {
-      const event = await GalleryModel.findById(req.params.id);
+      const event = await Gallery.findById(req.params.id);
       if (!event) {
         return res.status(404).json({
           success: false,
@@ -64,7 +62,7 @@ const galleryController = {
         images: images || []
       };
 
-      const newEvent = await GalleryModel.create(eventData);
+      const newEvent = await Gallery.create(eventData);
 
       res.status(201).json({
         success: true,
@@ -83,15 +81,18 @@ const galleryController = {
   // Update event
   updateEvent: async (req, res) => {
     try {
-      const event = await GalleryModel.findById(req.params.id);
-      if (!event) {
+      const updatedEvent = await Gallery.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedEvent) {
         return res.status(404).json({
           success: false,
           message: 'Event not found'
         });
       }
-
-      const updatedEvent = await GalleryModel.update(req.params.id, req.body);
 
       res.json({
         success: true,
@@ -110,15 +111,14 @@ const galleryController = {
   // Delete event
   deleteEvent: async (req, res) => {
     try {
-      const event = await GalleryModel.findById(req.params.id);
+      const event = await Gallery.findByIdAndDelete(req.params.id);
+
       if (!event) {
         return res.status(404).json({
           success: false,
           message: 'Event not found'
         });
       }
-
-      await GalleryModel.delete(req.params.id);
 
       res.json({
         success: true,
@@ -136,14 +136,6 @@ const galleryController = {
   // Add image to event
   addImageToEvent: async (req, res) => {
     try {
-      const event = await GalleryModel.findById(req.params.id);
-      if (!event) {
-        return res.status(404).json({
-          success: false,
-          message: 'Event not found'
-        });
-      }
-
       const { imageUrl } = req.body;
       if (!imageUrl) {
         return res.status(400).json({
@@ -152,10 +144,18 @@ const galleryController = {
         });
       }
 
-      const updatedImages = [...(event.images || []), imageUrl];
-      const updatedEvent = await GalleryModel.update(req.params.id, {
-        images: updatedImages
-      });
+      const updatedEvent = await Gallery.findByIdAndUpdate(
+        req.params.id,
+        { $push: { images: imageUrl } },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedEvent) {
+        return res.status(404).json({
+          success: false,
+          message: 'Event not found'
+        });
+      }
 
       res.json({
         success: true,
@@ -174,14 +174,6 @@ const galleryController = {
   // Remove image from event
   removeImageFromEvent: async (req, res) => {
     try {
-      const event = await GalleryModel.findById(req.params.id);
-      if (!event) {
-        return res.status(404).json({
-          success: false,
-          message: 'Event not found'
-        });
-      }
-
       const { imageUrl } = req.body;
       if (!imageUrl) {
         return res.status(400).json({
@@ -190,10 +182,18 @@ const galleryController = {
         });
       }
 
-      const updatedImages = (event.images || []).filter(img => img !== imageUrl);
-      const updatedEvent = await GalleryModel.update(req.params.id, {
-        images: updatedImages
-      });
+      const updatedEvent = await Gallery.findByIdAndUpdate(
+        req.params.id,
+        { $pull: { images: imageUrl } },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedEvent) {
+        return res.status(404).json({
+          success: false,
+          message: 'Event not found'
+        });
+      }
 
       res.json({
         success: true,

@@ -1,47 +1,42 @@
-const BlogModel = require('../models/blogModel');
+const Blog = require('../models/blogModel');
 
 const blogController = {
   // Get all blogs with optional filtering
   getAllBlogs: async (req, res) => {
     try {
       const { category, featured, status, search, tag } = req.query;
-      let blogs = await BlogModel.findAll();
+
+      // Build query object
+      let query = {};
 
       // Filter by status (default to 'Published' if not specified)
-      if (status) {
-        blogs = blogs.filter(blog => blog.status === status);
-      } else {
-        blogs = blogs.filter(blog => blog.status === 'Published');
-      }
+      query.status = status || 'Published';
 
       // Filter by featured
       if (featured === 'true') {
-        blogs = blogs.filter(blog => blog.featured === true);
+        query.featured = true;
       }
 
       // Filter by category
       if (category) {
-        blogs = blogs.filter(blog => blog.category === category);
+        query.category = category;
       }
 
       // Filter by tag
       if (tag) {
-        blogs = blogs.filter(blog =>
-          blog.tags && blog.tags.includes(tag)
-        );
+        query.tags = tag;
       }
 
       // Search in title and excerpt
       if (search) {
-        const searchLower = search.toLowerCase();
-        blogs = blogs.filter(blog =>
-          blog.title.toLowerCase().includes(searchLower) ||
-          blog.excerpt.toLowerCase().includes(searchLower)
-        );
+        query.$or = [
+          { title: { $regex: search, $options: 'i' } },
+          { excerpt: { $regex: search, $options: 'i' } }
+        ];
       }
 
-      // Sort by createdAt (newest first)
-      blogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      // Execute query and sort by createdAt (newest first)
+      const blogs = await Blog.find(query).sort({ createdAt: -1 });
 
       res.json({
         success: true,
@@ -59,7 +54,7 @@ const blogController = {
   // Get single blog by ID
   getBlogById: async (req, res) => {
     try {
-      const blog = await BlogModel.findById(req.params.id);
+      const blog = await Blog.findById(req.params.id);
       if (!blog) {
         return res.status(404).json({
           success: false,
@@ -82,8 +77,7 @@ const blogController = {
   // Get blog by slug
   getBlogBySlug: async (req, res) => {
     try {
-      const blogs = await BlogModel.findAll();
-      const blog = blogs.find(b => b.slug === req.params.slug);
+      const blog = await Blog.findOne({ slug: req.params.slug });
       if (!blog) {
         return res.status(404).json({
           success: false,
@@ -106,7 +100,7 @@ const blogController = {
   // Create new blog
   createBlog: async (req, res) => {
     try {
-      const { title, slug, excerpt, content, author, category, tags, imageUrl, readTime, featured, status } = req.body;
+      const { title, slug, excerpt, content, tableOfContents, author, category, tags, imageUrl, readTime, featured, status } = req.body;
 
       // Validate required fields
       if (!title || !slug || !excerpt || !content || !author) {
@@ -117,8 +111,7 @@ const blogController = {
       }
 
       // Check if slug already exists
-      const blogs = await BlogModel.findAll();
-      const existingBlog = blogs.find(b => b.slug === slug);
+      const existingBlog = await Blog.findOne({ slug });
       if (existingBlog) {
         return res.status(400).json({
           success: false,
@@ -131,6 +124,7 @@ const blogController = {
         slug,
         excerpt,
         content,
+        tableOfContents: tableOfContents || '',
         author,
         category: category || 'General',
         tags: tags || [],
@@ -140,7 +134,7 @@ const blogController = {
         status: status || 'Draft'
       };
 
-      const newBlog = await BlogModel.create(blogData);
+      const newBlog = await Blog.create(blogData);
 
       res.status(201).json({
         success: true,
@@ -159,15 +153,18 @@ const blogController = {
   // Update blog
   updateBlog: async (req, res) => {
     try {
-      const blog = await BlogModel.findById(req.params.id);
-      if (!blog) {
+      const updatedBlog = await Blog.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedBlog) {
         return res.status(404).json({
           success: false,
           message: 'Blog not found'
         });
       }
-
-      const updatedBlog = await BlogModel.update(req.params.id, req.body);
 
       res.json({
         success: true,
@@ -186,15 +183,14 @@ const blogController = {
   // Delete blog
   deleteBlog: async (req, res) => {
     try {
-      const blog = await BlogModel.findById(req.params.id);
+      const blog = await Blog.findByIdAndDelete(req.params.id);
+
       if (!blog) {
         return res.status(404).json({
           success: false,
           message: 'Blog not found'
         });
       }
-
-      await BlogModel.delete(req.params.id);
 
       res.json({
         success: true,
@@ -212,8 +208,7 @@ const blogController = {
   // Get all categories
   getCategories: async (req, res) => {
     try {
-      const blogs = await BlogModel.findAll();
-      const categories = [...new Set(blogs.map(blog => blog.category).filter(Boolean))];
+      const categories = await Blog.distinct('category');
 
       res.json({
         success: true,
@@ -231,13 +226,11 @@ const blogController = {
   // Get all tags
   getTags: async (req, res) => {
     try {
-      const blogs = await BlogModel.findAll();
-      const allTags = blogs.flatMap(blog => blog.tags || []);
-      const uniqueTags = [...new Set(allTags)];
+      const tags = await Blog.distinct('tags');
 
       res.json({
         success: true,
-        data: uniqueTags
+        data: tags
       });
     } catch (error) {
       res.status(500).json({
@@ -251,13 +244,14 @@ const blogController = {
   // Get related blogs
   getRelatedBlogs: async (req, res) => {
     try {
-      const { id, category, limit = 3 } = req.params;
-      const blogs = await BlogModel.findAll();
+      const { id, category } = req.params;
+      const limit = parseInt(req.params.limit) || 3;
 
-      // Filter out current blog and get published blogs
-      let relatedBlogs = blogs.filter(
-        blog => blog.id !== parseInt(id) && blog.status === 'Published'
-      );
+      // Get blogs excluding current one and only published
+      let relatedBlogs = await Blog.find({
+        _id: { $ne: id },
+        status: 'Published'
+      }).limit(limit * 2); // Get more to filter
 
       // Prioritize same category
       if (category) {
@@ -267,7 +261,7 @@ const blogController = {
       }
 
       // Limit results
-      relatedBlogs = relatedBlogs.slice(0, parseInt(limit));
+      relatedBlogs = relatedBlogs.slice(0, limit);
 
       res.json({
         success: true,

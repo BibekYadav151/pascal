@@ -1,28 +1,39 @@
-// Database configuration
-// Replace with actual database connection logic
+const mongoose = require('mongoose');
 
-const config = {
-  development: {
-    // Add your database configuration here
-    // Example for MongoDB:
-    // uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/pascal_dev'
+const connectDB = async () => {
+  try {
+    const mongoURI = process.env.MONGODB_URI;
 
-    // Example for PostgreSQL:
-    // host: process.env.DB_HOST || 'localhost',
-    // port: process.env.DB_PORT || 5432,
-    // database: process.env.DB_NAME || 'pascal_dev',
-    // username: process.env.DB_USER || 'postgres',
-    // password: process.env.DB_PASSWORD || '',
+    if (!mongoURI) {
+      throw new Error('MONGODB_URI is not defined in environment variables');
+    }
 
-    // For now, using in-memory storage
-    type: 'memory'
-  },
-  production: {
-    // Production database configuration
-    type: 'production_db'
+    const conn = await mongoose.connect(mongoURI);
+
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`Database: ${conn.connection.name}`);
+
+    // Handle connection events
+    mongoose.connection.on('error', (err) => {
+      console.error('MongoDB connection error:', err);
+    });
+
+    mongoose.connection.on('disconnected', () => {
+      console.log('MongoDB disconnected');
+    });
+
+    // Graceful shutdown
+    process.on('SIGINT', async () => {
+      await mongoose.connection.close();
+      console.log('MongoDB connection closed through app termination');
+      process.exit(0);
+    });
+
+    return conn;
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error.message);
+    process.exit(1);
   }
 };
 
-const environment = process.env.NODE_ENV || 'development';
-
-module.exports = config[environment];
+module.exports = connectDB;

@@ -1,17 +1,11 @@
-const BranchModel = require('../models/branchModel');
+const Branch = require('../models/branchModel');
 
 const branchController = {
   // Get all branches
   getAllBranches: async (req, res) => {
     try {
-      const branches = await BranchModel.findAll();
-      
       // Sort: main branch first, then others by name
-      branches.sort((a, b) => {
-        if (a.isMain && !b.isMain) return -1;
-        if (!a.isMain && b.isMain) return 1;
-        return a.name.localeCompare(b.name);
-      });
+      const branches = await Branch.find().sort({ isMain: -1, name: 1 });
 
       res.json({
         success: true,
@@ -29,7 +23,7 @@ const branchController = {
   // Get single branch by ID
   getBranchById: async (req, res) => {
     try {
-      const branch = await BranchModel.findById(req.params.id);
+      const branch = await Branch.findById(req.params.id);
       if (!branch) {
         return res.status(404).json({
           success: false,
@@ -64,12 +58,7 @@ const branchController = {
 
       // If setting as main branch, unset other main branches
       if (isMain) {
-        const allBranches = await BranchModel.findAll();
-        for (const branch of allBranches) {
-          if (branch.isMain) {
-            await BranchModel.update(branch.id, { isMain: false });
-          }
-        }
+        await Branch.updateMany({ isMain: true }, { isMain: false });
       }
 
       const branchData = {
@@ -83,7 +72,7 @@ const branchController = {
         isMain: isMain || false
       };
 
-      const newBranch = await BranchModel.create(branchData);
+      const newBranch = await Branch.create(branchData);
 
       res.status(201).json({
         success: true,
@@ -102,25 +91,26 @@ const branchController = {
   // Update branch
   updateBranch: async (req, res) => {
     try {
-      const branch = await BranchModel.findById(req.params.id);
-      if (!branch) {
+      // If setting as main branch, unset other main branches
+      if (req.body.isMain) {
+        await Branch.updateMany(
+          { isMain: true, _id: { $ne: req.params.id } },
+          { isMain: false }
+        );
+      }
+
+      const updatedBranch = await Branch.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedBranch) {
         return res.status(404).json({
           success: false,
           message: 'Branch not found'
         });
       }
-
-      // If setting as main branch, unset other main branches
-      if (req.body.isMain) {
-        const allBranches = await BranchModel.findAll();
-        for (const b of allBranches) {
-          if (b.isMain && b.id !== parseInt(req.params.id)) {
-            await BranchModel.update(b.id, { isMain: false });
-          }
-        }
-      }
-
-      const updatedBranch = await BranchModel.update(req.params.id, req.body);
 
       res.json({
         success: true,
@@ -139,15 +129,14 @@ const branchController = {
   // Delete branch
   deleteBranch: async (req, res) => {
     try {
-      const branch = await BranchModel.findById(req.params.id);
+      const branch = await Branch.findByIdAndDelete(req.params.id);
+
       if (!branch) {
         return res.status(404).json({
           success: false,
           message: 'Branch not found'
         });
       }
-
-      await BranchModel.delete(req.params.id);
 
       res.json({
         success: true,

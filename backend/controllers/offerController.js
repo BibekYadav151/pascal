@@ -1,82 +1,76 @@
-const OfferModel = require('../models/offerModel');
+const Offer = require('../models/offerModel');
 
 const offerController = {
   // Get all offers with optional filtering
   getAllOffers: async (req, res) => {
     try {
       const { status, includeExpired } = req.query;
-      let offers = await OfferModel.findAll();
+
+      // Build query
+      let query = {};
+
+      // Filter by status if provided
+      if (status) {
+        query.status = status;
+      }
+
+      // For public API (when includeExpired is not true), exclude expired offers
+      if (includeExpired !== 'true') {
+        query.status = { $ne: 'expired' };
+      }
+
+      // Get offers and sort by createdAt (newest first)
+      let offers = await Offer.find(query).sort({ createdAt: -1 });
 
       // Auto-update status based on startDate and validUntil
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      
+
+      const updatePromises = [];
+
       offers = offers.map(offer => {
         let newStatus = offer.status;
-        
+
         // Check if offer has expired based on validUntil
         if (offer.validUntil && offer.validUntil !== 'Ongoing') {
           try {
-            // Try to parse as date string (YYYY-MM-DD format)
             const validUntilDate = new Date(offer.validUntil);
-            validUntilDate.setHours(23, 59, 59, 999); // End of day
-            
-            // Check if it's a valid date
+            validUntilDate.setHours(23, 59, 59, 999);
+
             if (!isNaN(validUntilDate.getTime()) && validUntilDate < today) {
               newStatus = 'expired';
-              // Update in database if status changed
               if (offer.status !== 'expired') {
-                OfferModel.update(offer.id, { status: 'expired' });
+                updatePromises.push(
+                  Offer.findByIdAndUpdate(offer._id, { status: 'expired' })
+                );
               }
-              return { ...offer, status: 'expired' };
+              return { ...offer.toObject(), status: 'expired' };
             }
           } catch (error) {
-            // If date parsing fails, try to parse as text date
-            try {
-              // Try parsing common date formats
-              const parsedDate = new Date(offer.validUntil);
-              if (!isNaN(parsedDate.getTime())) {
-                parsedDate.setHours(23, 59, 59, 999);
-                if (parsedDate < today) {
-                  newStatus = 'expired';
-                  if (offer.status !== 'expired') {
-                    OfferModel.update(offer.id, { status: 'expired' });
-                  }
-                  return { ...offer, status: 'expired' };
-                }
-              }
-            } catch (e) {
-              // If all parsing fails, continue with existing status
-            }
+            // Continue with existing status if parsing fails
           }
         }
-        
+
         // Auto-update status based on startDate if not expired
         if (offer.startDate && newStatus !== 'expired') {
           const start = new Date(offer.startDate);
           start.setHours(0, 0, 0, 0);
           newStatus = start <= today ? 'current' : 'upcoming';
-          // Update in database if status changed
           if (offer.status !== newStatus) {
-            OfferModel.update(offer.id, { status: newStatus });
+            updatePromises.push(
+              Offer.findByIdAndUpdate(offer._id, { status: newStatus })
+            );
           }
-          return { ...offer, status: newStatus };
+          return { ...offer.toObject(), status: newStatus };
         }
-        return offer;
+
+        return offer.toObject();
       });
 
-      // Filter by status if provided
-      if (status) {
-        offers = offers.filter(offer => offer.status === status);
+      // Execute all updates in parallel
+      if (updatePromises.length > 0) {
+        await Promise.all(updatePromises);
       }
-
-      // For public API (when includeExpired is not true), exclude expired offers
-      if (includeExpired !== 'true') {
-        offers = offers.filter(offer => offer.status !== 'expired');
-      }
-
-      // Sort by createdAt (newest first)
-      offers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
       res.json({
         success: true,
@@ -94,7 +88,7 @@ const offerController = {
   // Get single offer by ID
   getOfferById: async (req, res) => {
     try {
-      const offer = await OfferModel.findById(req.params.id);
+      const offer = await Offer.findById(req.params.id);
       if (!offer) {
         return res.status(404).json({
           success: false,
@@ -149,7 +143,7 @@ const offerController = {
         terms: terms || []
       };
 
-      const newOffer = await OfferModel.create(offerData);
+      const newOffer = await Offer.create(offerData);
 
       res.status(201).json({
         success: true,
@@ -168,14 +162,6 @@ const offerController = {
   // Update offer
   updateOffer: async (req, res) => {
     try {
-      const offer = await OfferModel.findById(req.params.id);
-      if (!offer) {
-        return res.status(404).json({
-          success: false,
-          message: 'Offer not found'
-        });
-      }
-
       // Determine status based on startDate if it's being updated
       let updateData = { ...req.body };
       if (updateData.startDate) {
@@ -186,7 +172,18 @@ const offerController = {
         updateData.status = start <= today ? 'current' : 'upcoming';
       }
 
-      const updatedOffer = await OfferModel.update(req.params.id, updateData);
+      const updatedOffer = await Offer.findByIdAndUpdate(
+        req.params.id,
+        updateData,
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedOffer) {
+        return res.status(404).json({
+          success: false,
+          message: 'Offer not found'
+        });
+      }
 
       res.json({
         success: true,
@@ -205,15 +202,14 @@ const offerController = {
   // Delete offer
   deleteOffer: async (req, res) => {
     try {
-      const offer = await OfferModel.findById(req.params.id);
+      const offer = await Offer.findByIdAndDelete(req.params.id);
+
       if (!offer) {
         return res.status(404).json({
           success: false,
           message: 'Offer not found'
         });
       }
-
-      await OfferModel.delete(req.params.id);
 
       res.json({
         success: true,
