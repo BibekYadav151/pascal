@@ -1,6 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { classesData, instituteClassesData } from '../data/classesData';
-import { programsData, universitiesData } from '../data/programsData';
 import heroStudentImage from '../assets/hero-student.png';
 
 const AppContext = createContext();
@@ -17,29 +15,6 @@ export const AppProvider = ({ children }) => {
   // Admin Authentication
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminEmail, setAdminEmail] = useState('');
-
-  // Classes
-  const [classes, setClasses] = useState(() => {
-    const saved = localStorage.getItem('classes');
-    return saved ? JSON.parse(saved) : classesData;
-  });
-
-  const [instituteClasses, setInstituteClasses] = useState(() => {
-    const saved = localStorage.getItem('instituteClasses');
-    return saved ? JSON.parse(saved) : instituteClassesData;
-  });
-
-  // Programs
-  const [programs, setPrograms] = useState(() => {
-    const saved = localStorage.getItem('programs');
-    return saved ? JSON.parse(saved) : programsData;
-  });
-
-  // Universities
-  const [universities, setUniversities] = useState(() => {
-    const saved = localStorage.getItem('universities');
-    return saved ? JSON.parse(saved) : universitiesData;
-  });
 
   // Inquiries
   const [classInquiries, setClassInquiries] = useState(() => {
@@ -73,22 +48,6 @@ export const AppProvider = ({ children }) => {
   });
 
   // Persist data to localStorage
-  useEffect(() => {
-    localStorage.setItem('classes', JSON.stringify(classes));
-  }, [classes]);
-
-  useEffect(() => {
-    localStorage.setItem('instituteClasses', JSON.stringify(instituteClasses));
-  }, [instituteClasses]);
-
-  useEffect(() => {
-    localStorage.setItem('programs', JSON.stringify(programs));
-  }, [programs]);
-
-  useEffect(() => {
-    localStorage.setItem('universities', JSON.stringify(universities));
-  }, [universities]);
-
   useEffect(() => {
     localStorage.setItem('classInquiries', JSON.stringify(classInquiries));
   }, [classInquiries]);
@@ -137,77 +96,6 @@ export const AppProvider = ({ children }) => {
       setAdminEmail(savedEmail || '');
     }
   }, []);
-
-  // Class Management
-  const addClass = (newClass) => {
-    // Ensure timeSlots is an array
-    const classWithTimeSlots = {
-      ...newClass,
-      timeSlots: Array.isArray(newClass.timeSlots)
-        ? newClass.timeSlots
-        : [{ time: newClass.time || 'TBD', available: true }],
-      id: Date.now()
-    };
-    setClasses([...classes, classWithTimeSlots]);
-  };
-
-  const updateClass = (id, updatedClass) => {
-    setClasses(classes.map(c => {
-      if (c.id === id) {
-        // Ensure timeSlots is properly handled
-        const updated = { ...c, ...updatedClass };
-        if (updatedClass.timeSlots) {
-          updated.timeSlots = Array.isArray(updatedClass.timeSlots)
-            ? updatedClass.timeSlots
-            : [{ time: updatedClass.time || 'TBD', available: true }];
-        }
-        return updated;
-      }
-      return c;
-    }));
-  };
-
-  const deleteClass = (id) => {
-    setClasses(classes.filter(c => c.id !== id));
-  };
-
-  const addInstituteClass = (newClass) => {
-    setInstituteClasses([...instituteClasses, { ...newClass, id: Date.now() }]);
-  };
-
-  const updateInstituteClass = (id, updatedClass) => {
-    setInstituteClasses(instituteClasses.map(c => c.id === id ? { ...c, ...updatedClass } : c));
-  };
-
-  const deleteInstituteClass = (id) => {
-    setInstituteClasses(instituteClasses.filter(c => c.id !== id));
-  };
-
-  // Program Management
-  const addProgram = (newProgram) => {
-    setPrograms([...programs, { ...newProgram, id: Date.now() }]);
-  };
-
-  const updateProgram = (id, updatedProgram) => {
-    setPrograms(programs.map(p => p.id === id ? { ...p, ...updatedProgram } : p));
-  };
-
-  const deleteProgram = (id) => {
-    setPrograms(programs.filter(p => p.id !== id));
-  };
-
-  // University Management
-  const addUniversity = (newUniversity) => {
-    setUniversities([...universities, { ...newUniversity, id: Date.now() }]);
-  };
-
-  const updateUniversity = (id, updatedUniversity) => {
-    setUniversities(universities.map(u => u.id === id ? { ...u, ...updatedUniversity } : u));
-  };
-
-  const deleteUniversity = (id) => {
-    setUniversities(universities.filter(u => u.id !== id));
-  };
 
   // Inquiry Management
   const addClassInquiry = (inquiry) => {
@@ -305,19 +193,6 @@ export const AppProvider = ({ children }) => {
     setHeroImages(heroImages.filter(img => img !== imageUrl));
   };
 
-  // Dashboard Stats
-  const getDashboardStats = () => {
-    return {
-      totalInquiries: classInquiries.length + programInquiries.length,
-      classApplications: classInquiries.length,
-      programApplications: programInquiries.length,
-      activeClasses: classes.filter(c => c.status === 'Active').length,
-      activePrograms: programs.filter(p => p.status === 'Active').length,
-      unreadMessages: contactMessages.filter(m => !m.read).length,
-      pendingAppointments: appointments.filter(a => a.status === 'Pending').length
-    };
-  };
-
   return (
     <AppContext.Provider
       value={{
@@ -326,26 +201,6 @@ export const AppProvider = ({ children }) => {
         adminEmail,
         adminLogin,
         adminLogout,
-
-        // Classes
-        classes,
-        instituteClasses,
-        addClass,
-        updateClass,
-        deleteClass,
-        addInstituteClass,
-        updateInstituteClass,
-        deleteInstituteClass,
-
-        // Programs
-        programs,
-        universities,
-        addProgram,
-        updateProgram,
-        deleteProgram,
-        addUniversity,
-        updateUniversity,
-        deleteUniversity,
 
         // Inquiries
         classInquiries,
@@ -374,10 +229,7 @@ export const AppProvider = ({ children }) => {
         heroImages,
         updateHeroStats,
         addHeroImage,
-        removeHeroImage,
-
-        // Stats
-        getDashboardStats
+        removeHeroImage
       }}
     >
       {children}

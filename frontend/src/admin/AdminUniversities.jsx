@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useUniversities, useCreateUniversity, useUpdateUniversity, useDeleteUniversity } from '../hooks/usePrograms';
 
 const AdminUniversities = () => {
-  const { universities, addUniversity, updateUniversity, deleteUniversity } = useApp();
+  const { data: universitiesResponse, isLoading: loadingUniversities } = useUniversities();
+  const universities = universitiesResponse?.data || [];
+
+  const createUniversityMutation = useCreateUniversity();
+  const updateUniversityMutation = useUpdateUniversity();
+  const deleteUniversityMutation = useDeleteUniversity();
 
   const [showModal, setShowModal] = useState(false);
   const [editingUniversity, setEditingUniversity] = useState(null);
@@ -49,16 +54,20 @@ const AdminUniversities = () => {
     setShowModal(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (editingUniversity) {
-      updateUniversity(editingUniversity.id, formData);
-    } else {
-      addUniversity(formData);
+    try {
+      if (editingUniversity) {
+        await updateUniversityMutation.mutateAsync({ id: editingUniversity.id, data: formData });
+      } else {
+        await createUniversityMutation.mutateAsync(formData);
+      }
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error saving university:', error);
+      alert('Error saving university');
     }
-
-    handleCloseModal();
   };
 
   const handleCloseModal = () => {
@@ -122,31 +131,36 @@ const AdminUniversities = () => {
     setLogoPreview(null);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this university?')) {
-      deleteUniversity(id);
+      try {
+        await deleteUniversityMutation.mutateAsync(id);
+      } catch (error) {
+        console.error('Error deleting university:', error);
+        alert('Error deleting university');
+      }
     }
   };
 
   return (
     <>
       <div className="space-y-6">
-      {/* Header with Actions */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">University Management</h1>
-          <p className="text-gray-600">Manage partner universities</p>
-        </div>
+        {/* Header with Actions */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">University Management</h1>
+            <p className="text-gray-600">Manage partner universities</p>
+          </div>
 
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={handleAddUniversity}
-            className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
-          >
-            <span>➕</span> Add University
-          </button>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={handleAddUniversity}
+              className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+            >
+              <span>➕</span> Add University
+            </button>
+          </div>
         </div>
-      </div>
 
         {/* Universities Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -161,9 +175,8 @@ const AdminUniversities = () => {
                       <span>🎓</span>
                     )}
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                    uni.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${uni.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
                     {uni.status}
                   </span>
                 </div>
@@ -280,13 +293,13 @@ const AdminUniversities = () => {
                   <p className="text-xs text-gray-500 mb-2">
                     Upload a logo to display in the partner universities section (Max 5MB)
                   </p>
-                  
+
                   {logoPreview ? (
                     <div className="space-y-3">
                       <div className="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border-2 border-gray-300">
-                        <img 
-                          src={logoPreview} 
-                          alt="Logo preview" 
+                        <img
+                          src={logoPreview}
+                          alt="Logo preview"
                           className="w-full h-full object-contain p-2"
                         />
                       </div>

@@ -7,6 +7,10 @@ const galleryRoutes = require('./gallery');
 const offerRoutes = require('./offers');
 const branchRoutes = require('./branches');
 const uploadRoutes = require('./upload');
+const classRoutes = require('./classes');
+const instituteClassRoutes = require('./instituteClasses');
+const programRoutes = require('./programs');
+const universityRoutes = require('./universities');
 // const userRoutes = require('./users');
 // const authRoutes = require('./auth');
 
@@ -16,6 +20,10 @@ router.use('/gallery', galleryRoutes);
 router.use('/offers', offerRoutes);
 router.use('/branches', branchRoutes);
 router.use('/upload', uploadRoutes);
+router.use('/classes', classRoutes);
+router.use('/institute-classes', instituteClassRoutes);
+router.use('/programs', programRoutes);
+router.use('/universities', universityRoutes);
 // router.use('/users', userRoutes);
 // router.use('/auth', authRoutes);
 

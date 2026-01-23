@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, ExternalLink } from 'lucide-react';
+import { useBranches, useCreateBranch, useUpdateBranch, useDeleteBranch } from '../hooks/useBranches';
 
 const AdminBranches = () => {
-  const [branches, setBranches] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: branchesResponse, isLoading: loading } = useBranches();
+  const branches = branchesResponse?.data || [];
+
+  const createBranchMutation = useCreateBranch();
+  const updateBranchMutation = useUpdateBranch();
+  const deleteBranchMutation = useDeleteBranch();
+
   const [showModal, setShowModal] = useState(false);
   const [editingBranch, setEditingBranch] = useState(null);
 
@@ -18,23 +24,7 @@ const AdminBranches = () => {
     isMain: false
   });
 
-  useEffect(() => {
-    fetchBranches();
-  }, []);
-
-  const fetchBranches = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/branches');
-      const data = await response.json();
-      if (data.success) {
-        setBranches(data.data);
-      }
-    } catch (error) {
-      console.error('Error fetching branches:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Removed fetchBranches useEffect
 
   const handleAddBranch = () => {
     setEditingBranch(null);
@@ -75,27 +65,17 @@ const AdminBranches = () => {
     }
 
     try {
-      const url = editingBranch
-        ? `http://localhost:5000/api/branches/${editingBranch.id}`
-        : 'http://localhost:5000/api/branches';
+      let response;
+      if (editingBranch) {
+        response = await updateBranchMutation.mutateAsync({ id: editingBranch.id, data: formData });
+      } else {
+        response = await createBranchMutation.mutateAsync(formData);
+      }
 
-      const method = editingBranch ? 'PUT' : 'POST';
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        await fetchBranches();
+      if (response.success) {
         handleCloseModal();
       } else {
-        alert(data.message || 'Error saving branch');
+        alert(response.message || 'Error saving branch');
       }
     } catch (error) {
       console.error('Error saving branch:', error);
@@ -106,16 +86,12 @@ const AdminBranches = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this branch?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/branches/${id}`, {
-          method: 'DELETE',
-        });
+        const response = await deleteBranchMutation.mutateAsync(id);
 
-        const data = await response.json();
-
-        if (data.success) {
-          await fetchBranches();
+        if (response.success) {
+          // fetchBranches invalidated automatically
         } else {
-          alert(data.message || 'Error deleting branch');
+          alert(response.message || 'Error deleting branch');
         }
       } catch (error) {
         console.error('Error deleting branch:', error);

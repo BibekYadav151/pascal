@@ -7,8 +7,16 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import { BsAwardFill } from "react-icons/bs";
 import { ChevronDown } from "lucide-react";
 
+import { usePrograms, useUniversities } from "../hooks/usePrograms";
+
 const Courses = () => {
-  const { programs, universities, addProgramInquiry } = useApp();
+  const { data: programsResponse } = usePrograms();
+  const programs = programsResponse?.data || [];
+
+  const { data: universitiesResponse } = useUniversities();
+  const universities = universitiesResponse?.data || [];
+
+  const { addProgramInquiry } = useApp();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({

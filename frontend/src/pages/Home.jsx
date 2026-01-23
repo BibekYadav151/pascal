@@ -28,27 +28,22 @@ import {
   FloatingElements,
 } from "../components/ui";
 
+import { useOffers } from '../hooks/useOffers';
+
 // Offers Slider Component
 const OffersSlider = () => {
+  const { data: offersResponse } = useOffers('current');
+  const offersData = offersResponse?.data || [];
+
   const [offers, setOffers] = useState([]);
   const offersCarouselRef = useRef(null);
 
   useEffect(() => {
-    fetchOffers();
-  }, []);
-
-  const fetchOffers = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/offers?status=current');
-      const data = await response.json();
-      if (data.success && data.data.length > 0) {
-        // Duplicate offers for seamless infinite scroll
-        setOffers([...data.data, ...data.data, ...data.data]);
-      }
-    } catch (error) {
-      console.error('Error fetching offers:', error);
+    if (offersData.length > 0) {
+      // Duplicate offers for seamless infinite scroll
+      setOffers([...offersData, ...offersData, ...offersData]);
     }
-  };
+  }, [offersData]);
 
   // Auto-sliding carousel effect (same as Partner Universities)
   useEffect(() => {
@@ -145,8 +140,17 @@ const OffersSlider = () => {
   );
 };
 
+import { useClasses } from "../hooks/useClasses";
+import { useUniversities } from "../hooks/usePrograms";
+
 const Home = ({ onBookAppointment }) => {
-  const { classes, addClassInquiry, universities, heroStats, heroImages } = useApp();
+  const { data: classesResponse } = useClasses();
+  const classes = classesResponse?.data || [];
+
+  const { data: universitiesResponse } = useUniversities();
+  const universities = universitiesResponse?.data || [];
+
+  const { addClassInquiry, heroStats, heroImages } = useApp();
   const scrollContainerRef = useRef(null);
   const carouselRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -391,7 +395,7 @@ const Home = ({ onBookAppointment }) => {
       <section className="relative pt-24 pb-0 md:pt-28 md:pb-0 overflow-hidden min-h-[70vh] flex flex-col animate-fade-in">
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50"></div>
-       
+
 
         {/* Subtle Background Shapes */}
         <div className="absolute inset-0 overflow-hidden">
@@ -482,9 +486,8 @@ const Home = ({ onBookAppointment }) => {
                         key={index}
                         src={image}
                         alt={`Hero image ${index + 1}`}
-                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                          index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-                        }`}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                          }`}
                         loading={index === 0 ? "eager" : "lazy"}
                       />
                     ))
@@ -514,11 +517,10 @@ const Home = ({ onBookAppointment }) => {
                       <button
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
-                        className={`relative w-8 h-2 rounded-full transition-all duration-300 overflow-hidden ${
-                          index === currentImageIndex
+                        className={`relative w-8 h-2 rounded-full transition-all duration-300 overflow-hidden ${index === currentImageIndex
                             ? 'bg-white/80'
                             : 'bg-white/30 hover:bg-white/50'
-                        }`}
+                          }`}
                       >
                         {index === currentImageIndex && !isPaused && (
                           <div
@@ -580,9 +582,9 @@ const Home = ({ onBookAppointment }) => {
         <div className="w-full relative z-10 mt-auto pt-8 md:pt-10 pb-8 md:pb-10">
           <div className="max-w-7xl mx-auto container-spacing">
             <p className="text-base md:text-lg text-gray-700 w-full text-left">
-              Schedule a personalized appointment with our expert counselors to discuss your study abroad journey. 
-              Get guidance on course selection, visa requirements, university applications, and class enrollment. 
-              Explore our comprehensive classes and programs designed to help you achieve your educational goals. 
+              Schedule a personalized appointment with our expert counselors to discuss your study abroad journey.
+              Get guidance on course selection, visa requirements, university applications, and class enrollment.
+              Explore our comprehensive classes and programs designed to help you achieve your educational goals.
               Your future starts with a conversation.
             </p>
           </div>
@@ -658,7 +660,7 @@ const Home = ({ onBookAppointment }) => {
             ))}
           </div>
 
-          
+
         </div>
       </section>
 
@@ -729,9 +731,8 @@ const Home = ({ onBookAppointment }) => {
             {/* Scrollable Container */}
             <div
               ref={scrollContainerRef}
-              className={`flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-16 ${
-                isDragging ? "cursor-grabbing" : "cursor-grab"
-              } select-none`}
+              className={`flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-16 ${isDragging ? "cursor-grabbing" : "cursor-grab"
+                } select-none`}
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
@@ -836,13 +837,13 @@ const Home = ({ onBookAppointment }) => {
         </div>
       </section>
 
-      
+
       {/* Why Experience Matters */}
       <section className="section-spacing bg-white">
         <div className="relative max-w-7xl mx-auto container-spacing">
           <div className="text-center mb-12">
             <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium mb-6 border border-gray-200">
-              
+
               The Pascal Advantage
             </div>
             <h2 className="text-display-md text-gray-900 mb-6">Why Experience Matters: The Pascal Advantage</h2>
@@ -886,7 +887,7 @@ const Home = ({ onBookAppointment }) => {
                 With 30 years of documentation experience, we know how to handle complex profiles and turn potential rejections into success stories.
               </p>
             </Card>
-          
+
           </div>
         </div>
       </section>
@@ -1214,7 +1215,7 @@ const Home = ({ onBookAppointment }) => {
                   />
                 </div>
                 {selectedClass.timeSlots &&
-                selectedClass.timeSlots.length > 1 ? (
+                  selectedClass.timeSlots.length > 1 ? (
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
                       Select Time Slot *

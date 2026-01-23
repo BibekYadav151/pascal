@@ -4,8 +4,16 @@ import { AnimatedButton, Card } from "../components/ui";
 import { SiGoogleclassroom } from "react-icons/si";
 import { IoBookSharp } from "react-icons/io5";
 
+import { useClasses, useInstituteClasses } from "../hooks/useClasses";
+
 const Classes = () => {
-  const { classes, instituteClasses, addClassInquiry } = useApp();
+  const { data: classesResponse } = useClasses();
+  const classes = classesResponse?.data || [];
+
+  const { data: instituteClassesResponse } = useInstituteClasses();
+  const instituteClasses = instituteClassesResponse?.data || [];
+
+  const { addClassInquiry } = useApp();
   const [selectedClass, setSelectedClass] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -92,11 +100,10 @@ const Classes = () => {
                     {classItem.title}
                   </h3>
                   <span
-                    className={`px-2 py-1 text-xs font-medium rounded-md ml-4 ${
-                      classItem.status === "Active"
+                    className={`px-2 py-1 text-xs font-medium rounded-md ml-4 ${classItem.status === "Active"
                         ? "bg-green-100 text-green-700"
                         : "bg-gray-100 text-gray-600"
-                    }`}
+                      }`}
                   >
                     {classItem.status}
                   </span>
@@ -126,8 +133,8 @@ const Classes = () => {
                           {index < classItem.timeSlots.length - 1 ? ", " : ""}
                         </span>
                       )) || (
-                        <span className="text-body-sm">{classItem.time}</span>
-                      )}
+                          <span className="text-body-sm">{classItem.time}</span>
+                        )}
                     </div>
                   </div>
                   <div className="flex items-center gap-3 text-gray-600">
@@ -208,11 +215,10 @@ const Classes = () => {
                     {classItem.title}
                   </h3>
                   <span
-                    className={`px-3 py-1 text-xs font-semibold rounded-full ml-4 ${
-                      classItem.status === "Active"
+                    className={`px-3 py-1 text-xs font-semibold rounded-full ml-4 ${classItem.status === "Active"
                         ? "bg-green-50 text-green-700"
                         : "bg-gray-100 text-gray-600"
-                    }`}
+                      }`}
                   >
                     {classItem.status}
                   </span>
@@ -324,7 +330,7 @@ const Classes = () => {
                   />
                 </div>
                 {selectedClass.timeSlots &&
-                selectedClass.timeSlots.length > 1 ? (
+                  selectedClass.timeSlots.length > 1 ? (
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
                       Select Time Slot *

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../context/AppContext';
+import useAuthStore from '../store/authStore';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const { adminLogin } = useApp();
+  const { login } = useAuthStore();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -17,7 +17,7 @@ const AdminLogin = () => {
     e.preventDefault();
     setError('');
 
-    const result = adminLogin(formData.email, formData.password);
+    const result = login(formData.email, formData.password);
 
     if (result.success) {
       navigate('/admin/dashboard');

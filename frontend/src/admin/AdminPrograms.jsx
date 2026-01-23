@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useApp } from '../context/AppContext';
+import { usePrograms, useCreateProgram, useUpdateProgram, useDeleteProgram, useUniversities } from '../hooks/usePrograms';
 
 const AdminPrograms = () => {
-  const { programs, universities, addProgram, updateProgram, deleteProgram } = useApp();
+  const { data: programsResponse, isLoading: loadingPrograms } = usePrograms();
+  const programs = programsResponse?.data || [];
+
+  const { data: universitiesResponse } = useUniversities();
+  const universities = universitiesResponse?.data || [];
+
+  const createProgramMutation = useCreateProgram();
+  const updateProgramMutation = useUpdateProgram();
+  const deleteProgramMutation = useDeleteProgram();
 
   const [showModal, setShowModal] = useState(false);
   const [editingProgram, setEditingProgram] = useState(null);
@@ -76,7 +84,7 @@ const AdminPrograms = () => {
     setShowModal(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const programData = {
@@ -87,13 +95,17 @@ const AdminPrograms = () => {
       universityLogo: ''
     };
 
-    if (editingProgram) {
-      updateProgram(editingProgram.id, programData);
-    } else {
-      addProgram(programData);
+    try {
+      if (editingProgram) {
+        await updateProgramMutation.mutateAsync({ id: editingProgram.id, data: programData });
+      } else {
+        await createProgramMutation.mutateAsync(programData);
+      }
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error saving program:', error);
+      alert('Error saving program');
     }
-
-    handleCloseModal();
   };
 
   const handleCloseModal = () => {
@@ -101,9 +113,14 @@ const AdminPrograms = () => {
     setEditingProgram(null);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this program?')) {
-      deleteProgram(id);
+      try {
+        await deleteProgramMutation.mutateAsync(id);
+      } catch (error) {
+        console.error('Error deleting program:', error);
+        alert('Error deleting program');
+      }
     }
   };
 
@@ -120,22 +137,22 @@ const AdminPrograms = () => {
   return (
     <>
       <div className="space-y-6">
-      {/* Header with Actions */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Programs Management</h1>
-          <p className="text-gray-600">Manage university programs</p>
+        {/* Header with Actions */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Programs Management</h1>
+            <p className="text-gray-600">Manage university programs</p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={handleAddProgram}
+              className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+            >
+              <span>➕</span> Add Program
+            </button>
+          </div>
         </div>
-        
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={handleAddProgram}
-            className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
-          >
-            <span>➕</span> Add Program
-          </button>
-        </div>
-      </div>
 
         {/* Programs Table */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -166,11 +183,10 @@ const AdminPrograms = () => {
                       {program.ieltsRequired ? program.ieltsScore : 'Not Required'}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        program.status === 'Active'
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${program.status === 'Active'
                           ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
-                      }`}>
+                        }`}>
                         {program.status}
                       </span>
                     </td>

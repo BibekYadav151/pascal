@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Calendar } from 'lucide-react';
+import { useOffers, useCreateOffer, useUpdateOffer, useDeleteOffer } from '../hooks/useOffers';
 
 const AdminOffers = () => {
-  const [offers, setOffers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: offersResponse, isLoading: loading } = useOffers();
+  const offers = offersResponse?.data || [];
+
+  const createOfferMutation = useCreateOffer();
+  const updateOfferMutation = useUpdateOffer();
+  const deleteOfferMutation = useDeleteOffer();
+
   const [showModal, setShowModal] = useState(false);
   const [editingOffer, setEditingOffer] = useState(null);
 
@@ -35,23 +41,7 @@ const AdminOffers = () => {
 
   const categoryOptions = ['Test Prep', 'Package', 'Group', 'Referral', 'Seasonal', 'Partnership', 'Other'];
 
-  useEffect(() => {
-    fetchOffers();
-  }, []);
-
-  const fetchOffers = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/offers?includeExpired=true');
-      const data = await response.json();
-      if (data.success) {
-        setOffers(data.data);
-      }
-    } catch (error) {
-      console.error('Error fetching offers:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Removed fetchEvents useEffect
 
   const handleAddOffer = () => {
     setEditingOffer(null);
@@ -95,27 +85,17 @@ const AdminOffers = () => {
     }
 
     try {
-      const url = editingOffer
-        ? `http://localhost:5000/api/offers/${editingOffer.id}`
-        : 'http://localhost:5000/api/offers';
+      let response;
+      if (editingOffer) {
+        response = await updateOfferMutation.mutateAsync({ id: editingOffer.id, data: formData });
+      } else {
+        response = await createOfferMutation.mutateAsync(formData);
+      }
 
-      const method = editingOffer ? 'PUT' : 'POST';
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        await fetchOffers();
+      if (response.success) {
         handleCloseModal();
       } else {
-        alert(data.message || 'Error saving offer');
+        alert(response.message || 'Error saving offer');
       }
     } catch (error) {
       console.error('Error saving offer:', error);
@@ -126,16 +106,12 @@ const AdminOffers = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this offer?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/offers/${id}`, {
-          method: 'DELETE',
-        });
+        const response = await deleteOfferMutation.mutateAsync(id);
 
-        const data = await response.json();
-
-        if (data.success) {
-          await fetchOffers();
+        if (response.success) {
+          // fetchOffers invalidated automatically
         } else {
-          alert(data.message || 'Error deleting offer');
+          alert(response.message || 'Error deleting offer');
         }
       } catch (error) {
         console.error('Error deleting offer:', error);
@@ -557,11 +533,10 @@ const AdminOffers = () => {
                       key={color.value}
                       type="button"
                       onClick={() => setFormData({ ...formData, bgColor: color.value })}
-                      className={`relative ${color.value} h-12 rounded-lg border-2 transition-all ${
-                        formData.bgColor === color.value
+                      className={`relative ${color.value} h-12 rounded-lg border-2 transition-all ${formData.bgColor === color.value
                           ? 'border-gray-900 scale-110 shadow-lg'
                           : 'border-transparent hover:border-gray-300'
-                      }`}
+                        }`}
                     >
                       {formData.bgColor === color.value && (
                         <div className="absolute inset-0 flex items-center justify-center">

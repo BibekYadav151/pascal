@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useApp } from '../context/AppContext';
+import { useClasses, useCreateClass, useUpdateClass, useDeleteClass } from '../hooks/useClasses';
 
 const AdminClasses = () => {
-  const { classes, addClass, updateClass, deleteClass } = useApp();
+  const { data: classesResponse, isLoading: loading } = useClasses();
+  const classes = classesResponse?.data || [];
+
+  const createClassMutation = useCreateClass();
+  const updateClassMutation = useUpdateClass();
+  const deleteClassMutation = useDeleteClass();
 
   const [showModal, setShowModal] = useState(false);
   const [editingClass, setEditingClass] = useState(null);
@@ -43,16 +48,20 @@ const AdminClasses = () => {
     setShowModal(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (editingClass) {
-      updateClass(editingClass.id, formData);
-    } else {
-      addClass(formData);
+    try {
+      if (editingClass) {
+        await updateClassMutation.mutateAsync({ id: editingClass.id, data: formData });
+      } else {
+        await createClassMutation.mutateAsync(formData);
+      }
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error saving class:', error);
+      alert('Error saving class');
     }
-
-    handleCloseModal();
   };
 
   const handleCloseModal = () => {
@@ -68,9 +77,14 @@ const AdminClasses = () => {
     });
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this class?')) {
-      deleteClass(id);
+      try {
+        await deleteClassMutation.mutateAsync(id);
+      } catch (error) {
+        console.error('Error deleting class:', error);
+        alert('Error deleting class');
+      }
     }
   };
 
@@ -102,22 +116,22 @@ const AdminClasses = () => {
   return (
     <>
       <div className="space-y-6">
-      {/* Header with Actions */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Class Management</h1>
-          <p className="text-gray-600">Manage available classes</p>
+        {/* Header with Actions */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Class Management</h1>
+            <p className="text-gray-600">Manage available classes</p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={handleAddClass}
+              className="bg-orange-600 hover:bg-orange-800 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+            >
+              <span>➕</span> Add Class
+            </button>
+          </div>
         </div>
-        
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={handleAddClass}
-            className="bg-orange-600 hover:bg-orange-800 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
-          >
-            <span>➕</span> Add Class
-          </button>
-        </div>
-      </div>
 
         {/* Classes Table */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -151,11 +165,10 @@ const AdminClasses = () => {
                     <td className="px-6 py-4 text-gray-600">{classItem.duration}</td>
                     <td className="px-6 py-4 text-gray-600">{classItem.fee}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        classItem.status === 'Active'
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${classItem.status === 'Active'
                           ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
-                      }`}>
+                        }`}>
                         {classItem.status}
                       </span>
                     </td>

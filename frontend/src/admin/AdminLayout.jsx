@@ -3,8 +3,11 @@ import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { Bell, X, CheckCircle, AlertCircle, Info, Calendar } from 'lucide-react';
 
+import useAuthStore from '../store/authStore';
+
 const AdminLayout = () => {
-  const { isAdmin, adminEmail, adminLogout, contactMessages, classInquiries, programInquiries, appointments } = useApp();
+  const { contactMessages, classInquiries, programInquiries, appointments } = useApp();
+  const { isAdmin, adminEmail, logout: adminLogout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -18,7 +21,7 @@ const AdminLayout = () => {
 
     // Generate notifications from various sources
     const newNotifications = [];
-    
+
     // Unread contact messages
     const unreadMessages = contactMessages.filter(m => !m.read);
     if (unreadMessages.length > 0) {
@@ -144,9 +147,8 @@ const AdminLayout = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-50 ${
-                    location.pathname.includes(item.path) ? 'bg-orange-50 text-orange-600' : 'text-gray-700'
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-50 ${location.pathname.includes(item.path) ? 'bg-orange-50 text-orange-600' : 'text-gray-700'
+                    }`}
                 >
                   <span className="text-lg">{item.icon}</span>
                   <span>{item.name}</span>
