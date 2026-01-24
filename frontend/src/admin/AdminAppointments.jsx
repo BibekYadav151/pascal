@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { CheckCircle, XCircle, Clock, Calendar, User, Mail, Phone, MapPin, Edit, Trash2, Search, Filter, X, Eye } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Calendar, User, Mail, Phone, MapPin, Edit, Trash2, Search, Filter, X, Eye, Globe } from 'lucide-react';
+import { MdSchool, MdClass, MdAssignment, MdEvent } from 'react-icons/md';
 
 const AdminAppointments = () => {
-  const { 
-    isAdmin, 
-    appointments, 
-    addAppointment, 
-    updateAppointment, 
-    deleteAppointment 
+  const {
+    isAdmin,
+    appointments,
+    addAppointment,
+    updateAppointment,
+    deleteAppointment
   } = useApp();
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -77,7 +78,7 @@ const AdminAppointments = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const newAppointment = {
       ...formData,
       id: editMode ? selectedAppointment.id : Date.now(),
@@ -136,19 +137,19 @@ const AdminAppointments = () => {
       'Completed': { bg: 'bg-blue-100', text: 'text-blue-800' },
       'Cancelled': { bg: 'bg-red-100', text: 'text-red-800' }
     };
-    
+
     return statusConfig[status] || { bg: 'bg-gray-100', text: 'text-gray-800' };
   };
 
   const getAppointmentTypeInfo = (type) => {
     const types = {
-      'counseling': { name: 'Study Abroad Counseling', icon: '🎓', color: 'text-blue-600' },
-      'course-selection': { name: 'Course Selection', icon: '📚', color: 'text-green-600' },
-      'visa-guidance': { name: 'Visa Guidance', icon: '🛂', color: 'text-purple-600' },
-      'test-prep': { name: 'Test Preparation', icon: '📝', color: 'text-orange-600' }
+      'counseling': { name: 'Study Abroad Counseling', icon: <MdSchool />, color: 'text-blue-600' },
+      'course-selection': { name: 'Course Selection', icon: <MdClass />, color: 'text-green-600' },
+      'visa-guidance': { name: 'Visa Guidance', icon: <Globe className="w-4 h-4" />, color: 'text-purple-600' },
+      'test-prep': { name: 'Test Preparation', icon: <MdAssignment />, color: 'text-orange-600' }
     };
-    
-    return types[type] || { name: type, icon: '📅', color: 'text-gray-600' };
+
+    return types[type] || { name: type, icon: <MdEvent />, color: 'text-gray-600' };
   };
 
   if (loading) {
@@ -167,13 +168,13 @@ const AdminAppointments = () => {
           <h1 className="text-3xl font-bold text-gray-900">Appointment Management</h1>
           <p className="text-gray-600">Manage student appointments and consultations</p>
         </div>
-        
+
         <div className="flex flex-wrap gap-3">
           <button
             onClick={handleAddAppointment}
-            className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center gap-2"
           >
-            <span>➕</span> Add Appointment
+            <Calendar className="w-4 h-4" /> Book New Appointment
           </button>
         </div>
       </div>
@@ -243,13 +244,17 @@ const AdminAppointments = () => {
                     {/* Appointment Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className={`w-10 h-10 rounded-full ${statusBadge.bg} flex items-center justify-center`}>
+                        <div className={`w-10 h-10 rounded-xl ${statusBadge.bg} flex items-center justify-center`}>
                           <span className={`text-xl ${statusBadge.text}`}>{typeInfo.icon}</span>
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                          <h3 className="font-bold text-gray-900 flex items-center gap-3">
                             {appointment.fullName}
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusBadge.bg} ${statusBadge.text}`}>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider ring-1 ring-inset ${appointment.status === 'Pending' ? 'bg-amber-50 text-amber-700 ring-amber-600/20' :
+                              appointment.status === 'Confirmed' ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/20' :
+                                appointment.status === 'Completed' ? 'bg-blue-50 text-blue-700 ring-blue-600/20' :
+                                  'bg-rose-50 text-rose-700 ring-rose-600/20'
+                              }`}>
                               {appointment.status}
                             </span>
                           </h3>
@@ -291,36 +296,36 @@ const AdminAppointments = () => {
                           setViewingAppointment(appointment);
                           setViewModal(true);
                         }}
-                        className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+                        className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                        title="View Details"
                       >
                         <Eye className="h-4 w-4" />
-                        View
                       </button>
                       <button
                         onClick={() => handleEditAppointment(appointment)}
-                        className="bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+                        className="p-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                        title="Edit"
                       >
                         <Edit className="h-4 w-4" />
-                        Edit
                       </button>
-                      
+
                       <button
                         onClick={() => handleDeleteAppointment(appointment.id)}
-                        className="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+                        className="p-2 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-600 hover:text-white transition-all shadow-sm"
+                        title="Delete"
                       >
                         <Trash2 className="h-4 w-4" />
-                        Delete
                       </button>
-                      
+
                       {/* Status Update Dropdown */}
                       {appointment.status !== 'Completed' && appointment.status !== 'Cancelled' && (
                         <div className="relative">
                           <select
                             value={appointment.status}
                             onChange={(e) => handleStatusChange(appointment.id, e.target.value)}
-                            className="bg-green-100 hover:bg-green-200 text-green-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors appearance-none cursor-pointer"
+                            className="bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700 px-3 py-2 rounded-lg text-xs font-bold transition-all border-none ring-1 ring-emerald-600/20 appearance-none cursor-pointer"
                           >
-                            <option value="Pending">Pending</option>
+                            <option value="Pending">Process</option>
                             <option value="Confirmed">Confirm</option>
                             <option value="Completed">Complete</option>
                             <option value="Cancelled">Cancel</option>

@@ -4,6 +4,15 @@ import { useApp } from '../context/AppContext';
 
 import { useClasses } from '../hooks/useClasses';
 import { usePrograms } from '../hooks/usePrograms';
+import {
+  MdDashboard,
+  MdSchool,
+  MdClass,
+  MdMessage,
+  MdEvent,
+  MdTrendingUp,
+  MdAutoGraph
+} from 'react-icons/md';
 
 const AdminDashboard = () => {
   const { classInquiries, programInquiries, contactMessages, appointments } = useApp();
@@ -51,7 +60,7 @@ const AdminDashboard = () => {
             <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
-                  <span className="text-xl">📊</span>
+                  <MdAutoGraph className="text-xl" />
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats.totalInquiries}</div>
               </div>
@@ -61,7 +70,7 @@ const AdminDashboard = () => {
             <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600">
-                  <span className="text-xl">🎓</span>
+                  <MdSchool className="text-xl" />
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats.classApplications}</div>
               </div>
@@ -71,7 +80,7 @@ const AdminDashboard = () => {
             <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center text-purple-600">
-                  <span className="text-xl">📚</span>
+                  <MdClass className="text-xl" />
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats.programApplications}</div>
               </div>
@@ -81,7 +90,7 @@ const AdminDashboard = () => {
             <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
-                  <span className="text-xl">🏫</span>
+                  <MdSchool className="text-xl" />
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats.activeClasses}</div>
               </div>
@@ -91,7 +100,7 @@ const AdminDashboard = () => {
             <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-pink-50 rounded-lg flex items-center justify-center text-pink-600">
-                  <span className="text-xl">📖</span>
+                  <MdClass className="text-xl" />
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats.activePrograms}</div>
               </div>
@@ -101,7 +110,7 @@ const AdminDashboard = () => {
             <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-600">
-                  <span className="text-xl">💬</span>
+                  <MdMessage className="text-xl" />
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats.unreadMessages}</div>
               </div>
@@ -211,7 +220,7 @@ const AdminDashboard = () => {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-3">
                               <div className="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center">
-                                <span className="text-lg text-indigo-600">📅</span>
+                                <MdEvent className="text-lg text-indigo-600" />
                               </div>
                               <div>
                                 <h4 className="font-semibold text-gray-900 text-sm truncate">{appointment.fullName}</h4>
@@ -238,7 +247,7 @@ const AdminDashboard = () => {
             ) : (
               <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 p-8 text-center">
                 <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <span className="text-xl text-indigo-600">📅</span>
+                  <MdEvent className="text-xl text-indigo-600" />
                 </div>
                 <p className="text-gray-600 text-sm">No appointments yet</p>
                 <p className="text-gray-500 text-xs mt-1">Appointments will appear here when booked</p>
@@ -254,28 +263,36 @@ const AdminDashboard = () => {
                 to="/admin/classes"
                 className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
               >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">➕</div>
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                  <MdClass size={24} />
+                </div>
                 <p className="font-semibold text-gray-900 text-sm">Add Class</p>
               </Link>
               <Link
                 to="/admin/programs"
                 className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
               >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">➕</div>
+                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-3 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all">
+                  <MdSchool size={24} />
+                </div>
                 <p className="font-semibold text-gray-900 text-sm">Add Program</p>
               </Link>
               <Link
                 to="/admin/class-inquiries"
                 className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
               >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📨</div>
+                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-3 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-all">
+                  <MdMessage size={24} />
+                </div>
                 <p className="font-semibold text-gray-900 text-sm">View Inquiries</p>
               </Link>
               <Link
                 to="/admin/appointments"
                 className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all text-center group border border-gray-100"
               >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📅</div>
+                <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mx-auto mb-3 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all">
+                  <MdEvent size={24} />
+                </div>
                 <p className="font-semibold text-gray-900 text-sm">Manage Appointments</p>
               </Link>
             </div>

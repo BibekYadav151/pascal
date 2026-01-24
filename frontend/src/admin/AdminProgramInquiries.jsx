@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { Eye, X } from 'lucide-react';
+import { Eye, X, Download, Trash2, Filter, Search, Calendar, User, Mail, Phone, BookOpen, Clock, Globe, Award } from 'lucide-react';
+import { MdTrendingUp, MdNewReleases, MdCheckCircle, MdAssignment } from 'react-icons/md';
 
 const AdminProgramInquiries = () => {
   const { programInquiries, updateProgramInquiryStatus, deleteProgramInquiry } = useApp();
@@ -53,58 +54,79 @@ const AdminProgramInquiries = () => {
             <h1 className="text-3xl font-bold text-gray-900">Program Inquiries</h1>
             <p className="text-gray-600">Manage program application inquiries</p>
           </div>
-          
+
           <div className="flex flex-wrap gap-3">
             <button
               onClick={exportToExcel}
               disabled={programInquiries.length === 0}
-              className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+              className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-6 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center gap-2"
             >
-              📥 Export Excel
+              <Download className="w-4 h-4" />
+              Export CSV
             </button>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="text-3xl font-bold text-blue-600">{programInquiries.length}</div>
-            <div className="text-gray-600">Total</div>
-          </div>
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="text-3xl font-bold text-green-600">
-              {programInquiries.filter(i => i.status === 'New').length}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+            <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+              <MdAssignment size={24} />
             </div>
-            <div className="text-gray-600">New</div>
-          </div>
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="text-3xl font-bold text-yellow-600">
-              {programInquiries.filter(i => i.status === 'Contacted').length}
+            <div>
+              <div className="text-2xl font-bold text-gray-900">{programInquiries.length}</div>
+              <div className="text-sm text-gray-600 font-medium">Total Inquiries</div>
             </div>
-            <div className="text-gray-600">Contacted</div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="text-3xl font-bold text-blue-600">
-              {programInquiries.filter(i => i.status === 'Converted').length}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+            <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+              <MdNewReleases size={24} />
             </div>
-            <div className="text-gray-600">Converted</div>
+            <div>
+              <div className="text-2xl font-bold text-gray-900">
+                {programInquiries.filter(i => i.status === 'New').length}
+              </div>
+              <div className="text-sm text-gray-600 font-medium">New Applications</div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+            <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
+              <MdTrendingUp size={24} />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-gray-900">
+                {programInquiries.filter(i => i.status === 'Contacted').length}
+              </div>
+              <div className="text-sm text-gray-600 font-medium">In Progress</div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+            <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
+              <MdCheckCircle size={24} />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-gray-900">
+                {programInquiries.filter(i => i.status === 'Converted').length}
+              </div>
+              <div className="text-sm text-gray-600 font-medium">Converted</div>
+            </div>
           </div>
         </div>
 
         {/* Inquiries Table */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gradient-to-r from-orange-500 to-orange-700 text-white">
+              <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Date</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Student</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Program</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">University</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Country</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">IELTS</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Status</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">Actions</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Student</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Program</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">University</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Country</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">IELTS</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -129,13 +151,12 @@ const AdminProgramInquiries = () => {
                         <select
                           value={inquiry.status}
                           onChange={(e) => handleStatusChange(inquiry.id, e.target.value)}
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                            inquiry.status === 'New'
-                              ? 'bg-green-100 text-green-800'
+                          className={`px-3 py-1.5 rounded-full text-xs font-bold border-none ring-1 ring-inset ${inquiry.status === 'New'
+                              ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/20'
                               : inquiry.status === 'Contacted'
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : 'bg-blue-100 text-blue-800'
-                          }`}
+                                ? 'bg-amber-50 text-amber-700 ring-amber-600/20'
+                                : 'bg-indigo-50 text-indigo-700 ring-indigo-600/20'
+                            }`}
                         >
                           <option value="New">New</option>
                           <option value="Contacted">Contacted</option>
@@ -143,19 +164,20 @@ const AdminProgramInquiries = () => {
                         </select>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex items-center justify-center gap-2">
+                        <div className="flex items-center justify-center gap-3">
                           <button
                             onClick={() => setSelectedInquiry(inquiry)}
-                            className="bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-1 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1"
+                            className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                            title="View Details"
                           >
                             <Eye className="w-4 h-4" />
-                            View
                           </button>
                           <button
                             onClick={() => handleDelete(inquiry.id)}
-                            className="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1 rounded-lg text-sm font-semibold transition-colors"
+                            className="p-2 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-600 hover:text-white transition-all shadow-sm"
+                            title="Delete"
                           >
-                            Delete
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </td>
@@ -245,7 +267,7 @@ const AdminProgramInquiries = () => {
                     value={selectedInquiry.status}
                     onChange={(e) => {
                       handleStatusChange(selectedInquiry.id, e.target.value);
-                      setSelectedInquiry({...selectedInquiry, status: e.target.value});
+                      setSelectedInquiry({ ...selectedInquiry, status: e.target.value });
                     }}
                     className="bg-blue-100 text-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
                   >
