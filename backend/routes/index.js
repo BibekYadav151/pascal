@@ -12,7 +12,7 @@ const instituteClassRoutes = require('./instituteClasses');
 const programRoutes = require('./programs');
 const universityRoutes = require('./universities');
 // const userRoutes = require('./users');
-// const authRoutes = require('./auth');
+const authRoutes = require('./auth');
 
 // Mount routes
 router.use('/blogs', blogRoutes);
@@ -25,7 +25,9 @@ router.use('/institute-classes', instituteClassRoutes);
 router.use('/programs', programRoutes);
 router.use('/universities', universityRoutes);
 // router.use('/users', userRoutes);
-// router.use('/auth', authRoutes);
+router.use('/auth', authRoutes);
+router.use('/teams', require('./teams'));
+router.use('/users', require('./users'));
 
 // Example route
 router.get('/', (req, res) => {
@@ -39,7 +41,7 @@ router.get('/', (req, res) => {
       offers: '/offers',
       branches: '/branches',
       // users: '/users',
-      // auth: '/auth'
+      auth: '/auth'
     }
   });
 });

@@ -4,6 +4,8 @@ const Class = require('./models/classModel');
 const InstituteClass = require('./models/instituteClassModel');
 const Program = require('./models/programModel');
 const University = require('./models/universityModel');
+const User = require('./models/userModel');
+const Team = require('./models/teamModel');
 
 // Load env vars
 dotenv.config();
@@ -331,11 +333,29 @@ const importData = async () => {
         await InstituteClass.deleteMany();
         await Program.deleteMany();
         await University.deleteMany();
+        await User.deleteMany();
+        await Team.deleteMany();
 
         await Class.insertMany(classesData);
         await InstituteClass.insertMany(instituteClassesData);
         await Program.insertMany(programsData);
         await University.insertMany(universitiesData);
+
+        // Create Default Team
+        const adminTeam = await Team.create({
+            name: 'Administration',
+            description: 'Full access team',
+            permissions: ['blogs', 'contacts', 'leads', 'applications', 'gallery', 'offers', 'branches', 'classes', 'programs', 'universities', 'settings']
+        });
+
+        // Create Super Admin
+        await User.create({
+            name: 'Super Admin',
+            email: 'admin@pascal.edu.np',
+            password: 'admin123',
+            role: 'superadmin',
+            team: adminTeam._id
+        });
 
         console.log('Data Imported!');
         process.exit();

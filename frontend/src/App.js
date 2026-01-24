@@ -31,6 +31,8 @@ import AdminHero from './admin/AdminHero';
 import AdminGallery from './admin/AdminGallery';
 import AdminOffers from './admin/AdminOffers';
 import AdminBranches from './admin/AdminBranches';
+import AdminTeams from './admin/AdminTeams';
+import AdminUsers from './admin/AdminUsers';
 import ScrollToTop from './components/ScrollToTop';
 import WhatsAppButton from './components/WhatsAppButton';
 
@@ -85,6 +87,8 @@ function App() {
               <Route path="gallery" element={<AdminGallery />} />
               <Route path="offers" element={<AdminOffers />} />
               <Route path="branches" element={<AdminBranches />} />
+              <Route path="teams" element={<AdminTeams />} />
+              <Route path="users" element={<AdminUsers />} />
             </Route>
           </Routes>
 

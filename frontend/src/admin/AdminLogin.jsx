@@ -13,16 +13,16 @@ const AdminLogin = () => {
 
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    const result = login(formData.email, formData.password);
+    const result = await login(formData.email, formData.password);
 
     if (result.success) {
       navigate('/admin/dashboard');
     } else {
-      setError('Invalid email or password');
+      setError(result.error);
     }
   };
 

@@ -7,14 +7,14 @@ import useAuthStore from '../store/authStore';
 
 const AdminLayout = () => {
   const { contactMessages, classInquiries, programInquiries, appointments } = useApp();
-  const { isAdmin, adminEmail, logout: adminLogout } = useAuthStore();
+  const { isAuthenticated, user, logout: adminLogout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!isAuthenticated) {
       navigate('/admin/login');
       return;
     }
@@ -79,9 +79,9 @@ const AdminLayout = () => {
     }
 
     setNotifications(newNotifications);
-  }, [isAdmin, navigate, contactMessages, classInquiries, programInquiries, appointments]);
+  }, [isAuthenticated, navigate, contactMessages, classInquiries, programInquiries, appointments]);
 
-  if (!isAdmin) {
+  if (!isAuthenticated) {
     return null;
   }
 
@@ -98,7 +98,9 @@ const AdminLayout = () => {
     { name: 'Gallery', path: '/admin/gallery', icon: '🖼️' },
     { name: 'Offers', path: '/admin/offers', icon: '🎁' },
     { name: 'Branches', path: '/admin/branches', icon: '📍' },
-    { name: 'Contact Messages', path: '/admin/messages', icon: '💬' },
+    { name: 'Teams', path: '/admin/teams', icon: '👥' },
+    { name: 'Users', path: '/admin/users', icon: '👤' },
+    { name: 'Help/Messages', path: '/admin/messages', icon: '💬' },
     { name: 'Appointments', path: '/admin/appointments', icon: '📅' }
   ];
 
@@ -164,7 +166,7 @@ const AdminLayout = () => {
                 <span className="text-sm font-medium text-gray-600">👤</span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">{adminEmail}</p>
+                <p className="text-sm font-medium text-gray-900 truncate">{user?.email}</p>
                 <p className="text-xs text-gray-500">Admin</p>
               </div>
             </div>

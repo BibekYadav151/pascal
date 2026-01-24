@@ -1,23 +1,35 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { loginUser, logoutUser } from '../api/auth';
 
 const useAuthStore = create(
     persist(
         (set) => ({
-            isAdmin: false,
-            adminEmail: '',
-            login: (email, password) => {
-                // Mock login for now (replace with API call later)
-                if (email === 'admin@pascal.edu.np' && password === 'admin123') {
-                    set({ isAdmin: true, adminEmail: email });
-                    return { success: true };
+            user: null,
+            isAuthenticated: false,
+            login: async (email, password) => {
+                try {
+                    const response = await loginUser(email, password);
+                    if (response.success) {
+                        const { token, ...userData } = response.data;
+                        localStorage.setItem('token', token);
+                        set({ user: userData, isAuthenticated: true });
+                        return { success: true };
+                    }
+                    return { success: false, error: response.message || 'Login failed' };
+                } catch (error) {
+                    return { success: false, error: error.response?.data?.message || 'Login failed' };
                 }
-                return { success: false, error: 'Invalid credentials' };
             },
-            logout: () => set({ isAdmin: false, adminEmail: '' }),
+            logout: async () => {
+                await logoutUser();
+                localStorage.removeItem('token');
+                set({ user: null, isAuthenticated: false });
+            },
         }),
         {
             name: 'auth-storage',
+            partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated }),
         }
     )
 );
