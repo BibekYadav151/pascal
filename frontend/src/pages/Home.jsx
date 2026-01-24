@@ -29,6 +29,8 @@ import {
 } from "../components/ui";
 
 import { useOffers } from '../hooks/useOffers';
+import { useClasses } from '../hooks/useClasses';
+import { useUniversities } from '../hooks/usePrograms';
 
 // Offers Slider Component
 const OffersSlider = () => {
@@ -140,8 +142,7 @@ const OffersSlider = () => {
   );
 };
 
-import { useClasses } from "../hooks/useClasses";
-import { useUniversities } from "../hooks/usePrograms";
+
 
 const Home = ({ onBookAppointment }) => {
   const { data: classesResponse } = useClasses();
@@ -518,8 +519,8 @@ const Home = ({ onBookAppointment }) => {
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
                         className={`relative w-8 h-2 rounded-full transition-all duration-300 overflow-hidden ${index === currentImageIndex
-                            ? 'bg-white/80'
-                            : 'bg-white/30 hover:bg-white/50'
+                          ? 'bg-white/80'
+                          : 'bg-white/30 hover:bg-white/50'
                           }`}
                       >
                         {index === currentImageIndex && !isPaused && (
