@@ -33,8 +33,7 @@ const AdminDashboard = () => {
   const recentMessages = contactMessages.slice(-5).reverse();
 
   return (
-
-    <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="space-y-6">
       <div className="flex gap-8">
         {/* Main Content */}
         <div className="flex-1 min-w-0">
@@ -49,74 +48,64 @@ const AdminDashboard = () => {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+            <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">📊</span>
+                <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
+                  <span className="text-xl">📊</span>
                 </div>
-                <div className="text-3xl font-bold text-gray-600">{stats.totalInquiries}</div>
+                <div className="text-2xl font-bold text-gray-900">{stats.totalInquiries}</div>
               </div>
-              <p className="text-sm text-gray-900">Total Inquiries</p>
+              <p className="text-sm font-medium text-gray-600">Total Inquiries</p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+            <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">🎓</span>
+                <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600">
+                  <span className="text-xl">🎓</span>
                 </div>
-                <div className="text-3xl font-bold text-gray-600">{stats.classApplications}</div>
+                <div className="text-2xl font-bold text-gray-900">{stats.classApplications}</div>
               </div>
-              <p className="text-sm text-gray-500">Class Applications</p>
+              <p className="text-sm font-medium text-gray-600">Class Applications</p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+            <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">📚</span>
+                <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center text-purple-600">
+                  <span className="text-xl">📚</span>
                 </div>
-                <div className="text-3xl font-bold text-gray-600">{stats.programApplications}</div>
+                <div className="text-2xl font-bold text-gray-900">{stats.programApplications}</div>
               </div>
-              <p className="text-sm text-gray-500">Program Applications</p>
+              <p className="text-sm font-medium text-gray-600">Program Applications</p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+            <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">🏫</span>
+                <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600">
+                  <span className="text-xl">🏫</span>
                 </div>
-                <div className="text-3xl font-bold text-gray-600">{stats.activeClasses}</div>
+                <div className="text-2xl font-bold text-gray-900">{stats.activeClasses}</div>
               </div>
-              <p className="text-sm text-gray-500">Active Classes</p>
+              <p className="text-sm font-medium text-gray-600">Active Classes</p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+            <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">📖</span>
+                <div className="w-10 h-10 bg-pink-50 rounded-lg flex items-center justify-center text-pink-600">
+                  <span className="text-xl">📖</span>
                 </div>
-                <div className="text-3xl font-bold text-gray-600">{stats.activePrograms}</div>
+                <div className="text-2xl font-bold text-gray-900">{stats.activePrograms}</div>
               </div>
-              <p className="text-sm text-gray-500">Active Programs</p>
+              <p className="text-sm font-medium text-gray-600">Active Programs</p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
+            <div className="bg-white rounded-xl p-6 hover:shadow-md transition-all border border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">💬</span>
+                <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-red-600">
+                  <span className="text-xl">💬</span>
                 </div>
-                <div className="text-3xl font-bold text-gray-600">{stats.unreadMessages}</div>
+                <div className="text-2xl font-bold text-gray-900">{stats.unreadMessages}</div>
               </div>
-              <p className="text-sm text-gray-500">Unread Messages</p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all border border-gray-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-orange-300 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">📅</span>
-                </div>
-                <div className="text-3xl font-bold text-gray-600">{stats.pendingAppointments}</div>
-              </div>
-              <p className="text-sm text-gray-500">Pending Appointments</p>
+              <p className="text-sm font-medium text-gray-600">Unread Messages</p>
             </div>
           </div>
 
@@ -140,10 +129,10 @@ const AdminDashboard = () => {
                           <p className="text-xs text-gray-400">{new Date(inquiry.date).toLocaleDateString()}</p>
                         </div>
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${inquiry.status === 'New'
-                            ? 'bg-green-100 text-green-800'
-                            : inquiry.status === 'Contacted'
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : 'bg-blue-100 text-blue-800'
+                          ? 'bg-green-100 text-green-800'
+                          : inquiry.status === 'Contacted'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-blue-100 text-blue-800'
                           }`}>
                           {inquiry.status}
                         </span>

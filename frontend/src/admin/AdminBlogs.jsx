@@ -290,17 +290,20 @@ const AdminBlogs = () => {
     <>
       <div className="space-y-6">
         {/* Header with Actions */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Blog Management</h1>
-            <p className="text-gray-600">Create and manage blog articles</p>
+            <h1 className="text-2xl font-bold text-gray-900">Blog Management</h1>
+            <p className="text-gray-600 text-sm mt-1">Create and manage blog articles</p>
           </div>
 
           <button
             onClick={handleAddBlog}
-            className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg transition-colors flex items-center gap-2 shadow-sm"
           >
-            <span>➕</span> Add New Blog
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Add New Blog
           </button>
         </div>
 
@@ -365,8 +368,8 @@ const AdminBlogs = () => {
                       </td>
                       <td className="px-6 py-4">
                         <span className={`px-3 py-1 text-xs font-medium rounded-full ${blog.status === 'Published'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-yellow-100 text-yellow-700'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-yellow-100 text-yellow-700'
                           }`}>
                           {blog.status}
                         </span>

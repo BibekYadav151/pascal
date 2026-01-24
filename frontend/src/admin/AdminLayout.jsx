@@ -1,269 +1,207 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { Bell, X, CheckCircle, AlertCircle, Info, Calendar } from 'lucide-react';
-
+import {
+  MdDashboard, MdSchool, MdClass, MdQuestionAnswer,
+  MdLocalLibrary, MdMessage, MdEvent, MdArticle,
+  MdPhotoLibrary, MdLocalOffer, MdLocationOn,
+  MdGroup, MdPerson, MdNotifications, MdClose,
+  MdCheckCircle, MdMenu, MdSearch, MdLogout
+} from 'react-icons/md';
+import { FaUniversity } from 'react-icons/fa';
 import useAuthStore from '../store/authStore';
+
+import AdminSidebar from './components/AdminSidebar';
 
 const AdminLayout = () => {
   const { contactMessages, classInquiries, programInquiries, appointments } = useApp();
-  const { isAuthenticated, user, logout: adminLogout } = useAuthStore();
+  const { isAuthenticated, logout: adminLogout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/admin/login');
-      return;
-    }
+    if (!isAuthenticated) return;
 
-    // Generate notifications from various sources
     const newNotifications = [];
 
-    // Unread contact messages
+    // Notifications logic
     const unreadMessages = contactMessages.filter(m => !m.read);
     if (unreadMessages.length > 0) {
       newNotifications.push({
         id: 'messages',
-        type: 'message',
-        title: 'New Contact Messages',
+        title: 'New Messages',
         count: unreadMessages.length,
-        description: `${unreadMessages.length} new contact message(s) waiting for your response`,
+        description: `${unreadMessages.length} unread messages`,
         link: '/admin/messages',
-        icon: <Bell className="h-4 w-4" />
+        icon: <MdMessage className="h-4 w-4" />
       });
     }
 
-    // New class inquiries
     const newClassInquiries = classInquiries.filter(i => i.status === 'New');
     if (newClassInquiries.length > 0) {
       newNotifications.push({
         id: 'class-inquiries',
-        type: 'inquiry',
-        title: 'New Class Inquiries',
+        title: 'Class Inquiries',
         count: newClassInquiries.length,
-        description: `${newClassInquiries.length} new class inquiry(ies) need attention`,
+        description: `${newClassInquiries.length} new inquiries`,
         link: '/admin/class-inquiries',
-        icon: <Info className="h-4 w-4" />
+        icon: <MdQuestionAnswer className="h-4 w-4" />
       });
     }
 
-    // New program inquiries
     const newProgramInquiries = programInquiries.filter(i => i.status === 'New');
     if (newProgramInquiries.length > 0) {
       newNotifications.push({
         id: 'program-inquiries',
-        type: 'inquiry',
-        title: 'New Program Inquiries',
+        title: 'Program Inquiries',
         count: newProgramInquiries.length,
-        description: `${newProgramInquiries.length} new program inquiry(ies) need attention`,
+        description: `${newProgramInquiries.length} new inquiries`,
         link: '/admin/program-inquiries',
-        icon: <Info className="h-4 w-4" />
+        icon: <MdQuestionAnswer className="h-4 w-4" />
       });
     }
 
-    // Pending appointments
     const pendingAppointments = appointments.filter(a => a.status === 'Pending');
     if (pendingAppointments.length > 0) {
       newNotifications.push({
         id: 'appointments',
-        type: 'appointment',
-        title: 'Pending Appointments',
+        title: 'Appointments',
         count: pendingAppointments.length,
-        description: `${pendingAppointments.length} appointment(s) need confirmation`,
+        description: `${pendingAppointments.length} pending`,
         link: '/admin/appointments',
-        icon: <Calendar className="h-4 w-4" />
+        icon: <MdEvent className="h-4 w-4" />
       });
     }
 
     setNotifications(newNotifications);
-  }, [isAuthenticated, navigate, contactMessages, classInquiries, programInquiries, appointments]);
+  }, [isAuthenticated, contactMessages, classInquiries, programInquiries, appointments]);
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  // Auth check needs to be handled by a higher level component or route guard effectively, 
+  // but keeping basic check here
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/admin/login');
+    }
+  }, [isAuthenticated, navigate]);
 
-  const menuItems = [
-    { name: 'Dashboard', path: '/admin/dashboard', icon: '📊' },
-    { name: 'Hero Section', path: '/admin/hero', icon: '🎨' },
-    { name: 'Classes', path: '/admin/classes', icon: '🎓' },
-    { name: 'Class Inquiries', path: '/admin/class-inquiries', icon: '📨' },
-    { name: 'Programs', path: '/admin/programs', icon: '📚' },
-    { name: 'Program Inquiries', path: '/admin/program-inquiries', icon: '📩' },
-    { name: 'Institute Classes', path: '/admin/institute-classes', icon: '🏫' },
-    { name: 'Universities', path: '/admin/universities', icon: '🏛️' },
-    { name: 'Blogs', path: '/admin/blogs', icon: '📝' },
-    { name: 'Gallery', path: '/admin/gallery', icon: '🖼️' },
-    { name: 'Offers', path: '/admin/offers', icon: '🎁' },
-    { name: 'Branches', path: '/admin/branches', icon: '📍' },
-    { name: 'Teams', path: '/admin/teams', icon: '👥' },
-    { name: 'Users', path: '/admin/users', icon: '👤' },
-    { name: 'Help/Messages', path: '/admin/messages', icon: '💬' },
-    { name: 'Appointments', path: '/admin/appointments', icon: '📅' }
-  ];
+  if (!isAuthenticated) return null;
 
+  // Simple title mapping
   const getPageTitle = () => {
-    const path = location.pathname;
-    if (path.includes('dashboard')) return 'Dashboard Overview';
-    if (path.includes('hero')) return 'Hero Section Management';
-    if (path.includes('classes') && !path.includes('class-inquiries') && !path.includes('institute-classes')) return 'Class Management';
-    if (path.includes('class-inquiries')) return 'Class Inquiries';
-    if (path.includes('programs') && !path.includes('program-inquiries')) return 'Program Management';
-    if (path.includes('program-inquiries')) return 'Program Inquiries';
-    if (path.includes('institute-classes')) return 'Institute Classes';
-    if (path.includes('universities')) return 'University Management';
-    if (path.includes('blogs')) return 'Blog Management';
-    if (path.includes('gallery')) return 'Gallery Management';
-    if (path.includes('offers')) return 'Offer Management';
-    if (path.includes('branches')) return 'Branch Management';
-    if (path.includes('messages')) return 'Contact Messages';
-    if (path.includes('appointments')) return 'Appointment Management';
+    if (location.pathname.includes('dashboard')) return 'Dashboard';
+    if (location.pathname.includes('classes') && !location.pathname.includes('inquiries')) return 'Classes';
+    if (location.pathname.includes('class-inquiries')) return 'Class Inquiries';
+    if (location.pathname.includes('programs') && !location.pathname.includes('inquiries')) return 'Programs';
+    if (location.pathname.includes('program-inquiries')) return 'Program Inquiries';
+    if (location.pathname.includes('institute-classes')) return 'Institute Classes';
+    if (location.pathname.includes('universities')) return 'Universities';
+    if (location.pathname.includes('blogs')) return 'Blogs';
+    if (location.pathname.includes('gallery')) return 'Gallery';
+    if (location.pathname.includes('offers')) return 'Offers';
+    if (location.pathname.includes('branches')) return 'Branches';
+    if (location.pathname.includes('teams')) return 'Teams';
+    if (location.pathname.includes('users')) return 'Users';
+    if (location.pathname.includes('messages')) return 'Messages';
+    if (location.pathname.includes('appointments')) return 'Appointments';
     return 'Admin Panel';
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar Navigation - Always visible on larger screens */}
-      <div className="w-64 flex-shrink-0 hidden lg:block border-r border-gray-200">
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden h-full flex flex-col">
-          {/* Logo/Brand */}
-          <div className="p-6 border-b border-gray-100">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-sm">
-                <span className="text-white font-bold text-xl">P</span>
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-gray-900">Admin Panel</h1>
-                <p className="text-xs text-gray-500">Pascal Institute</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Navigation Menu */}
-          <nav className="p-4 flex-1 overflow-y-auto">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-3">Menu</p>
-            <div className="space-y-1">
-              {menuItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-gray-50 ${location.pathname.includes(item.path) ? 'bg-orange-50 text-orange-600' : 'text-gray-700'
-                    }`}
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </div>
-          </nav>
-
-          {/* User Info */}
-          <div className="p-4 border-t border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-gray-600">👤</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">{user?.email}</p>
-                <p className="text-xs text-gray-500">Admin</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Sidebar */}
+      <AdminSidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Main Content Area */}
-      <div className="flex-1 min-w-0 flex flex-col">
-        {/* Admin Header */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
-          <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-4">
-                <h1 className="text-lg font-bold text-gray-900">{getPageTitle()}</h1>
+      <div className="flex-1 flex flex-col min-w-0 lg:pl-64 transition-all duration-200">
+        {/* Top Header */}
+        <header className="bg-white border-b border-gray-200 h-16 sticky top-0 z-30 w-full">
+          <div className="flex items-center justify-between h-full px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden text-gray-500 hover:text-gray-700"
+              >
+                <MdMenu size={24} />
+              </button>
+              <h2 className="text-lg font-semibold text-gray-900">{getPageTitle()}</h2>
+            </div>
+
+            <div className="flex items-center gap-4">
+              {/* Search Bar */}
+              <div className="hidden md:flex items-center bg-gray-100 rounded-lg px-3 py-1.5 w-64">
+                <MdSearch className="text-gray-400 mr-2" />
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="bg-transparent border-none text-sm focus:ring-0 w-full p-0 text-gray-700 placeholder-gray-400"
+                />
               </div>
 
-              <div className="flex items-center gap-4">
-                {/* Notifications */}
-                <div className="relative">
-                  <button
-                    onClick={() => setShowNotifications(!showNotifications)}
-                    className="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
-                  >
-                    <Bell className="h-5 w-5 text-gray-600" />
-                    {notifications.length > 0 && (
-                      <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                        {notifications.length}
-                      </span>
-                    )}
-                  </button>
-
-                  {/* Notifications Dropdown */}
-                  {showNotifications && (
-                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 z-50">
-                      <div className="p-4 border-b border-gray-100 flex justify-between items-center">
-                        <h3 className="font-bold text-gray-900">Notifications</h3>
-                        <button
-                          onClick={() => setShowNotifications(false)}
-                          className="text-gray-400 hover:text-gray-600"
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      </div>
-                      <div className="max-h-80 overflow-y-auto">
-                        {notifications.length > 0 ? (
-                          <div className="divide-y divide-gray-100">
-                            {notifications.map((notification) => (
-                              <Link
-                                key={notification.id}
-                                to={notification.link}
-                                onClick={() => setShowNotifications(false)}
-                                className="flex items-start gap-3 p-4 hover:bg-gray-50 transition-colors"
-                              >
-                                <div className="flex-shrink-0 mt-1">
-                                  {notification.icon}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex justify-between items-start">
-                                    <p className="font-semibold text-gray-900 text-sm">{notification.title}</p>
-                                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
-                                      {notification.count}
-                                    </span>
-                                  </div>
-                                  <p className="text-sm text-gray-600 mt-1">{notification.description}</p>
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="p-6 text-center">
-                            <CheckCircle className="h-8 w-8 text-green-500 mx-auto mb-2" />
-                            <p className="text-gray-600 text-sm">All caught up!</p>
-                            <p className="text-gray-500 text-xs mt-1">No new notifications</p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
+              {/* Notifications */}
+              <div className="relative">
                 <button
-                  onClick={adminLogout}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors text-sm"
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className="p-2 text-gray-500 hover:bg-gray-100 rounded-full relative transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4 4m4-4v12m-4-16h14" />
-                  </svg>
-                  Logout
+                  <MdNotifications size={22} />
+                  {notifications.length > 0 && (
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                  )}
                 </button>
+
+                {/* Notifications Dropdown */}
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg ring-1 ring-black ring-opacity-5 py-1 z-50">
+                    <div className="px-4 py-3 border-b border-gray-100 flex justify-between items-center">
+                      <h3 className="text-sm font-semibold text-gray-900">Notifications</h3>
+                      <button onClick={() => setShowNotifications(false)} className="text-gray-400 hover:text-gray-500">
+                        <MdClose size={18} />
+                      </button>
+                    </div>
+                    <div className="max-h-96 overflow-y-auto">
+                      {notifications.length > 0 ? (
+                        notifications.map((notification) => (
+                          <Link
+                            key={notification.id}
+                            to={notification.link}
+                            onClick={() => setShowNotifications(false)}
+                            className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                          >
+                            <span className="text-blue-500 mt-0.5">{notification.icon}</span>
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">{notification.title}</p>
+                              <p className="text-xs text-gray-500">{notification.description}</p>
+                            </div>
+                          </Link>
+                        ))
+                      ) : (
+                        <div className="px-4 py-6 text-center text-gray-500">
+                          <p className="text-sm">No new notifications</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
+
+              <div className="h-6 w-px bg-gray-200 mx-1"></div>
+
+              <button
+                onClick={adminLogout}
+                className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-red-600 transition-colors"
+              >
+                <MdLogout size={20} />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
             </div>
           </div>
-        </div>
+        </header>
 
         {/* Page Content */}
-        <main className="flex-1 max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="flex-1 overflow-y-auto bg-gray-50 p-6 lg:p-8">
           <Outlet />
         </main>
       </div>
